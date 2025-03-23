@@ -1,5 +1,7 @@
 ### Picking an API:
 
+Choosing the right API isn’t just a technical decision, actually it’s a strategic one. A well-chosen API can boost performance, enhance developer experience, and future-proof your application.
+
 ###  REST (Representational State Transfer):
 
 - Best for: Standard web applications
