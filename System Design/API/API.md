@@ -55,7 +55,8 @@ Choosing the right API isn’t just a technical decision, actually it’s a stra
 
 
  ### How to improve API performance?
-![Uploading 1740824312470.gif…]()
+![1740824312470](https://github.com/user-attachments/assets/bc97dc23-82c5-449b-b0d0-177026733a1d)
+
 
  1. Use Caching – Reduce Database Load
 
