@@ -2,6 +2,8 @@
 
 Choosing the right API isn’t just a technical decision, actually it’s a strategic one. A well-chosen API can boost performance, enhance developer experience, and future-proof your application.
 
+![1742671005194](https://github.com/user-attachments/assets/7961d598-5369-4dfa-9ab1-5f398f915943)
+
 ###  REST (Representational State Transfer):
 
 - Best for: Standard web applications
