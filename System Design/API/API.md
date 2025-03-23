@@ -52,3 +52,80 @@ Choosing the right API isn’t just a technical decision, actually it’s a stra
  ✔ WebSockets → For Live, interactive applications
  
  ✔ MQTT → For IoT & connected devices
+
+
+ ### How to improve API performance?
+![Uploading 1740824312470.gif…]()
+
+ 1. Use Caching – Reduce Database Load
+
+    - Where? Frequently accessed data (e.g., user profiles, product listings).
+
+    - How? Store data in Redis/Memcached instead of querying the DB repeatedly.
+
+    - Example: Cache responses for /user/profile.
+
+2. Minimize Payload Size – Speed Up Responses
+
+    - Where? Large JSON responses, unused fields.
+
+    - How? Remove unnecessary data, compress responses (Gzip, Brotli).
+
+    - Example: Instead of {user: {name, age, bio}}, send {user: {name}}.
+
+3. Use Asynchronous Processing – Avoid Blocking Requests
+
+    - Where? Logging, notifications, database writes.
+
+    - How? Offload tasks to Kafka, RabbitMQ, or SQS.
+
+    - Example: Send a welcome email in the background after user signup.
+
+4. Load Balancing – Distribute Traffic Efficiently
+
+    - Where? High-traffic APIs, multiple backend servers.
+
+    - How? Use NGINX, AWS Load Balancer, HAProxy.
+
+    - Example: Distribute requests across multiple backend nodes.
+
+5. Optimize Data Formats – Reduce Processing Overhead
+
+    - Where? API responses, inter-service communication.
+
+    - How? Use JSON instead of XML, or Protobuf/gRPC for speed.
+
+    - Example: Fetch minimal JSON instead of bloated XML.
+
+6. Connection Pooling – Reduce DB Overhead
+
+    - Where? APIs with frequent database queries.
+
+    - How? Use HikariCP, PgBouncer, or MySQL pooling.
+
+    - Example: Reuse DB connections instead of opening new ones.
+
+7. Use CDNs – Reduce Latency
+
+    - Where? Static assets, global users.
+
+    - How? Serve images, JS, CSS via Cloudflare, AWS CloudFront.
+
+    - Example: Load images from https://lnkd.in/dnnacRrU.
+
+8. Implement an API Gateway – Offload Security & Routing
+
+    - Where? Microservices architectures.
+
+    - How? Use Kong, Apigee, or AWS API Gateway.
+
+    - Example: Route /api/users → User Service, /api/orders → Order Service.
+
+9. Avoid Overfetching & Underfetching – Fetch Only Needed Data
+
+    - Where? APIs for dynamic frontends (React, Vue, Mobile).
+
+    - How? Use GraphQL to request only required fields.
+
+    - Example: Fetch only {name, email} instead of the full user object.
+
