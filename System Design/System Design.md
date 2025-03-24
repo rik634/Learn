@@ -52,6 +52,24 @@ Building a robust system isn’t just about writing code—it’s about designin
 
 
 ## Concepts:
+![1740528092073](https://github.com/user-attachments/assets/65de3e62-8850-4526-9aef-9d94880a28a2)
 
+## Algorithms:
 
-![Uploading 1740528092073.gif…]()
+These 7 key algorithms play a crucial role in designing robust distributed systems.
+
+1. Merkle Tree – A hash-based structure that verifies data integrity and consistency in large datasets.
+
+2. Consistent Hashing – Reduces rehashing when nodes join or leave a system, ensuring stability.
+
+3. Read Repair – Automatically fixes missing or inconsistent data in distributed databases.
+
+4. Gossip Protocol – A decentralized communication model that spreads data efficiently across nodes.
+
+5. Bloom Filter – A space-efficient data structure that checks membership, allowing false positives but no false negatives.
+
+6. Heartbeat – A periodic signal that ensures availability and detects failures in real-time.
+
+7. CAP/PACELC Theorem – Explains trade-offs between consistency, availability, partition tolerance, and latency in distributed systems.
+
+![1740439432420](https://github.com/user-attachments/assets/a0aede38-688d-4142-b54a-2e1c8a7576b8)
