@@ -36,3 +36,7 @@ What’s Inside a JWT?
  - Secure data exchange when implemented correctly.
 
 JWTs are powerful, but they’re not magic! Use them wisely, and never store sensitive data inside a JWT.
+![1742760612353](https://github.com/user-attachments/assets/86e8316f-ac37-4330-bb1b-788cffac7517)
+
+
+
