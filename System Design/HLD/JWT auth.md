@@ -1,5 +1,6 @@
 # JWT Authentication
 
+- JWT stands for JSON Web Token
 - JWTs are everywhere in modern authentication, but how do they actually work? 
 
 What’s Inside a JWT?
