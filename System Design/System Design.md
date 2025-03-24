@@ -49,3 +49,9 @@ Every high-performing system follows a set of essential principles that make it 
 Building a robust system isn’t just about writing code—it’s about designing for scale, security, and reliability.
 
 ![1739751229977](https://github.com/user-attachments/assets/3b44a7b4-99cf-4b86-9768-3b1c1a3e7c53)
+
+
+## Concepts:
+
+
+![Uploading 1740528092073.gif…]()
