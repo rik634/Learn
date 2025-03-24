@@ -1,4 +1,4 @@
-## Google interview
+## Google interview - Design questions
 
 1. Design Google Map
 
@@ -35,3 +35,11 @@
 17. Design FB Live Comments
 
 18. Design GoPuff
+
+## Theory questions:
+
+1. Ever noticed how Netflix streams smoothly? That’s thanks to CDNs and Caching bringing content closer to you.
+
+2. Amazon processes millions of orders without crashing? Microservices and Database Partitioning keep it scalable.
+
+3. Apps rarely go down? Circuit Breakers and Heartbeat Monitoring prevent failures from spreading.
