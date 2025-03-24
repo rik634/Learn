@@ -53,4 +53,6 @@ Low latency for reads? Fast ingestion for writes?
 - State if the system is Read or Write heavy. 
 - Explain how you’d optimize it (caching, DB choices, replication, etc.). 
 - Discuss trade-offs (consistency vs scalability, latency vs durability). 
-- Provide real-world examples (e.g., Twitter feed = read-heavy, Log monitoring = write-heavy). 
+- Provide real-world examples (e.g., Twitter feed = read-heavy, Log monitoring = write-heavy).
+
+![1742214652037](https://github.com/user-attachments/assets/b7cfb800-1f5d-40ac-a464-9a6fe565bdb1)
