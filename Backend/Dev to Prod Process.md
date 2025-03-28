@@ -69,8 +69,35 @@ These build output files often include the following:
    - This image can be deployed across environments consistently.
     
 ## Containerization (Optional but powerful)
-- 
+- It is incorporated to make deployment consistent and scalable.
+  Steps:
+  - Create a Dockerfile: Here, we create a Dockerfile to package the application. And write the instructions to containerize the application.
+    
+    ![image](https://github.com/user-attachments/assets/ff63298f-25a2-435a-965c-179e13bba606)
+  - Build Docker Image:
+    
+    ![image](https://github.com/user-attachments/assets/169892aa-233d-4e43-95b7-602ed7475572)
+  - Test Locally: Run the Docker container to ensure it works as expected:
+    
+    ![image](https://github.com/user-attachments/assets/7d7632bb-e266-4c78-8f6d-aa0dfb345172)
+
+##
+### Dockerfile:
+A Dockerfile is essentially a script containing a set of instructions to build a Docker image. This image packages your Java project along with all its dependencies, configuration, and environment setup into a consistent, portable format. Here's why it's valuable:
+- Portability: Your application runs the same way on any system that has Docker installed.
+- Consistency: Removes environment-related issues by bundling dependencies and configurations.
+- Ease of Deployment: Once an image is built, it can be deployed anywhere, ensuring reliability and scalability.
+
+For example, in a Java project, a typical Dockerfile might:
+- Use a base image with Java runtime (e.g., openJDK:17).
+- Copy your application code and dependencies into the container.
+- Build the application (if needed) and specify the command to run it.
+##
+
+
 ## Pre-deployment preparation
+This involves preparing the infrastructure and environment for deployment.
+
 ## Deployment phase
 ## Post-deployment phase
 ## Maintenance and Optimization
