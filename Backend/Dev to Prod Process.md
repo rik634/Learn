@@ -44,18 +44,30 @@ These build output files often include the following:
       - Contains multiple modules (like JARs and WARs).
 
 3. Build Logs:
-
+   - File Type: Plain text or console output.
+   - Purpose: Logs of the build process that include details about compilation, dependency resolution, and potential errors.
+   - Use: Helpful for debugging and monitoring build success.
 
 4. Test Reports (If the tests are included in the build)
-
+   - File Type: HTML, XML, or other formats.
+   - Purpose: Summary of test results, including passed, failed, and skipped tests.
+   - Use: Ensures code quality and reliability before deployment.
 
 5. Dependency Metadata:
+   - Tools like Maven or Gradle generate files to resolve project dependencies:
+       - Maven POM.xml: Contains configuration for dependency management and build.
+       - Gradle build.gradle: Defines dependencies and build tasks.
 
 
 6. Distribution Files:
+   - Sometimes the build process produces distributable files for deployment. 
+   - Example: Pre-packaged zip files or directories containing all necessary files (e.g., libraries, JARs/WARs, configuration files).
 
 7. Docker Image (Optional for containerized applications)
-
+   If containerized:
+   - The build process includes creating a Docker image containing the application.
+   - This image can be deployed across environments consistently.
+    
 ## Containerization (Optional but powerful)
 - 
 ## Pre-deployment preparation
