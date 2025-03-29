@@ -11,7 +11,7 @@ Steps:
 ## Build phase
 This step involves compiling the project and preparing it for deployment.
 Steps:
-- Compile the Code: Use build tools like Maven or Gradle to compile your Java source code into bytecode ( files).
+- Compile the Code: Use build tools like Maven or Gradle to compile your Java source code into bytecode (.class files).
 - Resolve Dependencies: The build tools handle external libraries (e.g., Spring Boot dependencies).
 - Package the Application:
   - JAR: Package the compiled code and resources into a .jar file for standalone applications.
