@@ -48,7 +48,30 @@
   - Here, the number of connections we can make is limited.
   - DOS (Denial Of Service) attcks happens because, someone can try to establish the connection to the server suing the TCP connections. Its uses the pros features against the server.
 ## TCP Code Example (Nodejs and Telnet)
-
+![image](https://github.com/user-attachments/assets/7b4cb04e-5984-4963-9514-91e677b864a1)
+- This is NodeJS code.
+- Here, we need a package called "net".
+- net is used to create a server. This server will give us a socket. This is our connection essentially.
+- Once we create a server, we start listening to that. Once a client connects to us, we write back a "Hello" message back to the client. This is done only once when the client connects to the server.
+- when clients sends the data, we call the second function above. This function will receive the data, and prints it on console.
+- as mentioned in code, we are listening on the port 8080.
+- here, we have a TCP server created.
+- Click on debug option, to run the server. The sever will start running, and waits for connection.
+- we will use telnet to establish connection, on terminal. 
+- we can install it on windows.
+  ![image](https://github.com/user-attachments/assets/b26f4ede-1584-40af-95b3-58c2c4b94f81)
+- Here, in above image, we can say that connection is established.
+  ![image](https://github.com/user-attachments/assets/d45714a7-c790-4868-b592-be4bbc89dd48)
+- lets send a work "hi".
+- It will trigger the second function.
+- we can observe the output on the console:
+  ![image](https://github.com/user-attachments/assets/d0138917-c4c1-4bb4-9814-8ad999031845)
+- Now, we will close the connection, and try to send the data to server:
+![image](https://github.com/user-attachments/assets/9eaeaf06-f624-4698-9201-695d1ec1e0d2)
+- here, we can see that, the data is no more stored. This is what we call as statefulness.
 ## UDP pros and cons
+- UDP stands for User Dtatgram Protocol.
 
+### Cons:
+- No Acknowledgement: 
 ## UDP Code Example (Nodejs and netcat(nc))
