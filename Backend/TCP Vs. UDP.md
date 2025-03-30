@@ -71,7 +71,20 @@
 - here, we can see that, the data is no more stored. This is what we call as statefulness.
 ## UDP pros and cons
 - UDP stands for User Dtatgram Protocol.
+- The information which UDP packets adds on top of the messages is CRC(checksum).
+
+### Pros:
+- Smaller packets: This is because, UDP wont have headers to maintain the data for the features like congestion control, ACK etc and more.
+- Less bandwidth: small packets lead to lower bandwidth. It can be used for 3G or 2G networks as well.
+- faster than TCP: Fast as there is not waiting.
+- stateless: If the server dies and came back up. The client can continue to work without any interruptions. This is as there is not connection involved, which can get lost on server restart.
 
 ### Cons:
-- No Acknowledgement: 
+- No Acknowledgement: No ACK. There are chances of data loss.
+- No Guaranteed delivery: as there is no ACK, might lead to daat loss. so, no guarantee. There is no retransmission as well.
+- Connectionless: There is no physical connection. So, both client and server doesn't not know each other.
+- No congestion control: When it receives the data, it just sends it. Adn it doesn't care if there is traffic or not. It does not wait for the traffic to get cleared.
+- No ordered packets: It won't contain the headers to sequence or number the packets.
+- Security: As we dont know who the client or server is. So, if the port is open, any one can send the data. Its risky.
+
 ## UDP Code Example (Nodejs and netcat(nc))
