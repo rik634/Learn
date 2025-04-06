@@ -88,3 +88,32 @@ int lcs(string s1, string s2)
 ```
 - Time Complexity: theta(m)+theta(n)+theta(mn)=theta(mn)
 - Space Complexity: theta(mn)
+
+## Variations of LCS:
+1. Diff utility( difference between 2 files) :
+   -  find the common part in 2 files using LCS, and remove the part which is not common from the first file
+   - used in version control systems like GitLab, GitHub,and extra in 2nd file is added than in the first file
+2. Minimum insertions and deletions to convert s1 into s2:
+   - answer = 1 insertion and 1 deletion
+   - m-l deletions and n-l insertions.
+   - L = length of common subsequence
+   - M = length of 1st string
+   - N = length of 2nd string
+
+3.	Shortest common supersequence (find shortest such a string which has given 2 strings as subsequence):
+   - Find the LCS, traverse first string and insert in the middle extra characters to LCS. similarly in case of 2nd string.
+
+4.	Longest palindromic subsequence:
+   - Take this given string as s1, and s2 as reverse of this string.
+   - Find the LCS
+
+5.	Longest repeating subsequence:
+-	We need to consider the characters only at the different indexes.
+-	S1 is s and s2 is also s.  
+-	Change the condition from LCS such that 2 characters match but their indices don’t match.
+
+6.	Space optimized DP solution of LCS
+-	Instead of using 2d array if size (m+1)*(n+1), we can use 2*n or 2*m.
+
+7.	Printing LCS
+-	Create a string and append the character to the string when characters match. Use 2d array
