@@ -2,7 +2,9 @@
 - It is simply the optimization over plane recursion.
 - Idea is to reuse the solutions of the subproblem when there are overlapping subproblem.
     1. Memoization (top down)
+       - It tends to store the value of the subproblem in map or table
     2. tabulation (bottom up)
+       - 
 
 - Dimension of the memo array depends upon the number of parameters we are passing to the function, and are changing in the recursive calls. And size depends upon max and min value of parameters.
 - Here, the number of parameters we are passing is 1, so, memo array is 1-dimensional. While, if we are passing 2 parameters, memo array is 2-dimensional.
@@ -11,6 +13,12 @@
 ## Steps to follow:
 1. First write the recursive solution
 2. Find out about the overlapping subproblem, then we find it’s a DP problem.
+
+### Steps for Recursion to memoization
+1. Declare DP array considering the size of the subproblem
+2. Check in DP array, if the value was previously computed. If yes, just return it. Otherwise go for computing the answer for it.
+3. Storing the answer in array for every subproblem computed and return it.
+
 
 ## Applications:
 1.	Bellman ford algorithm (used to find the shortest path from source to destination)
