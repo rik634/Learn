@@ -6,6 +6,20 @@
     2. tabulation (bottom up)
        - 
 
+## How to understand if it is a DP problem:
+1. Count total number of ways
+2. Find minimum or maximum output
+
+- When we are asked to count all possible ways or the best way, we apply recursion.
+
+### How to find the recursive solution for it:
+1. First of all, try to represent the problem in terms of index.
+2. Do all possible stuffs on that index, according to the problem statement
+3. Sum of all the stuffs, if the questions says count all the ways.
+4. if questions says find min, then find minimum
+5. if the questions asks max, find maximum
+
+
 - Dimension of the memo array depends upon the number of parameters we are passing to the function, and are changing in the recursive calls. And size depends upon max and min value of parameters.
 - Here, the number of parameters we are passing is 1, so, memo array is 1-dimensional. While, if we are passing 2 parameters, memo array is 2-dimensional.
 - For initializing the memo array, assign such a value which is not a possible answer.
