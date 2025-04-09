@@ -1,5 +1,7 @@
-// Recursion
-//Code
+# Fibonacci Numbers
+
+### Recursion
+```
 int fib(int n)
 {
     if(n==0||n==1)
@@ -8,9 +10,11 @@ int fib(int n)
     }
     return fib(n-1)+fib(n-2);
 }
-//Time Complexity: O(2^n)
+```
+- Time Complexity: O(2^n)
 
-//Memoization
+### Memoization
+```
 int n;
 vector<int> memo(n+1,-1);
 int fib(int n)
@@ -30,11 +34,13 @@ int fib(int n)
     }
     return memo[n];
 }
+```
+- Time Complexity: theta(n)
+- Space complexity: theta(N)
 
-//Time Complexity: theta(n)
-//Space complexity: theta(N)
+### Tabulation
 
-//Tabulation
+```
 int fib(int n)
 {
     int f[n+1];
@@ -46,10 +52,12 @@ int fib(int n)
     }
     return f[n];
 }
-//Time Complexity: theta(N)
-//Space Complexity: theta(N)
+```
+- Time Complexity: theta(N)
+- Space Complexity: theta(N)
 
-//Space optimized
+### Space optimized
+```
 int fib(int n)
 {
     int prev1=0;
@@ -67,7 +75,8 @@ int fib(int n)
     }
     return temp;
 }
-//Time complexity: O(N)
-//Space Complexity: O(1)
-//Dp is not best solution for Fibonacci problem. It can be further optimized to O(log N) time complexity.
+```
+- Time complexity: O(N)
+- Space Complexity: O(1)
+- Dp is not best solution for Fibonacci problem. It can be further optimized to O(log N) time complexity.
 
