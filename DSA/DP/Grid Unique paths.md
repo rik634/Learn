@@ -123,3 +123,5 @@ int f(int m, int n)
 
 
 ```
+- Time Complexity: O(m*n) 
+- Space Complexity: O(n)
