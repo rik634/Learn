@@ -3,6 +3,12 @@
 
 ![alt text](image-1.png)
 
+### Constraints:
+1. 1<=T<=10
+2. 1<=N<=100
+3. 1<=A[i]<=1000
+4. 1<=target<=1000
+
 ### Logic:
 - Whenever we have are asked about the count in the questions, in the base case, if the condition is satisfied, we return 1, or else 0.
 - As the target value is also changing, we have 2 parameters, index and target.
@@ -141,4 +147,41 @@ int f()
 ```
 - Time Complexity: O(N*target) 
 - Space Complexity: O(target)
+
+
+- Suppose, if we ignore the constraints, and the possible value of A[i] can also be 0, then the code can be optimized as below:
+
+```
+vector<vector<int>> dp(n,vector<int>(target+1,-1));
+int f(int,target)
+{
+    
+    if(ind==0)
+    {
+        if(target==0 && A[0]==0)
+        {
+            return 2;
+        }
+        if(target==0 || target==A[0])
+        {
+            return 1;
+        }
+        return 0;
+    }
+    if(dp[ind][target]!=-1)
+    {
+        return dp[ind][target];
+    }
+    int notTake = f(ind-1,target);
+    int take=0;
+    if(A[ind]<=target)
+    {
+        take = f(ind-1,target-A[ind]);
+    }
+    return dp[ind][target]=notTake + take;
+}
+
+```
+- Time Complexity: O(N*target)
+- Space Complexity: O(N*target) + O(N) (Auxiliary stack space)
 
