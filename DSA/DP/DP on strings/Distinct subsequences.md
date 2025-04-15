@@ -3,6 +3,7 @@
 
 - The test cases are generated so that the answer fits on a 32-bit signed integer.
 
+Leetcode link: https://leetcode.com/problems/distinct-subsequences/description/
 ### Logic
 - Here, we are asked about the number/ count of ways, for some given condition. So, for the base case, it will either return 1 or 0.
 - And we sum the possible operations/ways and return.
