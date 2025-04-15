@@ -27,6 +27,8 @@ int f(ind1, ind2)
 vector<vector<int>> dp(n,vector<int>(m,-1));
 int f(ind1, ind2)
 {
+    int res;
+    int ans=0;
     if(ind1<0 || ind2<0)
     {
         return 0;
@@ -37,9 +39,15 @@ int f(ind1, ind2)
     }
     if(s1[ind1]==s2[ind2])
     {
-        return dp[ind1][ind2]=1 + f(ind1-1,ind2-1);
+        res = 1 + f(ind1-1,ind2-1);
+        ans=max(ans,res);
+        return dp[ind1][ind2]=res;
     }
-    return dp[ind1][ind2]=0;
+    else
+    {
+        return 0;
+    }
+    return ans;
 }
 ```
 - Time Complexity: O(n*m)(n and m are the lengths of s1 and s2 respectively)
@@ -51,6 +59,7 @@ int f(ind1, ind2)
 vector<vector<int>> dp(n+1,vector<int>(m+1,0));
 int f()
 {
+    int ans=0;
     for(int i=1;i<=n;i++)
     {
         for(int j=1;j<=m;j++)
@@ -58,6 +67,7 @@ int f()
             if(s1[i-1]==s2[j-1])
             {
                 dp[i][j]=1+dp[i-1][j-1];
+                ans = max(ans,dp[i][j]);
             }
             else
             {
@@ -65,7 +75,7 @@ int f()
             }
         }
     }
-    return dp[n][m];
+    return ans;
 }
 ```
 - Time Complexity: O(n*m)
@@ -76,6 +86,7 @@ int f()
 ```
 int f()
 {
+    int ans=0;
     vector<int> prev(m+1,0);
     for(int i=1;i<=n;i++)
     {
@@ -85,6 +96,7 @@ int f()
             if(s1[i-1]==s2[j-1])
             {
                 temp[j]=1+prev[j-1];
+                ans=max(ans,temp[j]);
             }
             else
             {
@@ -93,7 +105,7 @@ int f()
         }
         prev=temp;
     }
-    return prev[m];
+    return ans;
 }
 ```
 - Time Complexity: O(n*m)
