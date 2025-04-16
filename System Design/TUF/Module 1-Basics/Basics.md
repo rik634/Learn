@@ -259,3 +259,7 @@ Browser (cache) -> OS(host file) -> Resolver/Internet Service Provider -> root s
 - This is a special memory used for speeding up the transfer of data and instruction.
 - The cache stores the data and programs that are frequently used by the CPU. So any time some data is required it is first checked in the cache memory.
 
+
+## Why does thrashing occur?
+
+
