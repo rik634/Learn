@@ -188,8 +188,74 @@ Protocols used in the Application layer:
 
 ## What happens when you enter "google.com":
 
+### Terms:
 - WebPage: It is a text file formatted in a certain way so that the browser can understand it; This format is known as HTML. These files are located in computers that provide the service of storing. They are called servers because they serve the content that they hold.
 - Servers: Web server serves the web pages. Application servers hold an application base code that will then be used to interact with web browser or other applications. Database servers hold a database that can be updated and consulted when needed.
 - IP address: Address for client and server is IP address. It is a set of 4 numbers that range from 0 to 255 (one byte) separated by periods (i.e., 127.0.0.1).
 - Protocols for Delivery: TCP or UDP. Each one of these determine the way the content of the server is served or delivered.
+  1. TCP: TCP is usually used to deliver static websites such as Wikipedia or Google and also email services and to download files to your computer because TCP makes sure that all the content that is needed gets delivered. It accomplishes this by sending the file in small packets of data and along with each packet a confirmation to know that the packet was delivered; that's why if you are ever downloading something and your internet connection suddenly drops when it comes back up you don't have to start over because the server would know exactly how many packets you have and how many you still need to receive. The downside to TCP is that because it has to confirm whether you got the packet or not before sending the next, it tends to be slower.
+  2. UDP: UDP, on the other hand, is usually used to serve live videos or online games. This is because UDP is a lot faster than TCP since UDP does not check if the information was received or not; it is not important. The only thing UDP cares about is sending the information. That is the reason why if you've ever watched a live video and if either your internet connection or the host's drops, you would just stop seeing the content; and when the connection comes back up you will only see the current stream of the broadcast and what was missed is forever lost. This is also true for online videogames.
+
+ ### Process:
+
+What happens when you type www.google.com or any other URL (Uniform Resource Locator) in your web browser and press Enter.
+
+Flow:
+
+Browser (cache) -> OS(host file) -> Resolver/Internet Service Provider -> root server (.com TLD(Top Level Domain)) -> authoritative name servers -> get the IP address.  
+
+- So the first thing that happens is that your browser looks up in its cache to see if that website was visited before and the IP address is known. 
+
+- If it can't find the IP address for the URL requested then it asks your operating system to locate the website. The first place your operating system is going to check for the address of the URL you specified is in the host file. If the URL is not found inside this file, then the OS will make a DNS request to find the IP Address of the web page.
+
+- The first step is to ask the Resolver (or Internet Service Provider) server to look up its cache to see if it knows the IP Address, if the Resolver does not know then it asks the root server to ask the .COM TLD (Top Level Domain) server - if your URL ends in .net then the TLD server would be .NET and so on - the TLD server will again check in its cache to see if the requested IP Address is there. 
+
+- If not, then it will have at least one of the authoritative name servers associated with that URL, and after going to the Name Server, it will return the IP Address associated with your URL. All this was done in a matter of milliseconds WOW!
+
+- After the OS has the IP Address and gives it to the browser, it then makes a GET (a type of HTTP Method) to said IP Address. When the request is made the browser again makes the request to the OS which then, in turn, packs the request in the TCP traffic protocol we discussed earlier, and it is sent to the IP Address. 
+
+- On its way, it is checked by both the OS' and the server's firewall to make sure that there are no security violations. And upon receiving the request the server (usually a load balancer that directs traffic to all available servers for that website) sends a response with the IP Address of the chosen server along with the SSL (Secure Sockets Layer) certificate to initiate a secure session (HTTPS). 
+
+- Finally, the chosen server then sends the HTML, CSS, and Javascript files (If any) back to the OS who in turn gives it to the browser to interpret it. And then you get your website as you know it.
+
+## What is Cache?
+
+### Abstract
+- Cache memory is nearest to the CPU and stores all the recent instructions. The term cache means a safe place for hiding and storing things.
+
+### Definition
+- Cache memory is a small fast memory that holds copies of recently accessed instructions and data. 
+- The effectiveness of the cache mechanism is based on the property of locality of reference. It means many instructions for local areas of the program are executed repeatedly. The active segments of the program are placed in cache memory by reducing the total execution time. 
+- When the processor makes a request for memory reference, the request is first sought in the cache. If we get the memory reference that is requested we call it “CACHE HIT” otherwise “CACHE MISS”.
+- In the cache miss, the requested element is brought from a subsequent memory level from the memory hierarchy and placed in the cache.
+
+![alt text](image-15.png)
+
+- A block of elements is transferred from main memory to cache memory by expecting that the next requested element will be residing in the neighboring locality of the current requested element (spatial locality) and this has to happen under one memory access time.
+- The performance of cache memory is calculated in terms of hit ratio.
+- Hit ratio = hit/(hit + miss) = no. of hits/ total access.
+- Cache performance can be improved by using:
+  1. Higher cache block size
+  2. Higher associativity
+  3. Reduce miss rate
+  4. Reduce miss penalty
+  5. Reduce the time to hit in the cache.
+
+- Cache underlying principle is the locality of reference.
+- In the locality of reference, huge data is placed in a small area (data which is needed) so that the access time will be less and the performance will be higher.
+- The locality of reference is of two types:
+  1. Spatial locality: The adjacent words in the block are referenced by the CPU  in the near future.
+  2. Temporal locality: The same word in the block are referenced by the CPU in the near future 
+
+- The cache is organized not in bytes but as blocks of cache lines with each line containing the same no. of bytes. (16-64)
+
+- Cache lines do not have a fixed address, which enables the cache system to populate each cache line with a unique (non-contiguous) address. 
+
+- There are three methods for filling a cache lines
+  1. Fully associated - The most flexible.
+  2. Direct mapped - The most basic
+  3. Self associated - A combination of the two.
+
+- This is a special memory used for speeding up the transfer of data and instruction.
+- The cache stores the data and programs that are frequently used by the CPU. So any time some data is required it is first checked in the cache memory.
 
