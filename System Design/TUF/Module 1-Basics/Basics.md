@@ -262,4 +262,51 @@ Browser (cache) -> OS(host file) -> Resolver/Internet Service Provider -> root s
 
 ## Why does thrashing occur?
 
+- If there is an increase in the number of processes submitted to the CPU for execution, the CPU utilization increases. But if we continue to increase this number, after certain time, the CPU utilization falls sharply and sometimes reaches 0. This situation is known as thrashing.
 
+### Definition:
+- If the CPU utilization is too small, then we increase the degree of multiprogramming by introducing new processes to the system.
+
+- Here, is the breakdown of what happens during thrashing:
+  1. Process demands more frames: When a process enters a new phase and requires additional memory (frames), the system attempts to allocate these frames. However, if the system's memory is already heavily utilized, it may have insufficient free frames to satisfy the request.
+  2. Page faults occur: As the process does not get the frames and runs without the required frames, it generates page faults, which mean it tries to access pages not currently in memory. To handle these page faults, the system swaps pages in and out of memory using the paging device.
+  3. Stealing frames: To make room for the faulting process's pages, the operating system may take frames away from the other processes. This action causes those other processes to start faulting as well, creating a cascade of page faults across processes.
+  4. Paging device bottleneck: The constant swapping of pages into and out of memory places a heavy burden on the paging device (usually disk or SSD). Since the disk access is much slower than memory access, processes waiting for the paging device experience significant delays.
+  5. CPU utilization decreases: While processes are stuck waiting for the paging device, the CPU has fewer tasks to execute, leading to a decline in CPU utilization. This is because the system spends more time handling page faults and disk I/O instead of running actual processes.
+  This situation is what we call as thrashing.
+
+- Thrashing is a sign that the system's memory is overcommitted and is struggling to manage its workload efficiently. It can often be resolved by increasing available memory, optimizing processes, or implementing techniques like demand paging or working set management to ensure processes have sufficient frames to work with. 
+- Effects of thrashing can be minimized using a priority replacement algorithm and working set model. 
+- The CPU scheduler increases the degree of multiprogramming on finding a decrease in CPU utilization. The new processes start taking frames from other processes thereby causing more page faults and long queue for the paging device. Due to all this, CPU utilization decreases further, making the CPU scheduler increase the degree of multiprogramming even more. This causes thrashing and also throughput decreases.
+
+- It can be represented as follow:
+
+![alt text](image-17.png)
+
+- Here, we can observe that the degree of multiprogramming increases with the increase in CPU utilization although more slowly until the maximum is reached.
+- Now, if the degree of multiprogramming increases even further, thrashing comes into picture, and CPU utilization drops sharply.
+- At this point, we must decrease the degree of multiprogramming in order to increase CPU utilization and stop thrashing.
+
+- The effects of thrashing can be minimized by local replacement (priority replacement algorithm). So what happens in local replacement is that if one process starts thrashing it cannot steal frames from another process thereby causing the latter to thrash as well.
+- If the processes are thrashing the average time for the page fault will increase because they will be in a queue for paging devices most of the time. The effective access time will increase.
+- The working set strategy starts by looking at how many frames a process is actually using. This approach is known as the locality model of process execution.
+- The locality model states that, as a process executes, it moves from locality to locality. A locality is a set of pages that are actively used together. It also states that all programs will exhibit a basic memory reference structure. 
+
+### WORKING SET MODEL - Based on the assumption of locality :
+- This model uses a parameter Δ to define a working set window. It is to examine the most recent Δ page references. 
+- If the page is in active use, it will be in the working set and if it is no longer being used, it will drop from the working set Δ time units after its last reference. Thus the working set is the approximation of the program’s locality. 
+- The accuracy of the working set depends on the selection of Δ.
+
+- If  Δ is too small, it will not encompass the entire locality.
+- If  Δ is too large, it will overlap several localities
+- If  Δ is infinite, the working set is the set of pages touched during the process execution.
+- The most important property of a working set is its size. The working set size for each process can be computed :
+
+![alt text](image-18.png)
+
+- Each process is actively using the pages in its working sets. Thus the process needs WSSi frames.
+- If there are not enough frames to fulfill demand then thrashing will occur because some processes will not have enough frames. 
+- The working set strategy prevents thrashing while keeping the degrees of multiprogramming as high as possible. Thus it optimizes CPU utilization.
+- It is difficult to keep track of the working set. The working set window is a moving window. At each memory reference, a new reference appears at one end and the oldest reference drops off at the other end.
+
+## Difference between process, program and thread:
