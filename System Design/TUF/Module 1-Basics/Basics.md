@@ -310,3 +310,29 @@ Browser (cache) -> OS(host file) -> Resolver/Internet Service Provider -> root s
 - It is difficult to keep track of the working set. The working set window is a moving window. At each memory reference, a new reference appears at one end and the oldest reference drops off at the other end.
 
 ## Difference between process, program and thread:
+- A program consists of instruction in any programming language.
+- A process consists of instructions in machine code. A program in execution is called a process.
+- Thread is basic unit of execution or CPU utilization.
+
+### Definition:
+
+- A program is a passive entity, which is a file containing a list of instructions stored on a disk (often called an executable file). 
+- A process on the other hand is an active entity with a program counter specifying the next instruction to be executed and a set of associated resources.
+- A program becomes a process when an executable file is loaded into memory.
+- Difference between process and program:
+![alt text](image-19.png)
+
+- A process includes a stack, data section, and heap. Stack contains temporary data such as function parameters, return address, and local variables. The data section contains the global variables. Heap is a memory that is dynamically allocated during the process runtime.
+- A thread is a basic unit of CPU utilization. It comprises a shared ID, a program counter, a register set, and a stack. It shares code section, data section, and other operating system resource such a open file and signals.
+- Difference between thread and process:
+
+![alt text](image-20.png)
+
+### Types of processes:
+- There are basically 2 types of event-specific processes:
+1. I/O bound process: If a program/process spends more of its time doing I/O than it spends doing computations then it is called I/O bound process.
+2. CPU bound process: If a program/process spends more of its time doing CPU operations (computations) and generates I/O requests infrequently then it is called CPU bound process.
+
+- The program consists of a list of instructions that gets stored on a hard disk.
+- When the program goes to RAM and starts running, it becomes process.
+- A thread is the smallest unit of execution managed by a operating system.
