@@ -53,3 +53,77 @@ bool isCycle(int V, vector<int> adj[])
 - Space Complexity: O(V)
 
 ### Using DFS:
+- This code is i=useful when there is only one component formed from the graph nodes
+```
+bool dfs(int node, int parent, vector<bool>& vis, vector<int> adj[])
+{
+    vis[node]=true;
+    for(auto it:adj[node])
+    {
+        if(vis[it]==false)
+        {
+            if(dfs(it,node,vis,adj)==true)
+            {
+                return true;
+            }
+        }
+        else if(it!=parent)
+            {
+                return true;
+            }
+    }
+    return false;
+
+}
+
+bool isCycle(int V, vector<int> adj[])
+{
+    vector<bool> vis(V+1,false);
+    return dfs(1,-1, vis, adj);
+}
+
+```
+- Time Complexity: O(V+2E) (For DFS);
+- Space Complexity: O(V) (Recursion stack space) + O(V) (visited array) = O(N)
+
+- For multi-component graph:
+```
+bool dfs(int node, int parent, vector<bool>& vis, vector<int> adj[])
+{
+    vis[node]=true;
+    for(auto it:adj[node])
+    {
+        if(vis[it]==false)
+        {
+            if(dfs(it,node,vis,adj)==true)
+            {
+                return true;
+            }
+        }
+        else if(it!=parent)
+            {
+                return true;
+            }
+    }
+    return false;
+
+}
+
+bool isCycle(int V, vector<int> adj[])
+{
+    vector<bool> vis(V+1,false);
+    for(int i=1;i<=V;i++)
+    {
+        if(vis[i]==false)
+        {
+            if(dfs(i,-1,vis,adj)==true)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+```
+- Time Complexity: O(V+2E) (For DFS) + O(N) (for loop for multi component condition)
+- Space Complexity: O(V) (Recursion stack space) + O(V) (visited array) = O(N)
