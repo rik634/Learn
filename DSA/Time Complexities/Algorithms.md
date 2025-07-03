@@ -1,3 +1,46 @@
+# Algorithms:
+
+1. Searching:
+   - Linear search
+   - Binary search
+   - Depth First Search (DFS)
+   - Breadth First search (BFS)
+
+2. Sorting:
+   - Insertion Sort
+   - Heap Sort
+   - Selection Sort
+   - Merge Sort
+   - Quick Sort
+   - Counting Sort
+
+3. Graphs
+   - Kruskal's Algo
+   - Dijkstra's Algo
+   - Bellman Ford Algo
+   - Floyd Warshall Algo
+   - Topological sort
+   - Flood fill Algo
+   - Lee Algo
+
+4. Arrays
+   - Kadane's Algo
+   - Floyd's Cycle Detection Algo
+   - KMP Algo
+   - Quick Select Algo
+   - Boyer- More Majority Vote Algo
+
+5. BASIC
+   - Huffman Coding Compression Algo
+   - Euclid's Algo
+   - Union Find Algo
+
+
+
+
+
+
+
 # Time Complexities of Algorithms:
 
 
