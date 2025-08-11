@@ -9,7 +9,7 @@
 - Generate all the subsequence, and find the length of longest common subsequence.
 
 ### Recursive 
-```
+```cpp
 int lcs(string s1, string s2, int m , int n)
 {
     if(m==0 || n==0)
@@ -26,7 +26,7 @@ int lcs(string s1, string s2, int m , int n)
 - Time complexity: O(2^n)
 
 ### Memoization
-```
+```cpp
 vector<vector<int>> dp(m,vector<int>(n,-1));
 int lcs(string s1, string s2, int m, int n)
 {
@@ -55,7 +55,7 @@ int lcs(string s1, string s2, int m, int n)
 
 ### Tabulation
 
-```
+```cpp
 int lcs(string s1, string s2)
 {
     int m = s1.length();
