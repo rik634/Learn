@@ -389,10 +389,1640 @@
   3. Label your units. When you write down “5”, does it mean 5 KB or 5 MB? You might confuse yourself with this. Write down the units because “5 MB” helps to remove ambiguity.
   4. Commonly asked back-of-the-envelope estimations: QPS, peak QPS, storage, cache, number of servers, etc. You can practice these calculations when preparing for an interview. Practice makes perfect.
 
+### Cheat sheet for BOTEE:
+#### Quick reference: The 5 core calculation
+- Every system design interview needs these 5 calcualtions:
+  1. Traffic (QPS) - How many requests per second?
+     -  Daily active users to QPS:
+       ```text
+       Average QPS = (DAU * Actions per user per day) % 86400 seconds
+       Peak QPS = Average QPS * Peak factor (2-3x)
+       ```
+     -  Read vs. write QPS:
+     ```text
+     Read QPS = Total QPS * Read ratio
+     Write QPS = Total QPS * write ratio
+
+     Common ratios:
+     - Social media: 100: 1 (read:write)
+     - Chat apps: 1:1 (read: write)
+     - Analytics: 1000:1 (read:write)
+     - Content creation: 10:1 (read:write)
+     ```
+  2. Storage - How much data storage needed?
+     - Basic storage forumulas:
+     ```text
+     Total storage = Records per day * record size (bytes) * Days to store * Replication factor (usually 3)
+     ```
+     - With growth rate:
+     ```text
+     Storage after N years = Daily storage * 365 * N years * (1+ annual growth rate)^N
+     ```
+     - Media storage:
+     ```text
+     Total Media storage = Media uploads per day * Average file size * Days to store * Replication factor * (1+compression savings) // typically 0.7 = 30% savings
+     ```
+     
+  3. Bandwidth - How much network capacity needed?
+     - Incoming bandwidth (writes):
+     ```text
+     Write Bandwidth (MB/s) = Write QPS × Average Request Size (KB) ÷ 1,024
+     ```
+     - Outgoing bandwidth (reads):
+     ```text
+     Read Bandwidth (MB/s) = Read QPS × Average Response Size (KB) ÷ 1,024
+     ```
+     - Total Bandwidth:
+     ```text
+     Total Bandwidth = Write Bandwidth + Read Bandwidth
+     ```
+     - Peak Bandwidth:
+     ```text
+     Peak Bandwidth = Total Bandwidth × Peak Factor (2-3x)
+     ```
+
+  4. Memory (Cache) - How much RAM for caching?
+    - 80-20 Rule (Pareto Principle):
+    ```text
+    Cache Size = Daily Requests × 20% (hot data)
+                    × Average Response Size
+                      × Cache Overhead (1.2x)
+    ```
+    - Memory for Connections:
+    ```text
+    Connection Memory =  Max Concurrent Connections 
+                         × Memory per Connection (1-5 MB)
+    ```
+    - Cache Hit Ratio Impact:
+    ```text
+    Effective DB QPS = Total QPS × (1 - Cache Hit Ratio)
+   Example:
+   If Cache Hit = 80%, DB only sees 20% of traffic
+   100K QPS with 80% hit → 20K QPS to database
+    ``` 
+
+  5. Servers - How many servers needed?
+     - Application Servers:
+     ```text
+     Number of Servers = Peak QPS ÷ QPS per Server× Safety Factor (1.5-2x for redundancy)
+     Typical QPS per server: 1,000 - 10,000 (depends on complexity)
+     ```
+     - Database Servers:
+     ```text
+     Read Replicas = 
+     Read QPS ÷ QPS per DB Server (typically 1,000-5,000)+ 1 (for failover)
+     Master DB = 1 (or 2 for master-master replication)
+     ```
+     - Cache Servers:
+     ```text
+     Cache Instances = Total Cache Size ÷ Memory per Instance × Replication Factor (2-3x)
+     Typical cache server: 16-64 GB RAM
+     ```
+#### Critical numbers to remember
+-  Time Conversions
+   ```text
+   1 day = 86,400 seconds (~100K for quick math)
+   1 month = 2.6M seconds (30 days)
+   1 year = 31.5M seconds
+   ```
+-  Data Sizes (Powers of 2)
+   ```text
+   1 KB = 1,024 bytes ≈ 10³ = 1,000 bytes
+   1 MB = 1,024 KB ≈ 10⁶ = 1 million bytes
+   1 GB = 1,024 MB ≈ 10⁹ = 1 billion bytes
+   1 TB = 1,024 GB ≈ 10¹² = 1 trillion bytes
+   1 PB = 1,024 TB ≈ 10¹⁵ = 1 quadrillion bytes
+   ```
+-  Common Record Sizes
+   ```text
+   User ID (int64): 8 bytes
+   Timestamp: 8 bytes
+   UUID: 16 bytes
+   Short text (tweet): 300 bytes
+   User record: 1-2 KB
+   Photo metadata: 1 KB
+   Small image: 200 KB
+   Large image: 2-5 MB
+   1 min video (HD): 50-100 MB
+   ```
+-  Network & Latency
+   ```text
+   L1 cache: 0.5 ns
+   L2 cache: 7 ns
+   RAM access: 100 ns
+   SSD read: 150 μs
+   Network within datacenter: <1 ms
+   HDD seek: 10 ms
+   Network across continents: 100-150 ms
+   ```
+-  Throughput Benchmarks
+   ```text
+   Redis: 100K ops/sec per instance
+   Memcached: 100K ops/sec per instance
+   MySQL: 1K-10K QPS per server
+   MongoDB: 10K-50K QPS per server
+   Cassandra: 10K+ writes/sec per node
+   Kafka: 1M+ messages/sec per cluster
+   Nginx/HAProxy: 50K requests/sec per instance
+   ```
+-  Scale Reference
+   ```text
+   Small: <100 QPS, <10K DAU
+   Medium: 100-1K QPS, 10K-1M DAU
+   Large: 1K-10K QPS, 1M-10M DAU
+   Very Large: 10K-100K QPS, 10M-100M DAU
+    Massive: >100K QPS, >100M DAU
+   ```
+#### Step-by-Step Estimation Template
+- Step 1: Clarify Requirements (2 min)
+```
+Ask:
+- How many users? (DAU, MAU)
+- What's the read/write ratio?
+- What features are critical?
+- What's the scale? (current + 5 years)
+- What are the latency requirements?
+```
+ 
+-  Step 2: Make Assumptions (1 min)
+```
+State clearly:
+- "Assuming 100M DAU"
+- "Assuming 80% read, 20% write"
+- "Assuming 5 actions per user per day"
+- "Assuming peak traffic is 3x average"
+```
+ 
+- Step 3: Calculate Traffic (2 min)
+```
+1. Calculate daily requests
+   = DAU × Actions per User
+ 
+2. Calculate average QPS
+   = Daily Requests ÷ 86,400
+ 
+3. Calculate peak QPS
+   = Average QPS × 3
+ 
+4. Split into read/write
+   Read QPS = Total × 0.8
+   Write QPS = Total × 0.2
+```
+ 
+-  Step 4: Calculate Storage (2 min)
+```
+1. Estimate data per record
+   User: 2 KB
+   Post: 1 KB
+   Image: 300 KB
+ 
+2. Calculate daily new data
+   = Records per Day × Size per Record
+ 
+3. Calculate 5-year storage
+   = Daily Data × 365 × 5
+ 
+4. Add replication
+   = Total × 3
+```
+ 
+- Step 5: Calculate Bandwidth (1 min)
+```
+1. Write bandwidth
+   = Write QPS × Request Size
+ 
+2. Read bandwidth
+   = Read QPS × Response Size
+ 
+3. Total bandwidth
+   = Write + Read
+```
+ 
+- Step 6: Calculate Memory/Cache (1 min)
+```
+1. Apply 80-20 rule
+   Cache = Daily Data × 0.20
+ 
+2. Add overhead
+   = Cache Size × 1.2
+```
+ 
+- Step 7: Calculate Servers (1 min)
+```
+1. App servers
+   = Peak QPS ÷ 10K × 2
+ 
+2. DB servers
+   = Read QPS ÷ 5K + Write Replicas
+ 
+3. Cache servers
+   = Cache Size ÷ 64GB × 2
+```
+ 
+
 
 ## Power of two:
 - Although data volume can become enormous when dealing with distributed systems, calculation all boils down to the basics. To obtain correct calculations, it is critical to know the data volume unit using the power of 2. A byte is a sequence of 8 bits. An ASCII character uses one byte of memory (8 bits). Below is a table explaining the data volume unit.
 
   <img width="501" height="270" alt="image" src="https://github.com/user-attachments/assets/206dcdbc-40c3-45cb-b89b-4b5d93308961" />
 
+# API Design basics:
+
+## Restful principles
+- HTTP Methods Mapping
+
+  <img width="688" height="263" alt="image" src="https://github.com/user-attachments/assets/ba62c6e7-416f-4fb2-97f7-50a8c35bf1c0" />
+
+- HTTP Status Codes:
+
+  <img width="685" height="396" alt="image" src="https://github.com/user-attachments/assets/19477985-a17c-4cb4-8726-634751dacf5e" />
+
+- Stateless Communication:
+
+  1. Server doesn't store client state
+  2. Each request contains all needed info (auth token, params)
+  3. Session data stored client-side or in distributed cache (Redis)
+
+## Idempotency
+- An operation is idempotent if calling it multiple times produces the same result as calling it once.
+- Why It Matters
+
+  1. Network failures: Client doesn't know if request succeeded
+  2. Retry safety: Safe to retry without side effects
+  3. Distributed systems: Prevents duplicate operations
+- Idempotency by HTTP Method:
+
+  1. GET, PUT, DELETE are idempotent:
+     ```
+     GET /users/123        → Always returns same user (or 404)
+     PUT /users/123 {...}  → Set user to exact state, multiple calls = same state
+     DELETE /users/123     → Delete user, calling again still means user deleted 
+     ```
+  2. POST is NOT idempotent:
+     ```
+     POST /users           → Creates new user each time
+     POST /orders          → Creates new order each time
+     ``` 
+  3. Making POST Idempotent (Interview Gold!)
+ 
+     1. solution-1: Idempotency keys
+     ```
+      POST /orders
+     Headers:
+       Idempotency-Key: uuid-12345
+     Body:
+        { "productId": 789, "quantity": 2 }
+
+     Server logic:
+       1. Check if idempotency key exists in cache/DB
+       2. If exists → return cached response (201 or 200)
+       3. If new → process request, store key + response
+       4. Return response
+     ```
+       - Implementation
+       ```java
+       @PostMapping("/orders")
+      public ResponseEntity<Order> createOrder(
+         @RequestHeader("Idempotency-Key") String idempotencyKey,
+           @RequestBody OrderRequest request) {
+    
+        // Check cache (Redis)
+        Order existingOrder = redisTemplate.opsForValue()
+        .get("idempotency:" + idempotencyKey);
+    
+        if (existingOrder != null) {
+           return ResponseEntity.ok(existingOrder); // Already processed
+         }
+    
+        // Process new order
+        Order order = orderService.create(request);
+    
+       // Store with TTL (24 hours)
+        redisTemplate.opsForValue()
+         .set("idempotency:" + idempotencyKey, order, 24, TimeUnit.HOURS);
+    
+        return ResponseEntity.status(201).body(order);  
+       }
+       ``` 
+     2. Solution-2: Natual idempotency
+        ```
+        PUT /users/123/preferences
+        Body: { "theme": "dark", "language": "en" }
+
+        → Setting same preference multiple times = same result
+        → No idempotency key needed
+        ```   
+- Interview Tip: Always mention idempotency when designing payment/order APIs!
+
+## Pagination
+- Why Pagination?
+
+  1. Performance: Can't return 1M records in one response
+  2. Bandwidth: Reduce data transfer
+  3. User experience: Load data progressively
+- Pagination Strategies
+
+  1.  Offset-Based (Simple but has issues)
+      - Request:
+        ```
+        GET /posts?page=2&size=20
+        or
+        GET /posts?offset=20&limit=20
+        ```
+      - Response
+        ```
+        {
+            "data": [...],
+            "pagination": {
+                "page": 2,
+                "size": 20,
+                "totalPages": 50,
+                "totalElements": 1000
+             }
+        }
+        ```
+      - SQL Implementation:
+        ```
+        SELECT * FROM posts 
+         ORDER BY created_at DESC 
+        LIMIT 20 OFFSET 40;  -- page 2, skip first 40
+        ```
+      - Pros:
+
+        1. Simple to implement
+        2. Easy to jump to any page
+      - Cons:
+
+        1. Performance degrades with large offsets (OFFSET 1000000 is slow)
+        2. Inconsistent results if data changes between requests (insert/delete)
+        3. Example: User on page 2, new post added → sees duplicate
+           
+  2.  Cursor-Based (Recommended for feeds)
+      - Request:
+        ```
+        GET /posts?cursor=eyJpZCI6MTIzfQ==&limit=20
+
+        First request: GET /posts?limit=20
+        ```
+      - Response:
+        ```
+        {
+           "data": [
+              { "id": 123, "content": "..." },
+              { "id": 122, "content": "..." },
+                ...
+            ],
+         "pagination": {
+            "nextCursor": "eyJpZCI6MTAzfQ==",
+          "hasMore": true
+           }
+        }
+        ```
+      - Implementation (Spring boot)
+        ```
+        @GetMapping("/posts")
+         public ResponseEntity<FeedResponse> getFeed(
+               @RequestParam(required = false) String cursor,
+             @RequestParam(defaultValue = "20") int limit) {
+    
+          Long lastId = cursor != null ? decodeCursor(cursor) : Long.MAX_VALUE;
+    
+          // Query: Get posts with id < lastId
+            List<Post> posts = postRepository.findByIdLessThanOrderByIdDesc(lastId, 
+               PageRequest.of(0, limit));
+    
+                 String nextCursor = posts.isEmpty() ? null : 
+                encodeCursor(posts.get(posts.size() - 1).getId());
+    
+            return ResponseEntity.ok(new FeedResponse(posts, nextCursor));
+             }
+        ```
+      - SQL:
+        ```
+        -- Cursor = last seen ID (e.g., 123)
+          SELECT * FROM posts 
+          WHERE id < 123 
+          ORDER BY id DESC 
+          LIMIT 20;
+        ```
+      - Pros:
+ 
+        1. Consistent results (no duplicates/skips)
+        2. Performant (uses indexed WHERE clause, not OFFSET)
+        3. Works with infinite scroll
+      - Cons:
+ 
+        1. Can't jump to specific page
+        2. Cursor needs to be encoded/decoded
+      - When to Use What:
+ 
+        1. Offset: Admin panels, dashboards (need page numbers)
+        2. Cursor: Social feeds, chat history, real-time data
+        
+  3.  Keyset Pagination (Timestamp-based)
+      - Request:
+        ```
+        GET /posts?since=2024-03-15T10:30:00Z&limit=20
+        ```
+      - SQL:
+        ```
+        SELECT * FROM posts 
+        WHERE created_at > '2024-03-15 10:30:00' 
+        ORDER BY created_at ASC 
+        LIMIT 20;
+        ```
+      - Used for "load more since last check" scenarios.
+
+## Api Versioning
+- Why Version APIs?
+
+  1. Breaking changes: Can't break existing clients
+  2. Evolution: Add features without disrupting users
+  3. Multiple clients: Old mobile apps still in use
+- Versioning Strategies
+
+  1. URI Versioning (Most Common)
+     - request:
+       ```
+       GET /v1/users/123
+       GET /v2/users/123
+       ```
+     - Pros: Clear, easy to route
+     - Cons: URL pollution
+     - Used by: Twitter, Stripe, Facebook
+  2.  Header Versioning
+      - header:
+        ```
+        GET /users/123
+        Headers:
+            Accept: application/vnd.myapp.v1+json
+        ```
+      - Pros: Clean URLs
+      - Cons: Less visible, harder to test
+      - Used by: GitHub API
+  3.  Query Parameter
+      - request:
+        ```
+        GET /users/123?version=1
+        ```
+      - Pros: Simple
+      - Cons: Not RESTful, easy to forget
+      - Avoid in interviews unless asked
+  4.  Content Negotiation
+      - request:
+        ```
+        GET /users/123
+        Headers:
+           Accept: application/vnd.myapp+json; version=1
+        ```
+- When to Use: URI versioning (v1, v2) is the industry standard. Mention it in interviews.
+- Best Practice:
+
+  1. Version only when breaking changes occur
+  2. Maintain backward compatibility when possible
+  3. Deprecate old versions gradually (e.g., v1 deprecated → v2 → v1 removed after 6 months)
+
+## Rate limiting:
+- Purpose:
+
+  1. Prevent abuse: Stop DOS attacks
+  2. Fair usage: Ensure all users get service
+  3. Cost control: Limit expensive operations
+  4. API monetization: Free tier (100 req/hr), Paid tier (10,000 req/hr)
+- Common Algorithms:
+
+  1. Token Bucket (Most Popular)
+     - Concept:
+        
+       1. Bucket has capacity (e.g., 100 tokens)
+       2. Refills at constant rate (e.g., 10 tokens/second)
+       3. Each request consumes 1 token
+       4. If no tokens → reject request (429) 
+     - Example:
+       ```
+       Bucket capacity: 100 tokens
+       Refill rate: 10 tokens/sec
+        Time 0s:  100 tokens available
+       Request:  99 tokens left
+       Time 1s:  109 tokens (99 + 10 refill, capped at 100)
+        Burst of 50 requests: 50 tokens left
+        Time 5s:  100 tokens (50 + 50 refill)
+       ```
+     - Pros: Allows bursts, smooth rate limiting
+     - Used by: AWS, Stripe
+
+  2. Fixed Window Counter
+     - Concept:
+ 
+       1. Window: 1 minute intervals (00:00-00:59, 01:00-01:59)
+       2. Limit: 100 requests per window
+       3. Counter resets at window boundary
+     - Problem (Boundary Issue):
+     ```
+     12:00:30 - 12:00:59 → 100 requests
+     12:01:00 - 12:01:29 → 100 requests
+     Total in 60 sec: 200 requests (double the limit!)
+     ```
+  3. Sliding Window Log
+     - Concepts:
+ 
+       1. Store timestamp of each request
+       2. Count requests in last 60 seconds
+       3. Remove old timestamps
+     - Accurate but memory-intensive
+    
+  4. Sliding Window Counter (Best Balance)
+     - Combines fixed window + sliding window for accuracy with low memory.
+
+- HTTP Headers for Rate Limiting
+
+  1. Response headers:
+  ```
+  HTTP/1.1 200 OK
+   X-RateLimit-Limit: 100          # Total allowed per hour
+  X-RateLimit-Remaining: 23       # Requests left
+  X-RateLimit-Reset: 1678901234   # Unix timestamp when limit resets
+
+  When rate limit exceeded:
+  HTTP/1.1 429 Too Many Requests
+  Retry-After: 3600               # Seconds to wait
+  ```
+  
+  2. Implementation (Spring Boot + Redis)
+     - f
+     ```java
+       @Component
+       public class RateLimiter {
+    
+          @Autowired
+          private StringRedisTemplate redisTemplate;
+    
+          public boolean allowRequest(String userId, int limit, int windowSecs) {
+                String key = "rate_limit:" + userId;
+                Long count = redisTemplate.opsForValue().increment(key);
+        
+                if (count == 1) {
+                    redisTemplate.expire(key, windowSecs, TimeUnit.SECONDS);
+                }
+        
+               return count <= limit;
+           }
+         }
+
+      @RestControllerAdvice
+      public class RateLimitInterceptor {
+    
+           @Autowired
+           private RateLimiter rateLimiter;
+    
+           @Before
+          public void checkRateLimit(HttpServletRequest request) {
+               String userId = getUserIdFromToken(request);
+        
+              if (!rateLimiter.allowRequest(userId, 100, 3600)) {
+                 throw new RateLimitExceededException();
+            }
+         }
+        }
+     ```
+     - explanation of above implementation:
+
+        <img width="863" height="426" alt="image" src="https://github.com/user-attachments/assets/71161973-5f1c-49d0-8222-2b1ff85ef88b" />
+        <img width="849" height="383" alt="image" src="https://github.com/user-attachments/assets/11b83e34-692c-45de-a2f3-31f7817662be" />
+        <img width="839" height="520" alt="image" src="https://github.com/user-attachments/assets/f8131f8d-6b98-4126-87b4-af51bbbfa311" />
+  
+- Interview Answer: "For rate limiting, I'd use Token Bucket algorithm with Redis. Store user token count with TTL for window reset. Return 429 with Retry-After header when limit exceeded."
+
+## Pratical Exercise: Design API:
+### Task 1: Design "Create Post" API
+- Requirements
+   1. User can create a post with text/image
+   2. Must be idempotent (prevent duplicate posts)
+   3. Should handle large images
+   4. Rate limited
+
+ #### API Design
+ 
+**Endpoint:**
+```http
+POST /v1/posts
+```
+ 
+**Request Headers:**
+```http
+Content-Type: application/json
+Authorization: Bearer {jwt_token}
+Idempotency-Key: {uuid}
+```
+ 
+**Request Body:**
+```json
+{
+  "content": "This is my post content",
+  "imageUrl": "https://cdn.example.com/images/abc123.jpg",
+  "visibility": "public"  // public, friends, private
+}
+```
+ 
+**Response (201 Created):**
+```json
+{
+  "id": "post_789",
+  "userId": "user_123",
+  "content": "This is my post content",
+  "imageUrl": "https://cdn.example.com/images/abc123.jpg",
+  "visibility": "public",
+  "createdAt": "2024-03-15T10:30:00Z",
+  "updatedAt": "2024-03-15T10:30:00Z",
+  "likesCount": 0,
+  "commentsCount": 0
+}
+```
+ 
+**Response (429 Too Many Requests):**
+```json
+{
+  "error": "rate_limit_exceeded",
+  "message": "You can create maximum 50 posts per hour",
+  "retryAfter": 3600
+}
+```
+ 
+**Design Decisions:**
+ 
+1. **Idempotency**: Use `Idempotency-Key` header
+   - Store key in Redis with 24hr TTL
+   - Prevent duplicate posts if retry
+ 
+2. **Image Handling**:
+   - Don't upload image in POST body (too large)
+   - Separate flow:
+     ```
+     Step 1: POST /v1/media/upload → Get presigned URL
+     Step 2: Upload to S3 directly
+     Step 3: POST /v1/posts with imageUrl
+     ```
+ 
+3. **Rate Limiting**:
+   - 50 posts per hour per user
+   - Token bucket algorithm
+   - Return 429 with Retry-After
+ 
+4. **Validation**:
+   - Content max 5000 characters
+   - Image URL must be from CDN domain
+   - Visibility enum validation
+ 
+---
+ 
+### **Task 2: Design "Get Feed" API**
+ 
+#### Requirements
+- Show posts from followed users
+- Should be fast (millions of users)
+- Pagination for infinite scroll
+- Real-time updates
+ 
+#### API Design
+ 
+**Endpoint:**
+```http
+GET /v1/feed
+```
+ 
+**Request:**
+```http
+GET /v1/feed?cursor={base64_encoded}&limit=20
+Authorization: Bearer {jwt_token}
+```
+ 
+**Query Parameters:**
+- `cursor` (optional): Pagination cursor (base64 encoded post ID + timestamp)
+- `limit` (optional): Number of posts per page (default: 20, max: 50)
+ 
+**Response (200 OK):**
+```json
+{
+  "posts": [
+    {
+      "id": "post_789",
+      "userId": "user_456",
+      "userName": "John Doe",
+      "userAvatar": "https://cdn.example.com/avatars/456.jpg",
+      "content": "Amazing sunset today!",
+      "imageUrl": "https://cdn.example.com/images/abc123.jpg",
+      "createdAt": "2024-03-15T10:30:00Z",
+      "likesCount": 42,
+      "commentsCount": 5,
+      "isLiked": false,
+      "isSaved": false
+    },
+    // ... 19 more posts
+  ],
+  "pagination": {
+    "nextCursor": "eyJpZCI6InBvc3RfNzg5IiwidCI6MTcxMDQ5ODYwMH0=",
+    "hasMore": true
+  }
+}
+```
+ 
+**Design Decisions:**
+ 
+1. **Pagination Strategy**: Cursor-based
+   ```
+   Cursor structure (base64 encoded):
+   {
+     "id": "post_789",
+     "timestamp": 1710498600
+   }
+   
+   SQL Query:
+   SELECT * FROM posts 
+   WHERE user_id IN (SELECT followed_id FROM follows WHERE follower_id = ?)
+     AND (created_at, id) < (?, ?)  -- Cursor values
+   ORDER BY created_at DESC, id DESC
+   LIMIT 20;
+   ```
+ 
+2. **Performance Optimization**:
+   - **Pre-computed feed**: Use fan-out approach
+     - When user creates post → push to followers' feed cache (Redis)
+     - GET /feed → read from Redis
+     - Hybrid: Pre-compute for active users, on-demand for inactive
+   
+   - **Caching Strategy**:
+     ```
+     L1: Redis cache (feed:user_123) → TTL 15 min
+     L2: Database query
+     ```
+ 
+3. **Real-time Updates**: 
+   - WebSocket connection for new posts notification
+   - Client polls with `GET /feed/updates?since={timestamp}`
+ 
+4. **Data Optimization**:
+   - Embed user info (name, avatar) to avoid N+1 queries
+   - Return denormalized data (likesCount from cache)
+   - Lazy load comments (separate API)
+
+## Interview Answers (Ready-to-Use)
+ 
+**Q: How would you make POST API idempotent?**
+ 
+"I'd use an idempotency key approach. Client sends a unique UUID in the `Idempotency-Key` header. Server checks Redis cache:
+- If key exists → return cached response (likely 200 or 201)
+- If new → process request, cache the key-response pair with 24hr TTL, return response
+ 
+This prevents duplicate operations if client retries due to network failure. Similar to how Stripe handles payment APIs."
+ 
+**Q: Offset vs Cursor pagination?**
+ 
+"Offset (page/size) is simple but has two issues:
+1. Performance degrades with large offsets (OFFSET 1000000 is slow)
+2. Inconsistent results if data changes (new insert → see duplicates)
+ 
+Cursor-based uses last seen ID (e.g., WHERE id < 123). Benefits:
+- Uses index (fast)
+- Consistent results
+- Perfect for infinite scroll
+ 
+I'd use offset for admin panels (need page numbers), cursor for feeds (Instagram, Twitter style)."
+ 
+**Q: How would you implement rate limiting?**
+ 
+"Token Bucket algorithm with Redis:
+1. Each user has a bucket (Redis key: `rate_limit:user_123`)
+2. Bucket capacity = limit (e.g., 100 requests)
+3. Refills at constant rate (e.g., 10/sec)
+4. Each request: INCR key, check count, set EXPIRE if first request
+5. If count > limit → return 429 with Retry-After header
+ 
+Token Bucket allows bursts while maintaining average rate, which feels natural to users."
+
+## Code Templates (Copy-Paste Ready)
+ 
+### Spring Boot Idempotency Interceptor
+```java
+@Component
+public class IdempotencyInterceptor implements HandlerInterceptor {
+    
+    @Autowired
+    private StringRedisTemplate redis;
+    
+    @Override
+    public boolean preHandle(HttpServletRequest request, 
+                           HttpServletResponse response, 
+                           Object handler) throws Exception {
+        
+        if (!"POST".equals(request.getMethod())) {
+            return true;
+        }
+        
+        String key = request.getHeader("Idempotency-Key");
+        if (key == null) {
+            throw new BadRequestException("Idempotency-Key required");
+        }
+        
+        String cached = redis.opsForValue().get("idem:" + key);
+        if (cached != null) {
+            response.setStatus(200);
+            response.getWriter().write(cached);
+            return false; // Don't proceed to controller
+        }
+        
+        request.setAttribute("idempotencyKey", key);
+        return true;
+    }
+}
+```
+ 
+### Cursor Pagination Repository
+```java
+public interface PostRepository extends JpaRepository<Post, Long> {
+    
+    @Query("SELECT p FROM Post p WHERE p.id < :cursor " +
+           "ORDER BY p.id DESC")
+    List<Post> findByCursor(@Param("cursor") Long cursor, 
+                           Pageable pageable);
+    
+    // First page (no cursor)
+    @Query("SELECT p FROM Post p ORDER BY p.id DESC")
+    List<Post> findFirstPage(Pageable pageable);
+}
+ 
+// Usage
+Long cursor = request.getCursor() != null ? 
+    decodeCursor(request.getCursor()) : null;
+ 
+List<Post> posts = cursor != null ? 
+    repository.findByCursor(cursor, PageRequest.of(0, 20)) :
+    repository.findFirstPage(PageRequest.of(0, 20));
+```
+
+# Review question
+
+## Question 1: Explain CAP Theorem in 2 Minutes to a Non-Technical Person
+ 
+### The Explanation (Interview-Ready)
+ 
+**"Imagine you and your friends are planning a trip together using a shared calendar app.**
+ 
+**Three things you want:**
+ 
+1. **Consistency (C)**: Everyone sees the same information at the same time
+   - If you add "Beach trip - Saturday 2 PM" to the calendar
+   - Your friend should immediately see "Beach trip - Saturday 2 PM"
+   - Not old/different information
+ 
+2. **Availability (A)**: The app always works when you need it
+   - Even if your internet is slow or one server is down
+   - You can always open the app and use it
+   - No "Service Unavailable" errors
+ 
+3. **Partition Tolerance (P)**: The app works even when servers can't talk to each other
+   - Imagine servers in India and US can't communicate (network problem)
+   - The app still functions in both locations
+   - This is a real problem in distributed systems
+ 
+**The CAP Theorem says: You can only pick 2 out of these 3.**
+ 
+**Real-world examples:**
+ 
+- **Banking App (Choose C + P, sacrifice A)**:
+  - When you transfer money, consistency is critical (can't show different balances)
+  - If there's a network issue, the app might say "Try again later" (not available)
+  - Better to be temporarily unavailable than show wrong balance
+ 
+- **Instagram/Facebook Feed (Choose A + P, sacrifice C)**:
+  - Feed is always available (you can always scroll)
+  - But sometimes you see old posts or duplicate posts (not perfectly consistent)
+  - That's okay - seeing yesterday's photo a few seconds late doesn't break anything
+ 
+- **Single Server App (Choose C + A, but no P)**:
+  - If you only have one server, C + A is easy
+  - But if that server goes down, everything stops
+  - No distribution = no partition tolerance
+ 
+**Key Insight**: In distributed systems (multiple servers), network partitions WILL happen, so P is mandatory. Your real choice is between C and A."
+ 
+---
+ 
+### **Follow-up: CA, CP, AP Examples**
+ 
+| Type | Systems | Why? |
+|------|---------|------|
+| **CP** (Consistency + Partition Tolerance) | Banking systems, Financial transactions, MongoDB (default), HBase, Redis (single master) | Wrong data is unacceptable. Better to fail than show incorrect balance. |
+| **AP** (Availability + Partition Tolerance) | Social media feeds (Instagram, Twitter), DNS, Cassandra, DynamoDB | User experience matters more. Stale data is tolerable. Always available > perfect data. |
+| **CA** (Theoretical only) | Traditional RDBMS (single server), Local cache | Only works if no network partitions. Real distributed systems can't achieve this. |
+ 
+---
+ 
+## Question 2: Calculate Peak QPS for 100M DAU with 10 Requests/Day
+ 
+### The Calculation (Show Your Work in Interviews)
+ 
+**Given:**
+- DAU (Daily Active Users) = 100M = 100,000,000
+- Requests per user per day = 10
+ 
+**Step 1: Total Requests per Day**
+```
+Total requests/day = DAU × Requests per user
+                   = 100M × 10
+                   = 1,000M requests/day
+                   = 1 billion requests/day
+```
+ 
+**Step 2: Average QPS (Queries Per Second)**
+```
+Average QPS = Total requests per day / Seconds in a day
+            = 1,000,000,000 / 86,400
+            = ~11,574 QPS
+            ≈ 11.5K QPS (round for simplicity)
+```
+ 
+**Step 3: Peak QPS (Industry Standard: 2-3x Average)**
+```
+Peak QPS = Average QPS × Peak multiplier
+         = 11,574 × 2  (conservative)
+         = 23,148 QPS
+         ≈ 23K QPS
+ 
+OR (aggressive estimate):
+Peak QPS = 11,574 × 3
+         = 34,722 QPS
+         ≈ 35K QPS
+```
+ 
+### **Answer for Interview:**
+ 
+**"Let me calculate this step by step:**
+ 
+1. **Total daily requests**: 100M users × 10 requests = 1 billion requests/day
+ 
+2. **Average QPS**: 1B / 86,400 seconds ≈ 11.5K QPS
+ 
+3. **Peak QPS**: Traffic isn't evenly distributed. Most users are active during business hours (9 AM - 9 PM). Using a 2x peak multiplier: **~23K QPS**
+ 
+   For a more aggressive estimate (all users in 8-hour window): **~35K QPS**
+ 
+**System sizing**: To handle 35K QPS with 5ms latency per request, I'd provision servers with comfortable headroom (plan for 50K QPS to handle spikes)."
+ 
+---
+ 
+### **Useful Formulas to Memorize**
+ 
+```
+Average QPS = DAU × Requests per user / 86,400
+ 
+Peak QPS = Average QPS × (2 to 5)
+  - 2x: Normal apps (evenly distributed traffic)
+  - 3x: E-commerce, social media
+  - 5x+: News sites (event-driven spikes)
+ 
+Seconds in a day = 24 × 60 × 60 = 86,400 ≈ 100,000 (for rough estimation)
+```
+ 
+---
+ 
+## Question 3: Difference Between L4 and L7 Load Balancer
+ 
+### **Short Answer (30 seconds)**
+ 
+**L4 (Layer 4 - Transport Layer)**:
+- Works at TCP/UDP level
+- Routes based on IP address and port
+- Doesn't understand HTTP content
+- **Faster, simpler**
+ 
+**L7 (Layer 7 - Application Layer)**:
+- Works at HTTP level
+- Routes based on URL, headers, cookies
+- Can inspect request content
+- **Smarter, but slower**
+ 
+---
+ 
+### **Detailed Comparison Table**
+ 
+| Feature | L4 Load Balancer | L7 Load Balancer |
+|---------|------------------|------------------|
+| **OSI Layer** | Transport (Layer 4) | Application (Layer 7) |
+| **Protocol** | TCP/UDP | HTTP/HTTPS/WebSocket |
+| **Routing Based On** | IP address, Port | URL path, Headers, Cookies, Query params |
+| **Understands** | Packets, connections | HTTP requests, content |
+| **Performance** | Very fast (less processing) | Slower (must parse HTTP) |
+| **SSL Termination** | No (pass-through) | Yes (can decrypt and inspect) |
+| **Use Case** | Simple distribution, high throughput | Content-based routing, microservices |
+| **Examples** | HAProxy (L4 mode), AWS NLB | Nginx, HAProxy (L7 mode), AWS ALB |
+ 
+---
+ 
+### **Practical Examples**
+ 
+#### **L4 Use Case: Simple Round-Robin**
+```
+Client → L4 Load Balancer → Backend Servers
+         (IP: 192.168.1.100, Port: 443)
+         Routes to:
+         - Server 1: 10.0.1.10:8080
+         - Server 2: 10.0.1.11:8080
+         - Server 3: 10.0.1.12:8080
+ 
+Decision: Based on connection count, not content
+```
+ 
+**L4 sees:**
+```
+Source: 203.0.113.50:54321
+Destination: 192.168.1.100:443
+Protocol: TCP
+ 
+→ Routes entire TCP connection to Server 1
+```
+ 
+#### **L7 Use Case: Content-Based Routing**
+```
+Client → L7 Load Balancer → Route by URL path
+ 
+L7 sees:
+  GET /api/users/123 → Route to User Service (10.0.2.10)
+  GET /api/orders/456 → Route to Order Service (10.0.2.20)
+  GET /images/logo.png → Route to CDN (10.0.2.30)
+  
+Can also route by:
+  - Header: X-API-Version: 2 → Route to v2 servers
+  - Cookie: region=EU → Route to EU servers
+  - Query: ?mobile=true → Route to mobile API servers
+```
+ 
+**L7 sees:**
+```
+GET /api/users/123 HTTP/1.1
+Host: api.example.com
+Authorization: Bearer abc123
+User-Agent: Mobile App
+ 
+→ Inspects path, headers, and routes to User Service
+```
+ 
+---
+ 
+### **When to Use Which?**
+ 
+**Use L4 when:**
+- ✅ Need maximum throughput (low latency critical)
+- ✅ Simple round-robin/least-connections is enough
+- ✅ Non-HTTP traffic (databases, game servers, DNS)
+- ✅ Cost optimization (cheaper, less CPU)
+- ✅ Example: Load balancing database replicas
+ 
+**Use L7 when:**
+- ✅ Microservices architecture (route /users to User Service)
+- ✅ Need SSL termination at load balancer
+- ✅ A/B testing (route 10% traffic to new version)
+- ✅ Geographic routing (route EU users to EU servers)
+- ✅ Rate limiting per API endpoint
+- ✅ Web application firewall (WAF) integration
+- ✅ Example: API Gateway for microservices
+ 
+---
+ 
+### **Interview Answer Template**
+ 
+**"L4 operates at the transport layer and routes based on IP and port. It's fast but dumb - just distributes TCP connections without understanding content.**
+ 
+**L7 operates at the application layer and understands HTTP. It can route based on URL paths, headers, or cookies. For example, it can send `/api/users` to User Service and `/api/orders` to Order Service.**
+ 
+**I'd use L4 for database load balancing where throughput matters. I'd use L7 for microservices where I need intelligent routing and SSL termination.**
+ 
+**In AWS terms: Network Load Balancer (NLB) is L4, Application Load Balancer (ALB) is L7."**
+ 
+---
+ 
+## Question 4: When Would You Choose AP Over CP System?
+ 
+### **Short Answer**
+ 
+Choose **AP (Availability + Partition Tolerance)** over **CP (Consistency + Partition Tolerance)** when:
+- Stale data is acceptable
+- User experience (uptime) matters more than perfect accuracy
+- Eventually consistent is good enough
+- Downtime costs more than showing old data
+ 
+---
+ 
+### **Decision Framework**
+ 
+| Factor | Choose CP | Choose AP |
+|--------|-----------|-----------|
+| **Data Type** | Financial, Inventory | Social content, Analytics |
+| **Cost of Inconsistency** | High (wrong balance = lawsuit) | Low (old tweet = minor UX issue) |
+| **Cost of Unavailability** | Acceptable temporarily | Unacceptable (user leaves) |
+| **User Expectation** | Accurate data | Fast response |
+| **Write Frequency** | Low to medium | High (concurrent writes) |
+| **Read Frequency** | Any | Very high |
+ 
+---
+ 
+### **Real-World Examples - AP Systems**
+ 
+#### **1. Social Media Feed (Instagram, Twitter)**
+**Why AP?**
+```
+Scenario: User posts a photo
+ 
+CP Approach:
+- Must wait for all replicas to confirm before showing post
+- If one datacenter is down → post fails
+- User sees error: "Try again later" ❌
+ 
+AP Approach:
+- Write to one datacenter immediately
+- Replicate asynchronously to others
+- User sees "Posted!" instantly ✅
+- Some followers see it in 100ms, others in 2 seconds (eventual consistency)
+- Acceptable trade-off
+```
+ 
+**Decision**: Stale feed (see yesterday's post) > App down
+ 
+#### **2. Shopping Cart (Add to Cart)**
+**Why AP?**
+```
+Scenario: Black Friday sale, 10M users adding items
+ 
+CP Approach:
+- Every "Add to Cart" waits for strong consistency
+- During network partition → Cart service unavailable
+- Users can't add items → Lost sales ❌
+ 
+AP Approach:
+- Allow "Add to Cart" even during partition
+- Merge carts later (eventual consistency)
+- Worst case: User has duplicate items in cart (easily fixable)
+- Better than losing the sale ✅
+```
+ 
+**Decision**: Duplicate cart items > Cannot shop
+ 
+#### **3. DNS (Domain Name System)**
+**Why AP?**
+```
+Scenario: User types "google.com"
+ 
+CP Approach:
+- Wait for all DNS servers to agree on IP
+- If any server is down → "Cannot resolve domain" ❌
+- Website unreachable
+ 
+AP Approach:
+- Return IP from any available DNS server
+- Might return slightly stale IP (old cached value)
+- Website loads (even if not latest IP) ✅
+```
+ 
+**Decision**: 5-second stale DNS > Website unreachable
+ 
+#### **4. Analytics Dashboard (Page Views, Metrics)**
+**Why AP?**
+```
+Scenario: Real-time analytics showing website traffic
+ 
+CP Approach:
+- Wait for exact count from all servers
+- If datacenter is partitioned → Show no data ❌
+ 
+AP Approach:
+- Show approximate count from available servers
+- Might be 95,324 instead of 95,341 (off by 17)
+- Still useful for decision-making ✅
+```
+ 
+**Decision**: Approximate metrics > No metrics
+ 
+#### **5. Content Delivery Network (CDN)**
+**Why AP?**
+```
+Scenario: Serving images/videos globally
+ 
+CP Approach:
+- Ensure all edge servers have identical content
+- If sync fails → Don't serve content ❌
+- User sees broken image
+ 
+AP Approach:
+- Serve from nearest edge server
+- Might serve slightly old version of image
+- User sees content (even if 1 min old) ✅
+```
+ 
+**Decision**: Stale image > No image
+ 
+---
+ 
+### **When You MUST Choose CP (Counter-Examples)**
+ 
+#### **1. Banking Transactions**
+```
+Scenario: Transfer $1000 from Account A to Account B
+ 
+Why NOT AP:
+- Cannot show different balances to different users
+- Cannot process duplicate transfers
+- Regulatory compliance requires consistency
+ 
+CP Approach:
+- Use distributed transactions (2-phase commit)
+- If network partition → Fail the transaction
+- Show "Service temporarily unavailable" ✅
+- User retries later when network is stable
+```
+ 
+#### **2. Ticket Booking (Flight, Concert)**
+```
+Scenario: Only 1 seat left, 2 users try to book
+ 
+Why NOT AP:
+- Cannot oversell (legal issue)
+- Cannot show "Booked!" to both users
+ 
+CP Approach:
+- Lock seat during booking (distributed lock)
+- Only one user gets it
+- Second user sees "Sold out" ✅
+```
+ 
+#### **3. Inventory Management**
+```
+Scenario: Only 5 items in stock
+ 
+Why NOT AP:
+- Cannot accept 10 orders (angry customers)
+- Cannot show wrong inventory count
+ 
+CP Approach:
+- Strong consistency on inventory count
+- Decrement atomically
+- Better to show "Out of stock" than oversell ✅
+```
+ 
+---
+ 
+### **Interview Answer Template**
+ 
+**"I'd choose AP over CP when eventual consistency is acceptable and availability is critical.**
+ 
+**Examples:**
+ 
+1. **Social media feeds**: Better to show a 2-second-old post than have the app down. Users expect instant responses.
+ 
+2. **Shopping cart (add items)**: During Black Friday, allowing users to add items even during network partitions is crucial. We can resolve duplicate items later.
+ 
+3. **Analytics dashboards**: Approximate metrics (off by 0.1%) are better than no metrics at all.
+ 
+**The key question is: What's the business impact?**
+- If inconsistency costs money (banking, ticketing) → Choose CP
+- If unavailability costs money (e-commerce, social media) → Choose AP
+ 
+**Implementation**: AP systems use eventual consistency with techniques like:
+- Multi-master replication (Cassandra)
+- Conflict-free replicated data types (CRDTs)
+- Last-write-wins with timestamps
+- Merge strategies for conflicts"**
+ 
+---
+ 
+## Practical Task: Sketch URL Shortener Architecture
+ 
+### **High-Level Architecture Diagram**
+ 
+```
+┌─────────────┐
+│   Client    │ (Browser/Mobile App)
+│             │
+└──────┬──────┘
+       │ HTTPS
+       │
+       ▼
+┌─────────────────────────────────────────────────┐
+│         Load Balancer (L7)                      │
+│         (HAProxy / AWS ALB)                     │
+└──────┬──────────────────────┬───────────────────┘
+       │                      │
+       │                      │
+       ▼                      ▼
+┌──────────────┐      ┌──────────────┐
+│  App Server  │      │  App Server  │  (Spring Boot)
+│  (API Layer) │      │  (API Layer) │
+└──────┬───────┘      └──────┬───────┘
+       │                      │
+       │                      │
+       └──────────┬───────────┘
+                  │
+       ┌──────────┼──────────┐
+       │          │          │
+       ▼          ▼          ▼
+   ┌─────┐   ┌─────┐    ┌──────────┐
+   │Redis│   │MySQL│    │ Object   │
+   │Cache│   │ DB  │    │ Storage  │
+   │     │   │     │    │ (S3)     │
+   └─────┘   └─────┘    └──────────┘
+```
+ 
+---
+ 
+### **Detailed Architecture with Data Flow**
+ 
+```
+USER CREATES SHORT URL:
+=====================
+ 
+   Client
+     │
+     │ POST /shorten
+     │ Body: {"longUrl": "https://example.com/very/long/url"}
+     ▼
+  Load Balancer
+     │
+     ▼
+  App Server
+     │
+     ├─→ Generate Short Code (Base62: "aB3xY9")
+     │
+     ├─→ Check Redis Cache (code exists?)
+     │   └─→ If exists: Return error (collision)
+     │
+     ├─→ Store in MySQL:
+     │   TABLE: url_mappings
+     │   ┌────────┬──────────────────┬───────────┬─────────────┐
+     │   │  id    │   short_code     │ long_url  │ created_at  │
+     │   ├────────┼──────────────────┼───────────┼─────────────┤
+     │   │ 123456 │    aB3xY9        │ https://..│ 2024-03-15  │
+     │   └────────┴──────────────────┴───────────┴─────────────┘
+     │
+     ├─→ Cache in Redis:
+     │   Key: "short:aB3xY9"
+     │   Value: "https://example.com/very/long/url"
+     │   TTL: 1 hour
+     │
+     └─→ Return: {"shortUrl": "https://short.ly/aB3xY9"}
+ 
+ 
+USER ACCESSES SHORT URL:
+========================
+ 
+   Client
+     │
+     │ GET /aB3xY9
+     ▼
+  Load Balancer
+     │
+     ▼
+  App Server
+     │
+     ├─→ Check Redis Cache (Key: "short:aB3xY9")
+     │   │
+     │   ├─→ Cache HIT (99% of requests)
+     │   │   └─→ Return long URL
+     │   │
+     │   └─→ Cache MISS (1% of requests)
+     │       └─→ Query MySQL
+     │           └─→ Update Redis Cache
+     │           └─→ Return long URL
+     │
+     └─→ HTTP 301 Redirect to long URL
+     
+     
+  Client follows redirect to original URL
+```
+ 
+---
+ 
+### **Component Responsibilities**
+ 
+#### **1. Client (Browser/App)**
+```
+Responsibilities:
+- Send POST /shorten with long URL
+- Send GET /{shortCode}
+- Follow 301 redirect
+```
+ 
+#### **2. Load Balancer (L7)**
+```
+Responsibilities:
+- SSL termination
+- Distribute traffic across app servers
+- Health checks
+- Rate limiting (100 req/min per IP)
+ 
+Why L7?
+- Need to inspect URL path (/shorten vs /{code})
+- Rate limiting per endpoint
+```
+ 
+#### **3. App Server (Spring Boot API)**
+```
+Endpoints:
+ 
+POST /api/shorten
+- Validate long URL
+- Generate short code (Base62 encoding)
+- Check for collisions
+- Store in DB + Cache
+- Return short URL
+ 
+GET /{shortCode}
+- Lookup in Cache → DB
+- Return 301 redirect
+- (Optional) Increment analytics counter
+ 
+Core Logic:
+┌──────────────────────────────────────┐
+│ Short Code Generation Algorithm:     │
+│                                      │
+│ 1. Get auto-increment ID from DB    │
+│    Example: ID = 123456              │
+│                                      │
+│ 2. Convert to Base62                 │
+│    Base62 = [a-zA-Z0-9] (62 chars)  │
+│    123456 → "w7e" (6 chars)         │
+│                                      │
+│ 3. Collision check in Cache/DB      │
+│    If exists → Add random suffix     │
+│                                      │
+│ Result: "w7e" or "w7eX"             │
+└──────────────────────────────────────┘
+```
+ 
+#### **4. Redis Cache**
+```
+Purpose: Fast lookups (avoid DB hit)
+ 
+Data Structure:
+- Key-Value Store
+- Key: "short:aB3xY9"
+- Value: "https://example.com/very/long/url"
+- TTL: 1 hour (for popular URLs, no TTL)
+ 
+Cache Strategy:
+- Write-through: Write to DB + Cache simultaneously
+- Read pattern: Cache-aside (check cache → DB → update cache)
+ 
+Expected Cache Hit Rate: 95-99%
+(Pareto principle: 20% URLs get 80% traffic)
+```
+ 
+#### **5. MySQL Database**
+```
+Schema:
+ 
+CREATE TABLE url_mappings (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    short_code VARCHAR(10) UNIQUE NOT NULL,
+    long_url TEXT NOT NULL,
+    user_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP,
+    INDEX idx_short_code (short_code),
+    INDEX idx_user_id (user_id)
+);
+ 
+CREATE TABLE analytics (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    short_code VARCHAR(10),
+    accessed_at TIMESTAMP,
+    ip_address VARCHAR(45),
+    user_agent TEXT,
+    referrer TEXT,
+    INDEX idx_short_code_time (short_code, accessed_at)
+);
+ 
+Why MySQL (not NoSQL)?
+- Strong consistency needed (no duplicate short codes)
+- ACID transactions
+- Auto-increment IDs for Base62 encoding
+- Small dataset (millions of URLs easily fit)
+```
+ 
+#### **6. Object Storage (S3) - Optional**
+```
+Purpose: Store QR codes for short URLs
+ 
+- Generate QR code for short URL
+- Store in S3: s3://bucket/qr-codes/{shortCode}.png
+- Serve via CloudFront CDN
+```
+ 
+---
+ 
+### **Key Design Decisions**
+ 
+#### **1. Short Code Generation: Base62 Encoding**
+```
+Why Base62 (not Base10 or Base64)?
+- Base10: Only 10^6 = 1M combinations for 6 chars
+- Base64: Has special chars (+, /) → URL unsafe
+- Base62: [a-zA-Z0-9] → URL safe + 62^6 = 56B combinations
+ 
+Algorithm:
+def base62_encode(num):
+    chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    result = ""
+    while num > 0:
+        result = chars[num % 62] + result
+        num //= 62
+    return result
+ 
+Example:
+ID 123456 → Base62 "w7e"
+```
+ 
+#### **2. Caching Strategy: Write-Through**
+```
+Why write-through (not cache-aside)?
+- Avoids cache-DB inconsistency
+- New short URLs immediately available in cache
+- Read-heavy workload benefits from this
+ 
+Flow:
+1. Generate short code
+2. Write to MySQL (ACID ensures uniqueness)
+3. Write to Redis cache
+4. Return short URL
+```
+ 
+#### **3. 301 vs 302 Redirect**
+```
+301 Permanent Redirect:
+- Browser caches redirect
+- Faster for user (no server hit after first time)
+- Problem: Can't track analytics accurately
+ 
+302 Temporary Redirect:
+- Browser doesn't cache
+- Every click hits server (can track analytics)
+- Better for business (know click stats)
+ 
+Decision: Use 302 for tracking, or 301 with async analytics
+```
+ 
+#### **4. Read vs Write Ratio**
+```
+Typical ratio: 100:1 (read-heavy)
+- Most users click short URLs (read)
+- Few users create short URLs (write)
+ 
+Optimization:
+- Heavy caching for reads (Redis)
+- DB only for writes + cache misses
+- Read replicas for MySQL (if needed)
+```
+ 
+---
+ 
+### **Scalability Numbers**
+ 
+```
+Capacity Planning:
+ 
+Daily URL creations: 1M
+Daily URL clicks: 100M (100:1 ratio)
+ 
+Storage:
+- 1M URLs/day × 365 days = 365M URLs/year
+- Assume 500 bytes per URL (includes metadata)
+- Storage = 365M × 500 bytes = 182 GB/year
+- 5 years = 1 TB (very manageable)
+ 
+QPS:
+- Clicks: 100M/day → 100M/86400 ≈ 1157 QPS average
+- Peak: 1157 × 3 = 3500 QPS
+- With 95% cache hit rate: Only 175 DB QPS (easy)
+ 
+Servers needed:
+- 1 server handles ~1000 QPS
+- Need 4 servers for 3500 QPS (with headroom)
+- + Load balancer
+- + Redis cluster
+- + MySQL master-replica setup
+```
+ 
+---
+ 
+### **Interview Checklist**
+ 
+When presenting URL Shortener architecture, mention:
+ 
+- [x] Load balancer for distribution
+- [x] Multiple app servers (horizontal scaling)
+- [x] Redis cache (explain cache-aside pattern)
+- [x] MySQL for persistence (explain schema)
+- [x] Base62 encoding algorithm
+- [x] Auto-increment ID strategy
+- [x] 301 vs 302 redirect trade-off
+- [x] Read-heavy optimization (caching)
+- [x] Capacity estimation (storage, QPS)
+- [x] Analytics tracking (optional)
  
