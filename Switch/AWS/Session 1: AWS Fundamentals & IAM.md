@@ -99,5 +99,7 @@
   2. select AMI (Amazon Machine Image), which defined the operating system and might include additional software.
   3. select instance type, which defines the underlying hardware resources, such as CPU, memory, and network performance. 
   4. select key pair (This key pair is used to login into an EC2 instance), such as public key (whcih is going to be injected into the EC2 instance), private key (which we will keep).
-  5. we can connect to EC2 instance in various ways. Users or administrators can connect using SSH for linux instances or Remote Desktop Protocol (RDP) for windows instances. 
+  5. select network setting
+  6. Choose storage option for our EC2 instance
+  7. we can connect to EC2 instance in various ways. Users or administrators can connect using SSH for linux instances or Remote Desktop Protocol (RDP) for windows instances. 
 - 
