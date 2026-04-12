@@ -19,12 +19,26 @@
 
 
 ## Amazon EC2:
+- Amazon EC2 is more flexible, cost-effective, and faster than managing on-premise servers. It offers on-demand computer capacity that can be quickly launched, scaled and terminated, with cossts based only on the active usage.
+- Compute refered to the processing power needed to run applications, manage data, and perform calcualtion.
+- Compute in the cloud  means creating virtual machines with a cloud provider to run applications and tasks over the internet.
+- Amazon EC2 stands for Amazon Elastic Compute Cloud.
+- EC2 instances are virtual machines or VMs. VMs share the underlying physical host machine with mutiple other instances, which is a concept called multi-tenancy. In multi-tenant environment, we need to make sure that each VM is isolated from each other but is still able to share resources provided by the host. This job of resource sharing and isolation is being done by a piece of software called as hypervisor, which is running on the host machine. 
+- For EC2, AWS manages the underlying host, the hypervisor, and the isolation from instance to instance. 
+- When we provision an EC2 instance, we can chosse the OS, software we want to be running on our application.
+- EC2 instances are also resizable. Means, if needed, we can give more CPU and memory to it. This is what we call, vertically scaling an instance. 
+- We can also control the networking aspect of EC2.
+- AWS services like AWS system manager offer a secure and simplified method for accessing instances.
+
+### EC2 instance types:
+- The instance types are grouped under families, which offer varying combinations of CPU, memory, storage and networking capabilities.
+- The different instance 
 ### How to launch EC2 instace:
 - steps are as follows:
 
   1. Click "Launch Instance"
-  2. select AMI
-  3. select instance type
+  2. select AMI (Amazon Machine Image), which defined the operating system and might include additional software.
+  3. select instance type, which defines the underlying hardware resources, such as CPU, memory, and network performance. 
   4. select key pair (This key pair is used to login into an EC2 instance), such as public key (whcih is going to be injected into the EC2 instance), private key (which we will keep).
-  5. 
+  5. we can connect to EC2 instance in various ways. Users or administrators can connect using SSH for linux instances or Remote Desktop Protocol (RDP) for windows instances. 
 - 
