@@ -32,7 +32,32 @@
 
 ### EC2 instance types:
 - The instance types are grouped under families, which offer varying combinations of CPU, memory, storage and networking capabilities.
-- The different instance 
+- The different instance families are:
+
+  1. General purpose
+
+     - They provide the good balance of compute, memory and networking resources.
+     - They can be used for diverse workloads like web services or code repositories and when workload performance is uncertain. 
+  2. Compute optimized
+
+     - They are ideal for compute intensive tasks such as gaming servers, high performance computing, machine learning tasks, even scientific models.
+  3. Memory optimized
+
+     - They are good for memory intensive tasks such as processing large data sets, data analytice, and databases.
+     - They deliver fast performance for workloads that process large datasets in memory.
+  4. Storage optimized
+
+     - They are designed for workloads that require high performance for locally stored data, such as large databases data warehousing, and I/O intensive applications.
+  5. Accelerated computing
+
+     - They are good for floating-point number calculations, graphic processing and data pattern matching.
+     - They use hardware accelerators. These are co-processors that perform functions more efficiently than is possible in software running on CPUs.
+
+### How to provision AWS resources:
+- In AWS, tasks such as launching an EC2 instance, stopping an instance, or modifying instance settings are done through API requests.
+- APIs provide predefined methods to interact with, manage, and configure AWS resources efficiently.
+- 
+
 ### How to launch EC2 instace:
 - steps are as follows:
 
