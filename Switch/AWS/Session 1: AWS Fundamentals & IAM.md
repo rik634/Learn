@@ -56,7 +56,41 @@
 ### How to provision AWS resources:
 - In AWS, tasks such as launching an EC2 instance, stopping an instance, or modifying instance settings are done through API requests.
 - APIs provide predefined methods to interact with, manage, and configure AWS resources efficiently.
-- 
+- There are 3 main ways we can call AWS APIs:
+
+  1. AWS Management Console
+
+     - It is a web interface for managing the AWS services, offering quick access to services, search functionality and simplified workflows. 
+     -  Here, we can manage our resources visually.
+     - It is helpful for setting up test environments, viewing AWS bills, monitoring resources, view alarms, checks billing and managing non-techincal tasks supporting multiple logged-in identities at once.
+     - Good for: Users who prefer a visual, easy-to-use interface for managing and configuring AWS resources.
+       
+  2. AWS CLI (Command Line Interface)
+
+     - We can use AWS CLI to invoke AWS APIs using terminal.
+     - It allows us to interact with AWS services through text-based input called commands.
+     - This makes automation through scripting possible.
+     - Here, we can run commands using AWS CloudShell, which is a cloud based terminal that has AWS CLI already installed in managed environment.
+     - command examples:
+ 
+       1. To create EC2 instance: aws ec2 run-instances
+       2. List all AZs in current region: aws ec2 describe-availability-zones
+     - We can either run these commands manually or include these in script or other automation processes.
+     - Automation is an important aspect to having successful and predictable deployment over time.
+     - Good for: Advanced users and developers who need to automate tasks, script actions, and manage AWS resources efficiently from command line.
+       
+  3. AWS Software Development Kit (SDK):
+
+     - AWS SDK cimplifies integrating AWS services into our application by providing APIs for various programming languages.
+     - AWS SDK makes it possible for us to interact with AWS resources through various programming languages.
+     - Good for: Developers who want integrate AWS services into their applications using language specific APIs. 
+     - Example: e can run a python script using the integrated development environment such as Visual Studio Code (VS Code), that uses SDK to list the EC2 instances in the current region.
+ 
+### Compute and shared responsibility:
+- The AWS shared responsibility model outlines the division of duties between customer and AWS.
+- AWS handles the security of the cloud (hardware and infrastructure), and customer handles the security in the cloud (applications, data, and access control).
+- An unmanaged service like Amazon EC2 requires us to perform all the necessary security configurations and management tasks.
+- When we deploy and EC2 instance, we are responsible for configuring security, managing the guest operating system (OS), applying the updates, and setting up the firewalls (security groups). 
 
 ### How to launch EC2 instace:
 - steps are as follows:
