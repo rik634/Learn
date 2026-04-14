@@ -101,5 +101,119 @@
   4. select key pair (This key pair is used to login into an EC2 instance), such as public key (whcih is going to be injected into the EC2 instance), private key (which we will keep).
   5. select network setting
   6. Choose storage option for our EC2 instance
-  7. we can connect to EC2 instance in various ways. Users or administrators can connect using SSH for linux instances or Remote Desktop Protocol (RDP) for windows instances. 
+  7. In the advanced section, in user-data section, we are allowed to paste a script such as below one, which will install and activate the nginx web server, which we will be using to serve content to the internet.
+
+    <img width="507" height="234" alt="image" src="https://github.com/user-attachments/assets/fc2dded9-a310-48fd-a238-cb978035e973" />
+
+  9. Click on "Launch instance" to launch the instance. 
+- After the insatnce is launched, we can see the details of the launched instances.If we get the IP address of the instance and paste it in browser and hit enter, we can see the UI, to know, our instanc is up and running.
+-  we can connect to EC2 instance in various ways. Users or administrators can connect using SSH for linux instances or Remote Desktop Protocol (RDP) for windows instances. 
+
+### Amazon Machine Image (AMI):
+- AMIs are pre-built virtual machine images, that have the basic components for what is needed to start an instance.
+- AMI components:
+
+  - An AMI includes operating system, storage setup, architecture type, permissions for launching, and any extra software that is already installed.
+  - We can use one AMI to launch several EC2 instances that all have the same setup.
+
+- 3 wasy to use AMIs:
+
+  1. We can create our own by building a custom AMI with specific configurations and software tailored to our needs.
+  2. We can use pre-configured AWS AMIs, which are set up for common operating systems and software.
+  3. We can purchase AMIs from AWS marketplace, where third party vendors offer specialized software designed for specific use case.
+
+- AMI repeatability:
+
+  - AMIs provide repeatability through consistent environment for every new instance. Because configurations are identical and deployments are automated, development and testing environments are consistent.
+  - This helps when scaling, reduces errors, streamlines managing large-scale environments.
+
+### Amazon EC2 pricing:
+- The different options fro billing for Amazon EC2 are:
+
+  1. On-demand:
+
+    - Here, we only pay for the duration our instance runs.
+    - This can be per hour or per second based on the instance type and OS we choose.
+    - Also, no long-term commitments or upfront payments are needed.
+       
+  2. Savings plan:
+
+     - It offers lower EC2 prices for commitment to a consistent amount og usage.
+     - This is measured in dollars per hour for a one-year or three-year term.
+     - This can provide savings of upto 72 percent.
+     - Also, it can lower prices on our EC2 usage, regardless of instance family, size, OS, tenancy, or AWS region. Additionally it applies to AWS Fargate adn AWS Lambda usage.
+    
+  3. Reserved instances:
+
+     - These are well-suited for steady-state workloadsor ones with predictable usage.
+     - They offer upto 75% discount compared to on-demand pricing. We qualify for the discount after we commit to 1 one-year or 3 year term.
+     - It also has 3 payment options:
+ 
+       1. All upfront: Where we pay for them in full when we commit
+       2. partial upfront: Where we pay for a portion when we commit
+       3. No upfront: Where we don't pay anything at the beginning 
+       
+  4. Spot instances:
+
+     - Here, we can request spare EC2 capacity for upto 90% off of the on-demand price. The catch here is that AWS can reclaim the instance at any time.
+     - But, we do receive a 2 minute warning , so we can save our progress. And we can always resume later if we needed.
+     - So, if we are choosing spot instances, we need to make sure that our workload can tolerate being interrupted.
+       
+  5. Dedicated hosts:
+
+     - These are physical servers that customers can reserve for exclusive use.
+     - No other customer's workload can share the server. This isolation use case is ideal for security-sensitive or licensing-specific workloads like windows or SQL server.
+     - Here,w e have control over instance placement or resource allocation.
+       
+  6. Dedicated instance:
+
+     - Here, we pay for instances running on hardware dedicated solely to our account.
+     - This option provides isolation from other AWS customers.
+ 
+- Dedicated host vs. dedicated instances:
+
+  - Dedicated Hosts provide exclusive use of physical servers, offering full control over instance placement and resource allocation. This makes them ideal for security- or compliance-driven workloads. But what if you don’t need that level of control?
+  - You could use Dedicated Instances, which offer physical isolation from other AWS accounts while still benefiting from the flexibility and cost savings of shared infrastructure.
+  - The key difference is that Dedicated Instances provide isolation without you choosing which physical server they run on. Dedicated Hosts give you an entire physical server for exclusive use, providing complete control over instance placement and resource allocation.
+  - Dedicated Hosts offer exclusive use of a server with full control, whereas Dedicated Instances provide isolation without server control.
+
+### Scaling Amazon EC2:
+- If you've ever tried to access a website that wouldn't load and kept timing out, it might have been overwhelmed by more requests than it could handle. Here, scalability  helps us manage fluctuating demand by adjusting compute capacity.
+- Scalability is about a system’s potential to grow over time, whereas elasticity is about the dynamic, on-demand adjustment of resources.
+
+  1. Scalability:
+
+     - Scalability refers to the ability of a system to handle an increased load by adding resources.
+     - You can scale up by adding more power to existing machines, or you can scale out by adding more machines.
+     - Scalability focuses on long-term capacity planning to make sure that the system can grow and accommodate more users or workloads as needed.
+  2. Elasticity:
+
+     - Elasticity is the ability to automatically scale resources up or down in response to real-time demand.
+     - A system can then rapidly adjust its resources, scaling out during periods of high demand and scaling in when the demand decreases.
+     - Elasticity provides cost efficiency and optimal resource usage at any given moment.
+
+- Amazon EC2 Auto-scaling adds instances based on demand and key scaling metrics and then decommission instances when that demand goes down. Here, we also need help of other AWS services, such as AWS CloudWatch service to collect and monitor these metrics. This data is then used to determine when when scaling needs to happen. And, it happnes automatically right when we need it.
+
+#### Amzon EC2 Auto-scaling:
+- Amazon EC2 Auto Scaling automatically adjusts the number of EC2 instances based on changes in application demand, providing better availability. It offers two approaches.
+
+  1. Dynamic scaling adjusts in real time to fluctuations in demand.
+  2. Predictive scaling preemptively schedules the right number of instances based on anticipated demand.
+
+- With EC2 Auto Scaling, you maintain the desired amount of compute capacity for your application by dynamically adjusting the number of EC2 instances based on demand. You can create Auto Scaling groups, which are collections of EC2 instances that can scale in or out to meet your application’s needs.
+- An Auto Scaling group is configured with the following three key settings.
+
+  1. Minimum capacity:
+
+     - The minimum capacity defines the least number of EC2 instances required to keep the application running. This makes sure that the system never scales below this threshold. It's the number of EC2 instances that launch immediately after you have created the Auto Scaling group. 
+  2. Desired capacity:
+
+     - The desired capacity is the ideal number of instances needed to handle the current workload, which Auto Scaling aims to maintain. If you do not specify the desired number of EC2 instances in an Auto Scaling group, the desired capacity defaults to your minimum capacity.
+  3. Maximum capacity:
+
+     - The maximum capacity sets an upper limit on the number of instances that can be launched, preventing over-scaling and controlling costs. For example, you might configure the Auto Scaling group to scale out in response to increased demand.
+
+- Because Amazon EC2 Auto Scaling uses EC2 instances, you pay for only the instances you use, when you use them. This gives you a cost-effective architecture that provides the best customer experience while reducing expenses.
+
+### Directing traffic with elastic load balancing:
 - 
