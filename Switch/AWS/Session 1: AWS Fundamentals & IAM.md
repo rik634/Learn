@@ -216,4 +216,43 @@
 - Because Amazon EC2 Auto Scaling uses EC2 instances, you pay for only the instances you use, when you use them. This gives you a cost-effective architecture that provides the best customer experience while reducing expenses.
 
 ### Directing traffic with elastic load balancing:
-- 
+- Spreading workloads improves the performance of your applications by preventing any single resource from having to handle the full workload on its own.
+- ELB is designed to distribute network traffic to improve application scalability. The word elastic refers to its ability to scale up or down based on traffic, without adding to your hourly costs.
+- ELB can manage both internal and external traffic to AWS. It offers different routing strategies to ensure efficient traffic management and thusly optimal application performance.
+
+#### Elastic Load Balancing (ELB)
+- Elastic Load Balancing (ELB) automatically distributes incoming application traffic across multiple resources, such as EC2 instances, to optimize performance and reliability.
+- A load balancer serves as the single point of contact for all incoming web traffic to an Auto Scaling group.
+- As the number of EC2 instances fluctuates in response to traffic demands, incoming requests are first directed to the load balancer. From there, the traffic is distributed evenly across the available instances.
+- Although ELB and Amazon EC2 Auto Scaling are distinct services, they work in tandem to enhance application performance and ensure high availability. Together, they enable applications running on Amazon EC2 to scale effectively while maintaining consistent performance.
+- ELB Benefits:
+
+  1. Efficient traffic distribution:
+
+     - ELB evenly distributes traffic across EC2 instances, preventing overload on any single instance and optimizing resource utilization.
+  2. Automatic scaling:
+
+     - ELB scales with traffic and automatically adjusts to changes in demand for a seamless operation as backend instances are added or removed.
+  3. Simplified management:
+
+     - ELB decouples front-end and backend tiers and reduces manual synchronization. It also handles maintenance, updates, and failover to ease operational overhead.
+
+- Routing methods:
+
+  - To optimize traffic distribution, ELB uses several routing methods:
+
+    1. Round Robin
+
+       - Distributes traffic evenly across all available servers in a cyclic manner.
+    2. Least connections
+
+       - Routes traffic to the server with the fewest active connections, maintaining a balanced load.
+    3. IP Hash
+
+       - Uses the client’s IP address to consistently route traffic to the same server.
+    4. Least Response Time
+
+       - Directs traffic to the server with the fastest response time, minimizing latency.
+  - These routing strategies work together for efficient traffic management and optimal application performance.
+
+## 
