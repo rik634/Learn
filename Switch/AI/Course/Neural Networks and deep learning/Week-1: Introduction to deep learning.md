@@ -34,4 +34,25 @@
 
 ## Supervised learning with neural networks:
 - In supervised learning, we have some input x, and we want to learn a functions mapping to some output y.
+- Example:
+
+  1. Showing users the ads that user is most likely to click on, this has been lucrative application of neural network at many companies.
+  2. We input an image, and want to output and index from 1 to 1000 trying to tell, that the images is one of the 1000 images. It is used in Photo tagging.
+  3. It is also used in speech recognition. Here, we input an audio clip to neural network, amd have it output a text  transcript.
+  4. Machine translation: Here, we have a neural network input an English sentence, and directly output and chinese sentence.
+  5. Autonomous driving: Here, we input an image, say a picture of what's infront of car as well as some information from a radar, and based on that, a neural network can be trained to tell us the position of other cars on the radar.
+  
+- Also, slightly different types of neural networks are used for different applications.
+
+  1. For image applications, we often use CNN.
+  2. For sequence data, like audio (which is played out over time, so audio is most naturally represented as one-dimensional series or one-dimensional temporal sequence). So, for sequence data, we often use RNN (Recurrent neural network). Languages also comes one at a time, so it can also be represented as sequence data. 
+  3. For autonomous drivign, as input is image, it might suggest to use CNN, but it also use radar info , which suggest to use something more custom, hybrid neural network architecture.
+
+  <img width="1219" height="457" alt="image" src="https://github.com/user-attachments/assets/14b078c8-e880-4326-b520-c045c84b521a" />
+
+- Here, we can see in above image the structure of CNN, RNN, and standard neural network. CNN are often used for image data. RNN are very good for this type of one-dimensional sequence data that has maybe a temporal component.
+- Below image shows the usage of neural network in processing structured and unstructured data:
+
+  <img width="1197" height="527" alt="image" src="https://github.com/user-attachments/assets/63301828-5169-4542-b9b0-0c5c7129918c" />
+
 -  
