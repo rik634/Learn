@@ -220,7 +220,7 @@
 - ELB is designed to distribute network traffic to improve application scalability. The word elastic refers to its ability to scale up or down based on traffic, without adding to your hourly costs.
 - ELB can manage both internal and external traffic to AWS. It offers different routing strategies to ensure efficient traffic management and thusly optimal application performance.
 
-#### Elastic Load Balancing (ELB)
+## Elastic Load Balancing (ELB)
 - Elastic Load Balancing (ELB) automatically distributes incoming application traffic across multiple resources, such as EC2 instances, to optimize performance and reliability.
 - A load balancer serves as the single point of contact for all incoming web traffic to an Auto Scaling group.
 - As the number of EC2 instances fluctuates in response to traffic demands, incoming requests are first directed to the load balancer. From there, the traffic is distributed evenly across the available instances.
@@ -255,4 +255,76 @@
        - Directs traffic to the server with the fastest response time, minimizing latency.
   - These routing strategies work together for efficient traffic management and optimal application performance.
 
-## 
+## Messaging and Queuing
+
+- Note: A hallmark trait of a tightlu coupled architecture is this: if a single component fails or changes, it causes issues for the other components or even the whole system.
+- For example, Application A is sending messages directly to Application B. If Application B has a failure and cannot accept those messages, Application A will begin to see errors, as well. In this case, we introduced a message queue. Messages are sent into the queue by Application A and are processed by Application B. If Application B fails, Application A doesn't experience any disruption. Messages being sent can still be sent into the queue and will remain there until they are eventually processed.
+- And this brings me to two AWS services: Amazon Simple Queue Service, or Amazon SQS, and Amazon Simple Notification Service, or Amazon SNS.
+
+### Amazon SQS
+- SQS makes it possible for us to send, store, and receive messages between software components at any volume.
+- This is done without losing messages or requiring other message consumers to be available.
+- The data within a message is called a payload.
+- SQS queues are where the messages are placed until they are processed.
+- These scale automatically, are reliable, and are simple to configure and use. 
+
+### Amazon SNS:
+- SNS is similar as it also sends messages to services, but it has a big distinction: Sent SNS messages aren;t held for pickup until the processing service has a moment to get to them. Instead, SNS messages ned a response right now.
+- Additionally, SNS can be used to fan out notifications to end users using mobile push, SMS, and email.
+
+### key takeways: Decoupling services:
+- In modern application development, reliability and resilience are important. One effective way to achieve this is by adopting a service-oriented approach.
+- Monolithic application -> Microservices architecture 
+
+#### Monolithic applications:
+- Applications consist of multiple components that work together to transmit data, fulfill requests, and keep the application running smoothly.
+- In traditional approach to application architecture, the components - such as database logic, web application servers, user interfaces, and business logic - are tightly coupled.
+- This means, if one component fails, it can cause the failure of other components, potentially brining down the entire application.
+
+#### Microservices architecture 
+- To improve application availability and resilience, we can adopt a microservices architecture.
+- In this approach, app;ication components are loosely coupled, meaning that if one component fails, the others continue to function normally.
+- The communication between components remains intact, and the failure of a single component does not impact the entire system.
+- This design promotes greater flexibility and reliability in the application.
+
+### Supporting scalable and reliable cloud communication:
+- Amazon EventBridge, Amazon SNS, and Amazon SQS are AWS services that help different parts of an application communicate effectively in the cloud.
+- These services support building event-driven and message-based systems.
+- Together, they help create scalable, reliable applications that can handle high traffic and can enhance communication between components.
+
+#### Amazon EventBridge:
+- EventBridge is a serverless service that helps connect different parts of an application using events, helping to build scalable, event-driven systems.
+- With EventBridge, we route events from sources like custom apps, AWS services, and third-party software to other applications.
+- EventBridge simplifies the process of receiving, filtering, transforming, and delivering events, so we can quickly build reliable applications.
+- example:
+
+  - Customers use an online food delivery service to order meals from local restaurants through a mobile app. When a customer places an order, several steps need to happen simultaneously such as:
+       1. Payment processing: The payment service must verify and process the customer's payment
+       2. Restaurant notification: The restaurant receives a notification to start preparing the meal.
+       3. investory management: The inventory system checks if the ingredients for the order are available. 
+       4. delivery dispatch:  A delivery driver is notified to pick up and deliver the meal
+  - EventBridge can route events like order placed or payment completed, to relevant services (payment, restaurant, inventory, and delivery). It can hanlde high volumes of events during peak times, making sure each service works independently. Even if one service fails, EventBridge will store the event and process it as soon as the service is available again. EventBridge helps provide a smooth and reliable operation across the entire system. 
+
+#### Amazon SQS
+- Amazon SQS is a message queuing service that facilitates reliable communication between software components.
+- It can send, store, and receive messages at any scale, making sure messages are not lost and that other services don't need to be available for processing.
+- In Amazon SQS, an application places messages into a queue, and a user or service retrieves the message, processes it, and then removes it from the queue.
+- Example:
+
+  - As customer support teams grow and the volume of issues increases, traditional workflows can struggle to keep up.
+  - scenario: A customer support team consists of a support agent an a technical specialist. The support agent is responsible for receiving customer issues, and the technical specialist works on resoling them. This process works well as long as both the agent and the specialist are available and coordinated.
+  - Challenge: What if the support agent creates a ticket but the technical specialist is busy working on another issue or unavaialble? The agent would have to wait until the specialist is free to accept the new ticket, causing delays in resolcing cutomer issues and extending wait times for customers. As the volumes of customer issues increases, this process becomes inefficient.
+  - Solution:  To improve efficient, we can implement a queue system using Amazon SQS. The support agent adds customer issues to the queue, creating a backlog. Even if the specialist is busy, the agent can continue adding new issues. The specialist checks the queue, resolves issues, and updated the agent. This system provides a smooth workflow and helps handle higher volumes without delays or bottlenecks. 
+
+#### Amazon SNS
+- Amazon SNS is a publisj-subscribe service that publishers use to send messages to send messages to subscribers through SNS topics.In Amazon SNS, subscribers can include web servers, email addresses, Lambda functions, and various other endpoints.
+- Example:
+
+  - A company that sells a variety of products is currently sending a single email to all customers with updates on various topics, such as new producst, special offers, and upcoming events. Although this method worked initially, customers want to receive only the updates they're interested in. The current email update is causing customer idssatisfaction and lower engagement.
+  - So, what we can do to resolve this is:
+
+    1. Segment the communication: The company decides to divide the communication into three separate topics, including one for new producst, one for special offers, and one for events. Each topic will focus on a specififc area of interest. 
+    2. Let customers choose topics: Customers can subscribe to the topics they care about, such as following: a. A customer might subscribe only to new product updates b. Another customer might opt only for event notifications c. A third customer might choose to subscribe to new product updates and special offers 
+    3. Send tailored notifications: With Amazon SNS, the company can send personalized notification to subscribers based on their specific integrests. Amazon SNS makes sure that these notifications are promptly delivered to the right audience, improving the efficiency and relevance of the communication. 
+    
+-  
