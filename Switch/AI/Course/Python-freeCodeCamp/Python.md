@@ -704,4 +704,103 @@ my_var += 1
 
 print(my_var) # 6
 ```
- 
+
+## Boolean and Conditionals
+
+### How Do Conditional Statements and Logical Operators Work?
+- Below are the comparison operators in Python:
+
+  <img width="898" height="514" alt="image" src="https://github.com/user-attachments/assets/71f3fff8-15b2-470d-91ab-c6d5f62f708e" />
+
+- example:
+```python
+print(3 > 4) # False
+print(3 < 4) # True
+print(3 == 4) # False
+print(4 == 4) # True
+print(3 != 4) # True
+print(3 >= 4) # False
+print(3 <= 4) # True
+```
+- In Python, the most basic conditional is the if statement. Here's the basic syntax:
+```python
+if condition:
+    pass # Code to execute if condition is True
+```
+  - if statements start with the if keyword.
+  - condition is an expression that evaluates to True or False, followed by a colon (:).
+  - The body of the if statement constitutes a code block, which is a group of statements that belong together. In Python, the level of indentation is what defines a code block.
+- In the example above, the body of the if statement contains a pass statement. When a pass statement is executed, nothing happens. This is a special keyword that can be used as a placeholder for future code and it is useful when empty code blocks are not allowed.
+- While other programming languages use characters like curly braces to define code blocks, and just use indentation for readability, in Python, code blocks are determined by indentation.
+- The following code would raise an IndentationError, which is Python's way to signal that indentation is required at a certain point of the code:
+```python
+age = 18
+
+if age >= 18:
+print('You are an adult') # IndentationError: expected an indented block after 'if' statement on line 3
+```
+- Though you can use any number spaces (as long as you are consistent) to determine each level of indentation, the Python style guide recommends using four spaces.
+- syntax for if-else:
+```python
+if condition:
+   pass # Code to execute if condition is True
+else:
+   pass # Code to execute if condition is False
+```
+- There might be situations in which you want to account for multiple conditions. To do that, Python lets you extend your if statement with the elif (else if) keyword.
+```python
+if condition1:
+   pass # Code to execute if condition1 is True
+elif condition2:
+   pass # Code to execute if condition1 is False and condition2 is True
+else:
+   pass # Code to execute if all conditions are False
+```
+- Note that you can use as many elif clauses as you want.
+
+### What Are Truthy and Falsy Values, and How Do Boolean Operators and Short-Circuiting Work?
+- If you are working with more complex conditional statements, then you can use Python’s and, or, and not operators.
+- In Python, every value has an inherent boolean value, or a built-in sense of whether it should be treated as True or False in a logical context. Many values are considered truthy, that is, they evaluate to True in a logical context. Others are falsy, meaning they evaluate to False.
+- Here are a few falsy values:
+  - None
+  - False
+  - Integer 0
+  - Float 0.0
+  - Empty strings ""
+- Other values like non-zero numbers, and non-empty strings are truthy.
+- If you want to check whether a value is truthy or falsy, you can use the built-in bool() function. It explicitly converts a value to its boolean equivalent and returns True for truthy values and False for falsy values.
+```python
+print(bool(False)) # False
+print(bool(0))  # False
+print(bool('')) # False
+
+print(bool(True)) # True
+print(bool(1)) # True
+print(bool('Hello')) # True
+```
+- There are three Boolean operators in Python: and, or, and not.
+- The and operator takes two operands and returns the first operand if it is falsy, otherwise, it returns the second operand. Both operands must be truthy for an expression to result in a truthy value.
+```python
+is_citizen = True
+age = 25
+
+print(is_citizen and age) # 25
+```
+- In the above example, the number 25 is printed to the terminal because the and operator will evaluate the second operand if the first operand is True. The and operator is known as a short-circuit operator. Short-circuiting means Python checks values from left to right and stops as soon as it determines the final result.
+- Now let's take a look at the or operator. This operator returns the first operand if it is truthy, otherwise, it returns the second operand. An or expression results in a truthy value if at least one operand is truthy. The or operator is also known as a short-circuit operator. Here is an example:
+```python
+age = 19
+is_employed = False
+
+print(age or is_employed) # 19
+```
+- The last operator we will look at is the not operator which takes a single operand and inverts its boolean value. It converts truthy values to False and falsy values to True. Unlike the previous operators we looked at, not always returns True or False.
+```python
+print(not '') # True, because empty string is falsy
+print(not 'Hello') # False, because non-empty string is truthy
+print(not 0) # True, because 0 is falsy
+print(not 1) # False, because 1 is truthy
+print(not False) # True, because False is falsy
+print(not True) # False, because True is truthy
+```
+- 
