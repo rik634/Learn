@@ -119,4 +119,56 @@
 #### Containers and VMs
 - A container packages our application with everything it needs to run, so it works the same on any computer.
 - This helps to move, update and manage.
+- Containers are faster and lighter than Virtual machines (VMs) because thry share the host computer's operating system.
+- VMs use a hypervisor to run full, separate operating system, which makes then less resource-efficient and have longer startup times.
+<img width="725" height="315" alt="image" src="https://github.com/user-attachments/assets/ad3dd5b2-720e-428b-b24d-3ec20b15ebb9" />
+
+#### Deployment consistency with containers
+- When a developer's environment differs from staging or production, deployments can fail and become difficult to debug.
+- Containers solve this by keeping the application's environment consistent everywhere, making deployments smoother and assisting troubleshooting.
+<img width="737" height="206" alt="image" src="https://github.com/user-attachments/assets/c7ff9f86-472b-4e26-b989-bd2aace96456" />
+
+#### Scaling containers with orchestration
+- As containerized applications scale, managing them becomes more complex. A setup that began with a few containers on a single host can quickly grow into hundreds or thousands of containers across multiple hosts.
+- At that scale, manually handling container lifecycle, monitoring, and general operations becomes unsustainable.
+- This is where orchestration tools come in. They automate deployment, scaling, and management to keep everything running smoothly.
+<img width="753" height="354" alt="image" src="https://github.com/user-attachments/assets/811c5afe-7e3d-4a70-a413-37cc49d973bd" />
+
+### AWS container services
+- AWS has a set of tools for managing containers that fits into three categories: orchestration, registry, and compute
+
+#### Amazon ECS
+- Amazon Elastic Container Service (Amazon ECS) is a scalable container orchestration service for running and managing containers on AWS, like Docker containers.
+- Docker is a software platform for building, testing and deploying applications quickly.
+- Amazon ECS launch types:
+  1. Amazon ECS with Amazon EC2:
+     - This is ideal for small-to-medium businesses that need full control over infrastructure.
+     - They are suitable for custom applications requiring specific hardware or networking configurations, with flexibility of Amazon EC2 and simplicity of Amazon ECS.  
+  2. Amazon ECS with AWS Fargate:
+     - This is perfect for startups or small teams building web applications with variable traffic.
+     - It's a serverless option - no server management required - so teams can focus on development while Amazon ECS handles scaling and orchestration.  
+
+#### Amazon EKS:
+-  Amazon Elastic Kubernetes Service (Amazon EKS) is a fully managed service for running Kubernetes on AWS.
+-  It simplifies deploying, managing, and scakling containerized applications using open-source Kubernetes, with ongoing support and updates from the broader community.
+-  Amazon EKS launch types:
+   1. Amazon EKS with Amazon EC2:
+      - This is best for enterprises needing full control over infrastructure.
+      - It offers deep customization of EC2 instances alongside kubernetes scalability - ideal for complex, large-scale workloads. 
+   2. Amazon EKS with AWS Fargate:
+      - This is great for teams wanting Kubernetes flexibility without managing servers.
+      - It combines Kubernetes power with serverless simplicity, helping to scale applications quickly across varioud use cases.
+
+#### Amazon ECR
+- Amazon Elastic Container Registry (Amazon ECR) is where we can store, manage, and deploy container images.
+- It supports container images that follow the Open Container Initiative (OCI) standards.
+- We can push, pull, and manage images in our Amazon ECR repositores using standard container tooling and command line interfaces (CLIs).
+
+#### Fargate
+- AWS Fargate is a serverless  compute engine for containers. It works with both Amazon ECS and Amazon EKS.
+- Fargate is a container hosting platform, unlike Amazon ECS and Amazon EKS, which are both container orchestration services.
+- When using Fargate, we do not need to provision or manage servers. Fargate manages our server infrastrcuture for us.
+- We can focus more on innovating and developing our applications, and we pay only for the resources that are required to run our containers.
+
+## Additional Compute Services
 - 
