@@ -171,4 +171,35 @@
 - We can focus more on innovating and developing our applications, and we pay only for the resources that are required to run our containers.
 
 ## Additional Compute Services
-- 
+- AWS offers a range of purpose=built services designed to streamline specific use cases - from application deployment and data processing to web hosting and hybrid cloud setups.
+
+### AWS Elastic Beanstalk
+- This is fully managed service that streamlines the deployment, management, and scaling of web applications. 
+-  This is a service that makes it easier to deploy and manage applications in EC2.
+- Instead of building out the needed infrastructure, like the network, EC2 instances, scaling, and elastic load balancers by ourself, we can provide our application code and desired configurations to Elastic Beanstalk service.
+- Elastic Beanstalk then takes that information and automatically handles the provisioning of infrastructure, scaling, load balancing, and appllication health monitoring. Elastic Beanstalk also makes it easy to save environment configurations, so they can be deployed again.
+- We won't need to provision and manage all of these pieces separately, and we'll still have visibility and control of the underlying resources.
+- It supports various programming languages and frameworks such as Java, .NET, Python, Node.js, Docker, and more.
+- It provides full control over the underlying AWS resources while automating many operational tasks.
+- Good for: Deploying and managing web applications, RESTFul APIs, mobile backend services, and microservices archie=tectures, with automated scaling and simplified infrastructure management. 
+
+### AWS Batch
+- This is a fully managed compute service designed for heavy-duty tasks/ running batch computing workloads on AWS like processing massive datasets, running simulations, or performing complex calculations.
+- It automatically schedules, manages and scales compute resources for batch jobs, optimizing resource allocation based on job requirements. 
+- AWS Batch takes care of the infrastructure management for us. We won't need to worry about provisioning servers, scaling resources, or managing infrastrcuture.
+- AWS Batch handles all of that, allowing us to focus on the important tasks like building our application or running our analysis.
+- The service also scales automatically, distributing tasks across a fleet of compute resources like EC2 instances.
+- Goof for: Processing large-scale, parallel worloads in areas like scientific computing, financial risk analysis, media transcoding, ig data processing, machine learning training, and genomics research. 
+
+### Amazon Lightsail
+- Amazon Lightsail is a cloud service offering virtual private servers (VPCs), storage, databases, and networking at predictable monthly price.
+- It's ideal for small businessses, basic workloads, and developers seeking a straightforward AWS experience without the complexity of the full AWS Management Console. 
+- This simplifies web application hosting by giving us relativaly easy, cost effective solution for running specific types of applications and websites.
+- It takes care of a lot of the complexity that comes with traditional web application hosting, and it's great option if we want something qucik and easy to manage.
+- Good for: Basic web applications, low-traffic websites, development and testing environments, small business websites, blogs, and learning cloud services. 
+
+### AWS Outposts
+- AWS Outposts is a fully managed hybrid cloud solution that extends AWS services to our on-premise data center, giving us a consistent experience between on premises and AWS cloud, offering  compute, storage, and networking components.  
+- This one is designed for organizations that need a hybrid-cloud solution. If we want to leverage the power of AWS while keeping some of our infrastructure on premises, Outposts is the answer.
+- We get to run AWS services locally, while still benefiting from clooud computing.
+- Good for: Low-latency applications, data processing in remote locations, migrating and modernizing legacy applications, and meeting regulatory compliance or data residency requirements. 
