@@ -48,4 +48,16 @@
    - Some regions have lower operational costss than others. These operational costs can impact the overall expenses for hosting applications and services.
    - Tax alws and regulations can also play a role in cost. Some regions might offer tax incentives or have lower tax rates, which can affect customer pricing.
    - Additionally, data sovereignty laws in certain regions might require data to be stored locally, affecting both compliance and cost. 
-   - 
+
+## Diving Deeper into AWS Global Infrastructure
+- High availability and fault tolerance means that our resources remain accessible and operationsl, even if an outage occurs in one of the locations hosting our resources.
+- When it comes to infrastructure, we want to plan for long-term stability and less or virtully no down time for our users. SO, if our infrastructure has an interruption, we can swicth to redundant or backup infrastructure seamlessly. This is called building redundant architecture.
+- One method for redundancy is an architecture that uses multiple Availability Zones, or AZs. In a multi-AZ architecture, if an AZ has an  interruption, no worries. Our application will automatically swicth over to backup AZ we have configured. Even better, if we set it up correctly, our customers won't even notice a difference. Additionally, multi-AZ architectures can assist with quicker disaster recovery, improved business continuity, lower latency, and compliance.
+- We can deploy our application in multiple AWS Regions. So, if a whole Region experiences an interruptions, we can failover to another one.
+
+### Amazon CloudFront
+- CloudFront is a content delivery network, and it's designed to serve content as close to users as possible
+- This content can be images, data, videos, applications, APIs.
+- CloudFront uses edge locations, which are part of our worldwide Amazon Global Edge Network. These edge locations are actually separate from Regions and are specifically designed to accelerate content delivery.
+- Edge locations host other AWS services, like AWS Global Accelerator and Amazon Route 53.
+- 
