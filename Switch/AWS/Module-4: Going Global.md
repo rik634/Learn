@@ -60,4 +60,50 @@
 - This content can be images, data, videos, applications, APIs.
 - CloudFront uses edge locations, which are part of our worldwide Amazon Global Edge Network. These edge locations are actually separate from Regions and are specifically designed to accelerate content delivery.
 - Edge locations host other AWS services, like AWS Global Accelerator and Amazon Route 53.
+
+### Amazon Route 53:
+- route 53 is a Domain Name System , or DNS, that routes end users to internet applications.
+- Essentially, it converts human-readable URLs to machine-readable IP addresses.
+
+### AWS Outposts:
+- let's say that, we need more speed than even a Region paired with cloudFront can achieve. This is where Outposts comes in handy.
+- Outposts essentially makes it possible for us to run AWS services on-premises.
+
+### Designing highly avaialble architectures;
+#### Deploying multi-Region and multi-AZ resources
+- As we know, deplpying our cloud resources to multiple Regions can achieve high availability.
+- In addition to deploying to mltiple Regions, we also want to deploy resources to multiple Availability Zones.
+- By building redundant architectures or replicating our resources across multiple levels of AWS infrastructure, we can improve application reliability so that our users have access to our content when they need it.
+- In additiona to high availability, the AWS Global infrastructure also helps us to achieve agility and elasticity for our business.
+- Below are the advantes:
+  1. High availability:
+     - High availability refers to the capability of a system to operate continuously without failing. In the context of AWS infrastructure, it means that our application can handle the falure of individual components wihout significant downtime. 
+  2. Agility:
+     - Agility refers to the ability to quickly adapt to changing requirements or market conditions. With AWS infrastructure in place, we can modify and deploy services rapidly. 
+  3. Elasticity:
+     - Elasticity refers to the ability of a system to scale resources up or down automatically in response to changes in demand. AWS infrastructure is set up for us to scale resources up and down on demand. 
+
+#### Edge Locations
+- In addition to AWS Regions that contains Availability Zones, AWS has a global edge network that provides quicker content access to users outside of standard Regions.
+- These edge locations are strategically placed in areas like Atlanta, Gerogia, USA or Shanghai, China to provide low-latency access to AWS services and content delivery.
+- Edge locations offer multiple services to run closer to end users, including AWS networking services like Amazon CloudFront. CloudFront is a content delivery network (CDN) and caching system.
+
+### Key elements of AWS Global infrastructure
+#### AWS Regions
+- Regions are geographical areas around the world around the world that are made up of multiple data centers.
+- These data cemters provide scalable and redundant infrastructure for hosting cloud services.
+- Each Region consists of multiple, isolated locations known as Availability Zones.
+- Each Region has 3 or more Availability Zones.
+
+#### Availability Zones
+- Availability Zones are distinct locations within a Region, each designed as an independent zone with its own power, networking, and connectivity.
+- Availability Zones maintain high availability and fault tolerance for applications.
+- Each Availability Zones consists of one or more data centers.
+
+#### Edge locations
+- Edge locations are strategically placed sites around the world that cache contentto deliver data, video, and applications with lower latency and higher transfer speeds.
+- Edge locations are considered a vital part of the AWS content delivery network (CDN) and use services like CloudFront to efficiently distribute data to end users.
+- Edge locations are in areas outside of Regions.
+
+## Infrastructure and Automation
 - 
