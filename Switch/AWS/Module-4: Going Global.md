@@ -106,4 +106,43 @@
 - Edge locations are in areas outside of Regions.
 
 ## Infrastructure and Automation
-- 
+- Infrastructure as code )Iac) tools such as CloudFromation can help us scale our resources from one location to another with minimal effort.
+- As we know, in order to manage AWS resources, we have to interact with AWS APIs.
+- When we need to create and manage multiple resources, possibly across multiple AWS Regions or multiple accounts, adn we want to make sure everything is consistent and repeatable. Let's say, we have resources in Region 1 and we want to launch them in Region2. Here, doing this manually will be slow, error-prone and hard to reproduce. So, here, we can use automation and this is where the concept of infrastructure as code, or Iac comes in. 
+- We can use Iac to define our infrastructure in a file, almost like a blueprint of our AWS architecture. We can then use tools or services to automatically build and configure our resources based on the blueprint specifications.  We can deploy the same setup multiple times without variation, and we can track changes to our infrastructure more effectively using source control.
+- AWS CloudFormation is an Iac service that we can use to define wide variety of AWS resources in a declarative way by creating text-based documents called CloudFormation templates.
+- We can define what resources we want to build without specifying the details of exactly how to build it.
+- CloudFormation parses the template and then provisions all of the resources we defined, calling the needed AWS APIs in the background to make it all happen.
+- When we deploy the same template in multiple accounts or multiple regions, identical environments are created across them. There's less room for human error, because it's a totally automated process.
+- So now, instead of manually setting up resources in Region-2 to match RRegion-1, we can create a CloudFormation template that defines our infrastructure needed.
+- With a single command, AWS provisions those resources exactly as defined.
+
+### CloudFormation
+- CloudFormation is a service that helps us model and set up our AWS resources so that we can spend less time managing those resources and more time focusing on our applications that run in AWS.
+- With CloudFormation, we can define our infrastructure as code.
+- We create a template that describes all AWS resources that we want (like Amazon Elasic Compute Cloud (Amazon EC2) instances), and CloudFormation takes care of provisioning and configuring those resources for us.
+
+### Interacting with AWS resources
+- As we know, to interact with AWS resources, we must invoke AWS APIs. To interact with these APIs, we can use the AWS SDKs, the AWS CLI, the AWS management console, or Iac tools such as CloudFormation.
+- Below shows functions and uses cases for using these approachs:
+  1. Programmatic access:
+     - Programmatic access includes options like AWS CLI and AWS SDKs. These options are best suited for developers and those familiar with coding languages.
+     - With AWS CLI, we manage multiple AWS services directly from the command line. We can automate tasks through scripts.
+     - AWS SDKs can help integrate AWS services into our applications by providing APIs for various programming languages. AWS provides documentation and sample code to help with using SDKs.
+     - Use cases for AWS CLI actions and SDKs include the following:
+       1. AWS CLI:
+          - Automate routine tasks. For example, we might write a script to provide routine backups for a service such as Amazon Elastic Block Store (Amazon EBS)
+       2. SDKs: 
+          - Invoke APIs for one part of an application process. For exmaple, we might use an SDK to store user data in an AWS storage service such as Amazon Simple Storage Service (Amazon S3).
+  2. AWS Management Console:
+     - The AWS Management Console is a web interface that we use for managing AWS srvices, offering quick acess to services, search functionality, and simplified workflows.
+     - The console is a great option for those new to cloud or users with minimal or no development experience.
+     - Use cases for using the console include the following:
+       1. Billling and cost optimization dashboards and visualizations.
+       2. Services focused on graphical representation, like Amazon QuickSight and Amazon Neptune.  
+  3. Infrastructure as Code
+     - Witn Iac tools such as CloudFormation, we can automate resource management across our organization with AWS service integrations offering efficient and repeatable resource creation and management.
+     - Use cases for CloudFormation include the following:
+       1. Managing infrastructure with DevOps such as continuous integration and devlivery (CI/CD) pipelines.
+       2. Scaling resources such as Amazon EC2 instances to multi-region applications in a consistent, repeatable way. 
+
