@@ -53,4 +53,43 @@
 - So, we might want dedicated private connection to AWS. With AWS, we can achieve that using a service called AWS Direct Connect. Direct Connect lets us establish a completely private, dedicated fiber connection from uor data center to AWS. It ensures both security and consistent high performance. We work with a direct connect partner in our area to establish this connection, because, direct connect provides a physical line that connects our network to our Amazon VPC. This can help us meet regulatory and compliance needs, as well as sidestep any potential bandwidth issues.
 
 ### Organizing resources in the AWS Cloud
+- We have users, which might create millions of resources using the AWS services, such as Amazon EC2 instance. Withtout boundaries around all these resources, network traffic can flow between them unrestricted.
+
+### Establishing boundaries around AWS resources
+- When organizing our resources in the AWS Cloud, we need to be able to group certain functions together and isolate them from the public, or make then available to the public.
+
+#### Amazon VPC
+- With Amazon VPC, we can provision an isolaed section of the AWS Cloud. In this isolated section, we can launch resources in a virtual network that we define.
+- It provides 3 main benefits.
+  1. It helps increase security because we can secure and monitor connections, screen traffic, and restrict instance access.
+  2. Amazon VPC gives us full control over our resource placement, connectivity, and security.
+  3. The convenience of using Amazon VPC means we will spend less time setting up, managing, and validating ourvirtual network when compared to on-premise network management.  
+  <img width="307" height="117" alt="image" src="https://github.com/user-attachments/assets/1992d3a8-b4bb-40b7-aff7-4d9d907bf9b7" />
+
+##### Subnets
+- Within an Amazon VPC, we can reorganize our resources into subsections or subnets.
+- A subnet is a section of an Amazon VPC that can contain resources, such as Amazon EC2 instances. 
+
+##### Connecting our resources with an internet gateway
+- To allow public traffic from the internet to access our VPC, we attach an internet gateway to the VPC.
+- An internet gateway is a connection between a VPC and the internet.
+- Example: We can think of an internet gateway as being similar to a doorway that customers use to enter the coffee shop.
+- Without an internet gateway, no one can access the resources within our VPC.
+  <img width="392" height="163" alt="image" src="https://github.com/user-attachments/assets/5960d37b-de82-4194-83de-a51dcfd74a50" />
+
+### Virtual private gateway
+-  The internet gateway (public) is open and accessible to anyone. We want a way  to protect the traffic we send on the internet from the public, internet service providers, and other who might be trying to track or interceopt it.
+-  This is where virtual private network (VPN) connection comes in.
+-  VPN creates a connection that is more like a secure tunnel through the internet.
+-  Using encryption, it hides and protects everything we send and receive from the outside.
+-  A virtual private gateway is the component in the AWS Cloud that makes it possible for us to connect this protected traffic to enter the VPC. With VPN connection, our data travels privately and safely, hidden from others using the same route.
+-  With a virtual private gateway, we can establish a VPN connection between VPC and a private network, such as an on-premise data center or internal corporate network.
+-  A virtual private gateway allows traffic into the VPC only if it is coming from an approved network.
+   <img width="407" height="164" alt="image" src="https://github.com/user-attachments/assets/cd483369-edf7-4bf9-8672-aafc08694a92" />
+
+
+- Let's understand each of the preceding networking components:
+  1. Virtual Private Cloud (VPC): Amazon VPC is used to establish boundaries around our AWS resources.
+  2. Virtual private gateway: A virtual private gateway allows protected internet traffic to enter into the VPC.
+  3. Virtual private network (VPN) connection: A VPN encrypts our internet traffic, helping protect it from anyone who might try to intercept or monitor it. 
 - 
