@@ -92,4 +92,21 @@
   1. Virtual Private Cloud (VPC): Amazon VPC is used to establish boundaries around our AWS resources.
   2. Virtual private gateway: A virtual private gateway allows protected internet traffic to enter into the VPC.
   3. Virtual private network (VPN) connection: A VPN encrypts our internet traffic, helping protect it from anyone who might try to intercept or monitor it. 
+
+## More ways to connect to the AWS Cloud
+### Connecting to the AWS Cloud
+- With so many different types of networks, on-premises datacenters, and remote workers, companies need wide range of ways to connect to the AWS Cloud.
+- So, we have 4 ways to connect to the AWS Cloud:
+  1. AWS Client VPN
+  2. AWS Site-to-Site VPN
+  3. AWS PrivateLink
+  4. AWS Direct Connect
+  <img width="409" height="310" alt="image" src="https://github.com/user-attachments/assets/b054765a-214e-415d-8c82-8b3ff5c1ec9d" />
+
+### Securely connect a remote workforce to AWS Cloud resources
+- Imagine a company with a recent acquisition needing to securely connect their new remote workforce to their AWS Cloud resources.
+- Even the largest companies with worldwide remote workers can quickly scale up and connect to the AWS Cloud.
+- That's where AWS Client VPN can help.
+
+#### AWS Client VPN
 - 
