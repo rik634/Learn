@@ -109,4 +109,30 @@
 - That's where AWS Client VPN can help.
 
 #### AWS Client VPN
-- 
+- AWS Client VPN is a networking service we can use to connect our remote workers and on-premise networks to the cloud.
+- It is fully managed, elastic VPN service that automatically scales up or down based on user demand.
+- Because, it is a cloud VPN solution, we don't need to install and manage hardware or try to estimate how many remote usrs to support at one time.
+- **Benefits**: AWS Client VPN provides advanced authentication, remote access. It is elastic and fully managed.
+- **Use case**: It can be used to quickly scale remote-worker access.
+
+  <img width="333" height="251" alt="image" src="https://github.com/user-attachments/assets/00fb5538-a7dc-46bb-a3d0-34a580d3c3ff" />
+
+- Client VPN, a managed VPN service, provides secure access to AWS resources and on-premise networks from anywhere.
+- It uses an OpenVPN-based client, and it works with global regions by using the AWS global network.
+
+### Securely connect sites to other sites
+- Some companies might want to establish secure, encrypted connections between their on-premises networks like data centers or branch offices and their resources in their Amazon VPC.
+- That's where Site-to-Site VPN can help.
+
+#### AWS Site-to-Site VPN
+- Site-to-Site VPN creates a secure connection between our daa center or branch offices and our AWS Cloud resources.
+- **Benefits:** Site-to-Site VPN provides high availability, secure and private session, and accelerates applications.
+- **Use cases:** It can be used fro application migrations and secure communication between rmeote locations.
+ <img width="260" height="182" alt="image" src="https://github.com/user-attachments/assets/00094ce5-3815-4efe-a268-fa56b81962f0" />
+
+### Securely connect resources, ven in other VPCs
+- Other companies sometimes need the flexibility to privately connect to resources in other cloud providers as though they were in their own VPC.
+- They need a way to communicate with these resources and don;t want the hassle of setting up gateways or site-to-site.
+- That's where AWS PrivateLink can help.
+#### AWS PrivateLink
+- AWS PrivateLink is highly available, scalable technology that we can use to privately connect our 
