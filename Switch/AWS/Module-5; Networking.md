@@ -140,4 +140,50 @@
 - Instead, we control the specific API endpoints, sites, services, and resources that are reachable from our VPC.
 - **Benefits:** AWS PrivateLink helps use secure our traffic and connect with simplified management rules.
 - **Use case:** It is used for connecting our clients in our VPC to resources, other VPCs, and endpoints.
-- Even though the preceding connections are highly available and scalable, traffic jams are possible because 
+- Even though the preceding connections are highly available and scalable, traffic jams are possible because we're using the same connection as other clients. This is the reason, we might need a dedicated private connection with a lot og bandwidth.
+
+### Dedicated private connections for increased bandwidth
+#### AWS Direct Connect
+- Direct Connect is a servicr that makes it possible for us to establish a dedicated private connection between our network and VPC in the AWS Cloud.
+- **Benefits:** AWS Direct Connect reduces network costs and increases amoutn of bandwidth.
+ <img width="380" height="173" alt="image" src="https://github.com/user-attachments/assets/3c7cab7c-7ffc-4691-8311-ca0f97fdce2e" />
+
+-  Let's understand about direct connect:
+   1. Latency-sensitive applications:
+      - Direct Connect bypasses the internet and provides a consistent, low-latency network experience.
+      - This makes it ideal for applications like video streaming and other real-time applications that require high performance. 
+   2. Large-scale data migration or transfer:
+      - Direct Connect helps ensure smooth and reliable data transfers at massive scale for rea;-time analysis, rapid data backup, or broadcast media processing. 
+   3. Hybrid cloud architecture:
+      - We can use Direct Connect to link our AWS and on-premise networks to build applications that span environments without compromising performance. 
+
+### Additional gateway services:
+- There are several different types of gateways we can use to connect our AWS resources.
+- Let's understand about those gateways:
+  1. AWS Transit Gateway:
+     - AWS Transit Gateway is used to connect our Amazon VPCs and on-promise networks through a central hub.
+     - As our cloud infrastructure expands globally, inter-Region peering connects transit gateways together using the AWS Global infrastructure. 
+  2. Network Address Translation (NAT) Gateway:
+     - A NAT gateway is a NAT service. We can use a NAT gateway so that instances in a private subnet can connect to services outside our VPC but external services can't initiate a connection with those instances. 
+  3. Amazon API Gateway:
+     - An API defines how different software systems can interact and communicate with each other.
+     - The Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing APIs at any scale. 
+------------------------------------
+- Let's review the 4 types of connectivity options/services that help us connect our AWS Cloud to our clients, datacenters and sites:
+  1. AWS Direct Connect: AWS Direct Connect is a private, dedicated AWS connection to our data center or office.
+  2. AWS Client VPN: AWS Client VPN connects our remote workforce to AWS or on-premises with a VPN.
+  3. AWS Site-to-Site VPN: AWS Site-to-Site is an encrypted network connection to our Amazon VPCs.
+  4. AWS PrivateLink: AWS PrivateLink connects our VPC privately to services and resources as though they were in our VPC. 
+
+## Subnets, Security Groups, and Network Access Control Lists
+- AWS has wide range of tools that cover every layer of security: Firewalls, distributed denial-of-service, or DDoS prevention, encryption, and much more.
+- One of the main reasons to use subnets in a VPC is to control access to the gateways. The public subnets have access to the internet gateway, the private subnets do not. But subnets can also control traffic permissions.
+- Packets are messages from internet, and every packet that crosses the subnet boundaries gets checked against something called a network access control list, or network ACL. This check is to see if the packet has permissions to either leave or enter the subnet, based on who it was sent from and how it's trying to communicate.
+- We can think of network ACLs as passport control officers. If we're on the approved list, we get through. If we're not on the list, or if we're explicitly on the do-not-enter list, then we get blocked.
+- Network ACLs check traffic going into and leaving a subnet. The list gets checked on our way in and on the way out. And just because traffic is let in doesn't necessarily mean they're gonna let responses back out. Only explicitly approved traffic can be sent on its way.
+- A network ACL only gets to evaluate a packet if it crosses a subnet boundary, in or out. It doesn't evaluate if a packet can reach a specific EC2 instance or not. Sometimes, we will have multiple EC2 instances in the same subnet, but they might have different rules around who can send them messages and what port those messages are allowed to be sent to. So, we need instance-level network security as well.
+- To solve instance-level access questions, we introduce security groups. Every EC2 instance, when it's launched, automatically comec with a security group. And by default, the security group does not allow any traffic into the instance at all. All ports are blocked. That's very secure, but perhaps not very useful if we want an instance to actually accept traffic from outside, like a message from the frontend instance or message from the internet. So, we can modify the security group to accept a specific type of traffic.
+- In case of a website, we want web-based traffic like HTTPS to be accepted but not other types of traffic. If network ACLs are a passport control, a security group is like doorman at our building, the building being the EC2 instance. With security groups, we allow specific traffic in, and by default, all traffic is alllowed out.
+- The key difference between a security group and network ACL is the security group is stateful. That means, it has some kind of memory when it comes to who to allow in or out. And the network ACL is stateless, which remembers nothing and checks every single packet that crosses its border regardless of any circumstances.
+- By default, all outbound traffic is allowed from a security group
+- 
