@@ -324,4 +324,8 @@
 <img width="384" height="232" alt="image" src="https://github.com/user-attachments/assets/0ad6c7be-427b-450f-838f-ab6381f3a6d2" />
 
 #### Create the subnets
-- 
+- We will create 2 public and private subnets across 2 AZs. This is a best practice to achieve high availability.
+<img width="382" height="229" alt="image" src="https://github.com/user-attachments/assets/03697c47-cf61-4605-9173-ce1b3714c529" />
+
+#### Create an internet gateway and route traffic
+- Withoout an internet gateway. our users can't get to our resources. First, we create the internet gateway. 
