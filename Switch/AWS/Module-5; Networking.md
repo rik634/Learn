@@ -250,6 +250,8 @@
 <img width="912" height="470" alt="image" src="https://github.com/user-attachments/assets/fed84b9c-e481-4398-a1d9-02e63ff8875f" />
 
 - Task: Create VPC, private and public subnets, internet gateway, route table for public subnets.
+  <img width="925" height="485" alt="image" src="https://github.com/user-attachments/assets/3d28f874-1ae0-4716-bb2b-33ccaaf04e53" />
+
 - Steps:
   1. create VPC:
      - select VPC from AWS Management console.
@@ -275,8 +277,44 @@
           - select cancel.
           - We can create another subnet in different AZ, by following the same steps mentioned above.
        2. Create public subnet:
-          - 
-       3. 
-     - 
-  3.  
+          - Go to VPC dashboard, and in left panel, click on subnets.
+          - Click on "Create subnet".
+          - On create subnet page, for VPC ID, select the VPC from dropdown.
+          - Enter the subnet name, select AZ, and add IPv4 subnet CIDAR block, like (10.0.3.0/24)
+          - Click on "create subnet", and subnet will be created.
+          - on subnet dashbaord, select the public subnet we created just now, click on action, click on edit subnet settings.
+          - On edit subnet settings page, There is Auto-assign IP settings, enable the auto-assign public IPv4 address. This setting provides a public IPv4 address for all instances or resources launched into this public subnet.
+          - Click on "Save".
+          - We can create another public subnet in different AZ, by following the same steps mentioned above. 
+     - So, we have created 2 public and 2 private subnets. Also, even through our subnets are labeled public, they are not yet public subnets. First, the VPC needs an attached internet gateway, which we will attach in next steps. Then, we need to create appropriate routes in the route tables. 
+  3.  Create internet gateway:
+      - On VPC dashboard, on left pannel, click on internet gateways.
+      - Click on "Create internet gateway".
+      - On the create internet gateway page, add name tag for our gateway.
+      - Click "create internet gateway" and the internet gateway will get created.
+      - nOW, select the just now created internet gateway, select actions, select "Attach to VPC".
+      - On attach to VPC page, in VPC section, select the VPC from the dropdown, to which we want to attach our internet gateway.
+      - Click on "Attach internet gateway".
+      - Now, the internet gateway is attached to our VPC.
+      - Eeven though, we have created an internet gateway, and it is attached to VPC, we still have to tell instances within the public subnet, how to get to the internet. That's where the route table comes in.
+      - A route table contains a set of rules, called routes, that are used to determine where the network traffic is directed.
+      - Each subnet in our VPC must be associated with a route table. The table controls the routing for that subnet.  
+  4.  Set up route table:
+      - On VPC dashboard, in left panel, select "route tables".
+      - We need to create a route table to route public traffic to the internet gateway.
+      - Now, click on "create route".
+      - On create route table page, add name, for VPC, select the VPC from the dropdown.
+      - Click on "create route table", and the route table will get created.
+      - Now that the route table is created, clik on the just now created route table, under the routes tab, there is one route in our route table that allows traffic within the VPC to flow within the network, but it does not route traffic outside of the network.
+      - So, we need to add a new route to enable public traffic.
+      - For this, click on edit routes. Click on "add route". And for this route, under the destinatino, enter (0.0.0.0/0) and for target, select the internet gateway, we created and attached to VPC.
+      - Click on "save changes".
+      - Now, we need to associate this route table with our public subnets. On route table page, click on subnet associations tab. In the explicit subnet association section, select edit subnet associations. On edit subnet associations page, select the public subnets we created, and click on "save associations".
+      -  So, our subnets (which we selected) is now public because it is connected to the internetthrough the internet gateway.
+      - But, the private subnets do not have that route, so they remain private. 
+     
+- security groups also use CIDR blocks to define sources or destinations for network traffic. This way, everything is secure and we can decide who can access what resources based on our needs.
+
+### Building an Amazon VPC in the AWS Cloud:
+- 
 - 
