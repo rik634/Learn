@@ -316,5 +316,12 @@
 - security groups also use CIDR blocks to define sources or destinations for network traffic. This way, everything is secure and we can decide who can access what resources based on our needs.
 
 ### Building an Amazon VPC in the AWS Cloud:
-- 
+- Core components covered in this demonstration. 
+- The following is a high-level overview of the resources and core components created in the preceding demonstration.
+
+#### Create the Amazon VPC
+- Before we can create resources in the AWS Cloud, the first step is to create our own Amazon VPC. We will also specify the Region best located for our resources.
+<img width="384" height="232" alt="image" src="https://github.com/user-attachments/assets/0ad6c7be-427b-450f-838f-ab6381f3a6d2" />
+
+#### Create the subnets
 - 
