@@ -185,5 +185,98 @@
 - To solve instance-level access questions, we introduce security groups. Every EC2 instance, when it's launched, automatically comec with a security group. And by default, the security group does not allow any traffic into the instance at all. All ports are blocked. That's very secure, but perhaps not very useful if we want an instance to actually accept traffic from outside, like a message from the frontend instance or message from the internet. So, we can modify the security group to accept a specific type of traffic.
 - In case of a website, we want web-based traffic like HTTPS to be accepted but not other types of traffic. If network ACLs are a passport control, a security group is like doorman at our building, the building being the EC2 instance. With security groups, we allow specific traffic in, and by default, all traffic is alllowed out.
 - The key difference between a security group and network ACL is the security group is stateful. That means, it has some kind of memory when it comes to who to allow in or out. And the network ACL is stateless, which remembers nothing and checks every single packet that crosses its border regardless of any circumstances.
-- By default, all outbound traffic is allowed from a security group
+- By default, all outbound traffic is allowed from a security group. The network ACL dosn't care about what the security group allowed. It has ots own list of who can pass and who can't. If the traffic address is allowed, we can keep going on our journey, which it is. A network ACL has stateless control. Stateless contro means, it always checks its list.
+- Network ACLs have rules for both incoming and outgoing and they can be different.
+- Here, we might think about all the network overhead this might generate. The reality is all of these exchanges happen instantly as part of how AWS networking actually works.
+- Security is a critical consideration in all networking for modern architectures.
+
+### Subnets
+- A section of a VPC for grouping resources based on security or operationsl needs.
+ <img width="305" height="356" alt="image" src="https://github.com/user-attachments/assets/e80d0624-d0b0-4a83-a45b-4cbbea7cfe76" />
+
+- A subnet is a section of a VPC in which we can group resources based on security or operationsl needs. Subnets can be public or private.
+- **Public subnets** contain resources that need to be accessible by the public, such as an online store's website
+- **Private Subnets** contains resources that should be accessible only through our private network, such as database that contains customer's personal information and order histories.
+- In a VPC, we can define rules to allow resources in different subnets to communicate with each other. For example, we might have an application that uses Amazon EC2 instances in public subnet communicating with databases that are located in a private subnet.
+
+### Network traffic in a VPC
+- The movement of data packets traveling across a network.
+- When a customer requests data from an application hosted in the AWS Cloud, this request is sent as a packet. A packet is a unit of data sent over the internet or a network.
+- It enters into a VPC through an internet gateway. Before a packet can enter into a subent or exit from a subnet, it will run into several checks for permissions, one being a network ACL associated with the subnet the packet is being routed to. The permissions defined by the network ACLs indicate what is allowed or denied. It is based on who sent the packet and how the packet is trying to communicate with the resources in the subnet.
+<img width="380" height="116" alt="image" src="https://github.com/user-attachments/assets/7b56c7e3-7ba5-4270-9d29-4ff65f82a624" />
+
+- The VPC component that checks packet permissions for subnets is a network ACL.
+
+### Network ACLs
+- Virtual firewall controlling traffic.
+- A network ACL is a virtual firewall that controls inbound and outbound traffic at subnet level.
+- A network ACL checks permissions every time a packet travels across a subnet boundary.
+- Each AWS  account includes a default network ACL. When configuring our VPC, we can use our account's default network ACL or create custom network ACLs. By default, our account; default network ACL allows all inbound and outbound traffic, but we can modify it by adding our own rules.
+<img width="407" height="173" alt="image" src="https://github.com/user-attachments/assets/e9b9892a-4697-47de-8c78-abf8cf0d0807" />
+
+- For custom network ACLs, all inbound and outbound traffic is denied until we add rules to specify which traffic to allow. Additionally, all network ACLs have an explicit  deny rule. This rules makes sure that is a packet doesn't match any of the other rules on the list, the packet is denied.
+ <img width="406" height="179" alt="image" src="https://github.com/user-attachments/assets/af7fb97d-d6ef-488c-b991-7e0eb503f43d" />
+
+#### Stateless packet filtering
+- Network ACLs perform stateless packet filtering. They remember nothing and check packsts that cross the subnet border each way: inbound and outbound.
+- This is similar to sending a request out from an Amazon EC2 instance and to the internet.
+<img width="410" height="167" alt="image" src="https://github.com/user-attachments/assets/b26fc076-686a-4dac-8355-68bbb7b2da6c" />
+
+- When a packet response for that requets comes back to the subnet, the network ACL does not remember our previous request. The network ACL checks the packet response against its list of rules to determine whether to allow or deny.
+
+### Security groups
+- Control inbound and outbound traffic at resource level. 
+- After a packet has entered a subnet, it must have its permissions evaluated for resources within the subnet, such as Amazon EC2 instances.
+- A security group is the VPC component that checks packet permissions for an Amazon EC2 instance. It is a virtual firewall that controls inbound and outboound traffic for specific AWS resources, like Amazon EC2 instances.
+- By default, a security group denies all inbound traffic and allows all outboud traffic.
+<img width="417" height="238" alt="image" src="https://github.com/user-attachments/assets/f5c609e7-0fb2-4374-9ab4-0f222cfab154" />
+
+- With security groups, we can add custom rules to configure which traffic should be allowed. Any other traffic would then be denied. For example, custom rules can be given separately for inbound and outbound traffic.
+<img width="410" height="250" alt="image" src="https://github.com/user-attachments/assets/6c0f7618-0ae5-411f-b194-aa432b562443" />
+
+- **Note:** If we have multiple Amazon EC2 instances within the same VPC, we can associate them with the same security group or use different security groups for each instance.
+
+#### Stateful packet filtering
+-  Security groups perform stateful packet filtering. They remember previous decisions made for incming packets.
+------------------------------------------------------------------------
+
+- With both network ACLs and security groups, we can configure custom rules for the traffic in our VPC.
+- Difference between security group and network ACLs:
+<img width="389" height="312" alt="image" src="https://github.com/user-attachments/assets/8410a79a-1a73-4fee-9c37-3716f809d55a" />
+
+- When it comes to securing the subnets and resources in our VPC with the network ACLs and security groups, it is our responsibility. These components make up networking traffic protection and are critical defenses in protecting our application in the cloud
+
+## Amazon VPC demo
+<img width="912" height="470" alt="image" src="https://github.com/user-attachments/assets/fed84b9c-e481-4398-a1d9-02e63ff8875f" />
+
+- Task: Create VPC, private and public subnets, internet gateway, route table for public subnets.
+- Steps:
+  1. create VPC:
+     - select VPC from AWS Management console.
+     - create New VPC.
+     - Resources to create: select VPC only
+     - Name tag: Add the name for VPC
+     - IPv4 CIDR block: select IPv4 CIDR manual input
+       - CIDR stands for classless inter-doman routing address. This address is used to define the block of private IO addresses available to assign to any resources launched into the VPC.
+     - IPv4 CIDR: add some value like (10.0.0.0/16)
+     - click on "Create VPC", and VPC will get created with provided details.
+     - So, with this, every resources in our VPC will get a private IP address that starts with 10.0, then second 2 numbers will vary from resource to resource, each one hacing a unique address in the VPC. 
+  2. Create subnet:
+     - Here, we will create both public and private subnets across 2 different availability zones or AZs.
+     - This is the best practice for achieving high availability for our applications. it allow our instances to remain accessible even if one AZ experiences an ouage, by distributing them across separate physical locations within same AWS Region.
+     - So, subnet is a range of IP addresses in our VPC. We can launch AWS resources into specified subnet. And we can use public subnet for resources that must be connected to internet, and a private subnet for resourced that won't be connected to ineternet.
+       1. Create private subnet:
+          - In the left panel for VPC dashboard, select subnet.
+          - select create subnet.
+          - On create subnet page, for VPC ID, select our created VPC from the dropdown list.
+          - now, in subnet settings, add the fields subnet name, select desired AZ, IPv4 VPC CIDR block (will be same as we added while creatiion VPC, i.e., 10.0.0.0/16), IPv4 subnet CIDR block (we need to find CIDAR block for subnet, i.e., 10.0.0.0/24) etc.
+          - select "Create subnet' and subnet will get created under specified VPC.
+          - Now, select just created subnet, select actions, and select settings. Here, in edit subnet setting page, there is setting for Auto-assign IP setting. We have to make sure that this is not enabled, because enabling this setting would give every resource in the subnet a public IP. This is private subnet, so we don't want that.
+          - select cancel.
+          - We can create another subnet in different AZ, by following the same steps mentioned above.
+       2. Create public subnet:
+          - 
+       3. 
+     - 
+  3.  
 - 
