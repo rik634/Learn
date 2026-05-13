@@ -328,4 +328,10 @@
 <img width="382" height="229" alt="image" src="https://github.com/user-attachments/assets/03697c47-cf61-4605-9173-ce1b3714c529" />
 
 #### Create an internet gateway and route traffic
-- Withoout an internet gateway. our users can't get to our resources. First, we create the internet gateway. 
+- Withoout an internet gateway. our users can't get to our resources. First, we create the internet gateway. Then, we create route tables to route traffic to allow internet traffic in and local traffic out.
+<img width="404" height="227" alt="image" src="https://github.com/user-attachments/assets/f2d4497d-d799-4c4a-a21f-02b0cf391843" />
+
+## Global networking
+- Let's say, we are hosting an application on AWS Cloud. When our users type the website's address into their browser, the site lights up. Here, 2 of the AWS services help with this, i.e., Amazon Route 53
+- Route 53 is a
+  
