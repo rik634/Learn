@@ -332,6 +332,66 @@
 <img width="404" height="227" alt="image" src="https://github.com/user-attachments/assets/f2d4497d-d799-4c4a-a21f-02b0cf391843" />
 
 ## Global networking
-- Let's say, we are hosting an application on AWS Cloud. When our users type the website's address into their browser, the site lights up. Here, 2 of the AWS services help with this, i.e., Amazon Route 53
-- Route 53 is a
-  
+- Let's say, we are hosting an application on AWS Cloud. When our users type the website's address into their browser, the site lights up. Here, 2 of the AWS services help with this, i.e., Amazon Route 53, Amazon CloudFront
+- Route 53 is a domain name service, or DNS. DNS acts as a translation service. However, instead of translating between languages, DNS translates  website names into Internet Protocol, or IP addresses. Humans can read website names and computers can read IP addresses. This acts as the bridge between the two. Additionally, Route 53 can route traffic to different endpoints using several different routing policies. These include latency-based routing, geolocation, geoproximity, and weighted round robin. We can even use Route 53 to register domain names. Pick a domain name, check if it's available, and buy it using Route 53.
+- Amazon CloudFront: As we know, edge locations serve content as close to customers as possible, and one part of that is a content delivery network or CDN. So, using CloudFront, we can cache our content near to the customer location. 
+
+### Edge networking services
+####Secure and speedy networking for user-facing application data
+- Edge networking is the process of brining information storage and computing abilities closer to the devices that produce that information and the user who consume it.
+- Edge computing is important because organizations often need lower latency access to their data and content. By performing tasks or caching data locally or closer to users, organizations can deliver faster, more responsive experiences while maintaining better control over their infrastructure.
+- There are also many different services that are hosted on the edge, like DNS service, Amazon Route 53.
+
+#### Translating domain names to IP addresses with DNS
+- Suppose, a company has website hosted in the AWS Cloud. Customer can enter the web address into their browser and they are able to access the website.
+- This happens because of DNS resolution. DNS resolution involves a customer DNS resolver communicating with company DNS server.
+- DNS resolution is the process of translating a domain name to IP address.
+- Let's understand the steps of how DNS works:
+  1. When we enter the domain name into our browser, this request is sent to a customer DNS resolver.
+  2. The customer DNS resolver asks the company DNS server for the IP address that corresponds to company's website.
+  3. Company DNS server responds by providing the IP address for company's website, like 192.0.2.2
+
+### Amazon Route 53
+- Route 53 is a DNS that provides a reliable and cost-effective way to route users to internet applications.
+- Route 53 directs end users to our resources with globally dispersed DNS servers and automatic scaling. It gives developers and businesses a reliable way to route end users to internet applications hosted in AWS.
+- It connects user requests to infrastructure running in AWS, such as Amazon EC2 instances and load balancers. It also routes users to infrastructure outside of AWS.
+- Another feature of Route 53 is the ability to manage the DNS records for domain names. We can register new domain names directly in Route 53. We can also transfer DNS records for existing domain names managed by other domain registrars. This makes it possible for us to manage all of our domain names withing a single location.
+- Route 53 also works with the AWS edge networking server, Amazon CloudFront.
+
+### Amazon CloudFront
+- CloudFront is a content delivery network (CDN) service that delivers our content with faster loading times, cost savings, and reliability.
+- CloudFront is like global network of delivery trucks that quickly brings web content to users around the world. Instead of all requests traveling back to one central warehouse (our original server), CloudFront stores sopies of our content at locations closer to our users.
+- This means websites, videos, images, and applications load much faster, no matter where our customers are located.
+- Use cases:
+  1. Streaming video service:
+     - A company that offers online workout videos uses CloudFront to make sure videos play smoothly without buffering, even during peak exercise times when thousands of users log in simultaneously. 
+  2. Ecommerce website:
+     - An online store uses CloudFront to deliver product images and web pages quickly during busy shopping seasons. This faster experience keeps customers engaged and reduces abandoned shopping carts. 
+  3. Mobile app:
+     - A travel app uses CloudFront to deliver map data and images to user;s phones quickly to help travelers navigate new cities without frustating delays. 
+
+- The below example describes how Route 53 and CloudFront work together to deliver content to customers.
+<img width="403" height="178" alt="image" src="https://github.com/user-attachments/assets/6f8f781e-cf3a-42db-8a18-46a6536201a8" />
+
+  1. Client: A customer requests data from the application by going to company's website
+  2. Amazon Route 53: Amazon Route 53 uses DNS resolution to identify "company.com"'s corresponding IP address, 192.0.2.0. This information is sent back to the customer.
+  3. CloudFront: The customer's request is sent to the nearest edge location through CloudFront.
+  4. Application load balancerL CloudFront connects to the application load balancer, which sends the incoming packet to an Amazon EC2 instance. 
+
+### AWS Global Accelerator
+-  Global accelerator is a service that uses the AWS Global network to improve application availability, performance, and security. It uses intelligent traffic routing and fast failover if something goes wrong in one of our application locations.
+-  Global Accelerator is a networking service that helps our applications run faster and more reliably across the globe. We can think of it like creating exress lanes on the internet highway specifically for our application's traffic.
+-  Instead of our users' requests taking the regular, sometimes congested internet routes, Global Accelerator directs traffic through the AWS private global network - getting our users to our application faster and more reliably.
+-  Use cases:
+   1. Global gaming company:
+      - A gaming company uses Global Accelerator to reduce lag and provide smoother gameplay for players around the world. Players in Tokyo, new york, and london all experience similar, responsive gameplay because their connections are optimized.
+   2. Financial services application: 
+      - A banking app uses Global Accelerator to ensure their customers always have fast, reliable access to their accounts. Even during peak times or when network conditions in one area are poor, customers can check balances and make transactions without frustating delays.
+-----------------
+- Lets review each of the edge services:
+  1. Amazon Route 53: Route 53 is a highly available and scalable cloud DNS service.
+  2. Amazon CloudFront: CloudFront is a CDN service that delivers our content with low latency and high speeds.
+  3. AWS Global Accelerator: Global Accelerator is a service that uses the AWS global network to improve application availability, performance and security. 
+
+## Global Architectures
+-  
