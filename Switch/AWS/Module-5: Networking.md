@@ -394,4 +394,43 @@
   3. AWS Global Accelerator: Global Accelerator is a service that uses the AWS global network to improve application availability, performance and security. 
 
 ## Global Architectures
--  
+-  Until now, we worked on creating single VPC in a single region. However, in the real world, companies often need more complex networks to support global customers. This can mean multiple AWS accounts, multiple AWS Regions, multiple VPCs.. even hybrid cloud deployments.
+-  Let's start with common setup - a VPC with a VPN connection. This setup allows a company to securely connect their on-premise network to their cloud-based resources on AWS. This essentially creates private, encrypted tunnel to access data and applications in the cloud from their physical office locations, while maintaining data security and privacy over the public internet. Companies often use this for remote employees who need to access sensitive information that is stored in the AWS cloud.
+-  While, there are definnitely benefits to using a VPN to connect to VPC, and it works great for many customers, it does also have a few potentials limitations. One is that VPN  connections do share the bandwidth of the local internet, so the connection can be prone to slowdowns if we have heavy payloads of data being sent over the internet to AWS. second might be, our company requirements to meet certain compliance or regulatory standards. Due to these limitations, we might consider using Direct Connect.
+-  Direct Connect is also awesome when lots of data needs to flow between corporate data centers and AWS. These huge data transfers can take long time over the public internet so some companies opt for Direct Connect instead. Traffic will be routed from their corporate data center to Direct Connect location. It is then routed to a VPC through a virtual private gateway. All network traffic flows through this dedicated private connection. This helps to speed up data transfers, address application performance and increase a company's data transfer security.
+-  When to use VPC and Direct Connect:
+   - VPN: We should use VPN when we need a secure, fleible connection for remote access to our resources. This is especially true for small-scale data transfers or when a dedicated connection is not necessary.
+   - We should use Direct Connect when we need much higher bandwidth with a dedicated line like with large data transfers between our on-premise network and AWS.
+   - A common use case for using VPN alongside AWS Direct Connect is where we use VPN as failover for Direct Connect. 
+-  So, with Direct Connect, these are physical hard-wired connections. So, if there is some situation where a line gets cut accidentally or if something were to happen, we can use VPN as backup connection for failover. But there are even cases where we may want to failover to a secondary direct connect line.
+-  In addition to fault tolerance, if a customer wants increased bandwidth, they can vombine multiple connections to achieve higher aggregate bandwidth.
+-  For companies with customers around the globe or even offices in different regions where they need to deliver content, they could use Amazon Cloudfront and Route 53. CloudFront distributes content from edge locations globally, while Route 53 uses its latency-based routing capabilities to direct users to the closest AWS region (based on their location). This ensures they access the application with the lowest latency, which effectively provides a seamless experience across multiple regions.
+    - **Example**: User access the company's website using a custom domain, the request is then sent to Route 53 DNS record. Route 53 uses a routing policy to determine which region is closest to the user and then directs them to appropriate CloudFront edge location. The edge location then fetches the content from the designated origin server in the chosen region.
+
+### Cloud in rwal life: Exploring the examples
+#### Direct Connect failover when we need much higher bandwidth with dedicated lines
+- Let's learn more about using Direct Connect for failover and to aggregate bandwidth:
+  <img width="395" height="179" alt="image" src="https://github.com/user-attachments/assets/8ea950ea-bf50-4cde-b4ac-7f8f50729ee8" />
+
+  1. **Customer Network:** The customer network clients and servers need a secure, high-bandwidth connection for large data transfers and critical application performance.
+  2. **Content router or firewall:** The customer has a content router or firewall connecting their network to Direct Connect.
+  3. **Multiple Direct Connect Connections:**In addition to fault tolerance, the customer wanted increased bandwidth. They can even combine multiple connections to achieve higher aggregate bandwidth.
+  4. **Virtual Private Gateway:** Using a virtual private gateway, the clients can securely access the private resources in the Amazon VPC.
+ 
+#### Delivering content to several different Regions globally
+- Below shows an example of how a company with offices around the world can deliver content with low latency for seamless experience across multiple Regions.
+- Let's learn about how traffic gets to Regions through CloudFront and Route 53:
+  <img width="437" height="230" alt="image" src="https://github.com/user-attachments/assets/5ef535cb-2302-4710-aef0-49b478bee518" />
+
+  1. **Users:** The users access the company's website using a custom domain. The request is first sent to Route 53 DNS record.
+  2. **Routing policy:** Route 53 uses a routing policy to determine which Region is closest to the appropriate CloudFront edge location.
+  3. **Direct to edge locations:** Route 53 directs the user to the CloudFront edge location in the appropriate Region.
+  4. **Content in multiple AZs:** The content is fetched from designated origin server in the choosen region. Also note, the website was built with resources in multiple availability zones for high availability. 
+
+## Summary:
+- **Amazon VPC:** Amazon VPC is a service to provision a logically isolated section of the AWS Cloud where we can launch AWS resources in a virtual network that we define
+- **Subnet:** A subnet is a section of a VPC that can contain resources and is used to organize our resources. They can be either public or private.
+- **Internet gateway:** An internet gateway is a connection between a VPC and the internet. It allows public traffic from the internet to access our VPC.
+- **Virtual private gateway:** A virtual private gateway is the component that allows protected internet traffic to enter into VPC. It allows a connection between our VPC and private network only if it is coming from an approved network.
+- **AWS Client VPN:**Amazon Client VPN is a networking service we can use to connect our remote workers and on-premises networks to the cloud. It is fully managed, elastic VPN service that automatically scales up or down based on user demand.
+- **AWS Site-to-Site VPN:** 
