@@ -433,4 +433,15 @@
 - **Internet gateway:** An internet gateway is a connection between a VPC and the internet. It allows public traffic from the internet to access our VPC.
 - **Virtual private gateway:** A virtual private gateway is the component that allows protected internet traffic to enter into VPC. It allows a connection between our VPC and private network only if it is coming from an approved network.
 - **AWS Client VPN:**Amazon Client VPN is a networking service we can use to connect our remote workers and on-premises networks to the cloud. It is fully managed, elastic VPN service that automatically scales up or down based on user demand.
-- **AWS Site-to-Site VPN:** 
+- **AWS Site-to-Site VPN:** AWS Site-to-Site VPN creates a secure connection between our data center or branch offices and our AWS Cloud resources.
+- **AWS PrivateLink:** AWS PrivateLink is a highly available, scalable technology that we can use to privately connect our VPC to services and resources as though they were in our VPC.
+- **AWS Direct Connect:** AWS Direct Connect is a service that provides a dedicated private connection between our data center and a VPC.
+- **Network Access Control List (network ACL):** A network ACL allows or denies specific inbound or outbound traffic at the subnet level using stateless packet filtering.
+- **Security Groups:** Security groups control the inbound and outbound traffic for a resource at the instance level using stateful packet filtering.
+- **Domain Name System (DNS):** DNS translates human readable domain names to machine readable IP adddresses.
+- **Amazon Route 53:** Route 53 is a scalable and reliable DNS web service that helps developers and businesses route end users to internet applications, whether they're hosted in AWS or elsewhere. It also supports domain registration, health checks, and advanced traffic routing policies.
+- **Amazon CloudFront:** CloudFront is a web service that speeds up distribution of our web content to our users through a worldwide network of data centers called edge locations. It securely delivers content with low latency and high transfer speeds.
+- **AWS Global Accelerator:** Global Accelerator is a networking service that helps improve the availability and performance of applications for global users by routing traffic through the AWS global network. It helps improve application availability, performance, and security.
+- **Amazon Transit Gateway:** Amazon VPC Transit Gateway is a network transit hub used to interconnect VPCs and on-premise networks.
+- **NAT Gateway:** Network Address Translation (NAT) gateway allows instances in a private subne to connect with services outside our VPC. External services can't initiate a connection with those instances.
+- **API Gateway:** The Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing APIs at any scale. It handles all the tasks involved in accepting and processing up to hundreds of thousands of concurrent API calls. 
