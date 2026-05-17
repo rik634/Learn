@@ -11,6 +11,7 @@
      - Object storage saves data in self-contained units, as objects.
      - Each of these objects includes the data, a unique ID, and information about the object called metadata that makes it easy to organize and retrieve.
      - Unlike block storage, where we can update small parts of a file as needed, this type of storage requires rewriting the entire object for every change.
+       
      - Objects are organized flat structured called buckets, which are different from traditional hierarhical systems like folders.
      - Object storage is best for files that dont' change constantly, like videos, backups, or logs.
   3. File storage 
