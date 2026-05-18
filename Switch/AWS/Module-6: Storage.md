@@ -184,8 +184,20 @@
 #### Benefits
 - Below shows the main benefits of EBS snapshots and how it improves our data protection strategy in Amazon EBS:
   1. Data protection and recovery:
-
+     - Snapshots enable fast data recovery from corruption, accidental deletion, or system failures using point-in-time backups.
   2. Operational flexibility:
-
+     - Snapshots enable operations like cross-region data migration, volume resizing, volume cloning, and sharing data across AWS accounts. 
   3. Cost effective:
+     - Snapshots use incremental backup technology, storing only changed blocks after the initial backup, reducing storage costs and backup time.
+
+### Amazon Data Lifecycle Manager
+- We can automate the creation, retention, and deletion of EBS snapshots using Amazon Data Lifecycle Manager. Amazon Data Lifecycle Manager can schedule snapshots during off-peak hours to minimize performance impact and automatically delete outdated backups to control storage costs. It's particularly valuable for large-scale deployments where manual snapshot management would be time-consuming and error-prone.
+- Let's learn how you can use Data Lifecycle Manager to create custom EBS Snapshots policies:
+  - By reducing manual effort and establishing consistent backup policies, Amazon Data Lifecycle Manager helps maintain compliance requirements by scheduling regular backups and enforcing retention rules.
+  1. Create an EBS snapshots policy: Create an EBS snapshots policy using the Amazon EC2 console, API calls, AWS Command Line Interface (AWS CLI), SDKs, or AWS CloudFormation.
+  2. Select target resource type: Choose either an EBS volume or an EC2 instance as the target for the snapshot.
+  3. Exclude volumes: Narrow down the data to be included in the snapshot by choosing options to exclude either the root volume or data volumes
+  4. Set custom schedules: Automate the creation, retention, and deletion of EBS snapshots by setting up custom schedules.
+  5. Apply additional actions: Before finalizing the policy, we can apply additional actions. These include configuring elements of the snapshots like tags, snapshot archiving, Amazon EBS fast snapshot restore, cross-Region copying, and cross-account sharing.
+
 - 
