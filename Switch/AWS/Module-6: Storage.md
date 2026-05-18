@@ -200,4 +200,32 @@
   4. Set custom schedules: Automate the creation, retention, and deletion of EBS snapshots by setting up custom schedules.
   5. Apply additional actions: Before finalizing the policy, we can apply additional actions. These include configuring elements of the snapshots like tags, snapshot archiving, Amazon EBS fast snapshot restore, cross-Region copying, and cross-account sharing.
 
+## Amazon Simple Storage Service (Amazon S3)
+- Amazon S3 is an object storage service that can store unlimited amounts of data in the AWS Cloud. Object storage is particularly well-suited for handling large amounts of unstructured data, such as documents, images, and videos.
+- Amazon S3 is a data store that makes it possible to store and retrieve a virtually unlimited amount of data at any scale.
+- Single data files, regardless of the type of file, are stored as objects. But instead of storing them in a file directory, we store them in what we call buckets.
+- The maximum individual object size that we can upload is 5 terabytes, but there is no maximum on the total bucket size. So, we can have many objects in many buckets, and it's virtually unlimited storage. We can also turn on versioning for these objects to protect them from accidental deletion. With this feature we can always restore the previous versions.
+- Data stored in S3 for most storage classes is automatically redundant. Multiple object copies reside in the cloud simultaneously, and that is all managed by AWS. Now this means that all S3 objects have 11 nines of data durability. So, an object stored in S3 has a 99.999999999 percent probability that it will remain intact after a period of 1 year.
+- S3 is commonly used for situations like: hosting websites, storing backups, archiving data, and managing media files like videos or images. It's a really versatile service that scales up and down as needed with our business, whether we're a small startup or a large enterprise.
+- S3 is a managed service, so all of the underlying mechanisms for scaling and running the service are handled by AWS. S3 is also great for data backups because it ensures our data is safely stored and convenient to retrieve when needed. As it's durable, we don't have to worry about data loss, even if something unexpected happens. 
+- S3 has multiple security features that make it possible for you to control who has access to what, creating a layer of protection for your data. By default, everything is completely private and only the person who created the object can access it. Then you have to configure any additional access you need through features like bucket policies.
+- Or, in some cases, you want to only grant temporary access, and you don't want to set up long-term access policies. For this use case, you can create time-limited presigned URLs for secure sharing without having to update your bucket policy. There are also features like Amazon S3 Access Points, which simplify the process of creating unique access control policies for shared datasets, where managing different groups and their respective access might be complicated.
+- If you want to track who is accessing what, you can use Amazon S3 Audit Logs to track every request made to your resources. This provides complete visibility into who is accessing your data and when. 
+
+### Amazon Simple Storage Service (S3)
+- Amazon S3 is a fully managed, highly-available object storage service for storing and retrieving any amount of data as objects. It offers 99.999999999 percent durability, meaning your data is highly protected against loss, and offers features like versioning, lifecycle management, and various storage classes to optimize costs.
+- Amazon S3 stores files as objects in containers known as buckets, and each object can range in size from a few bytes to several terabytes. It integrates seamlessly with other AWS services and supports a wide range of use cases, from basic backups to complex data lakes.
+
+#### Elements
+1. S3 objects
+   - An object in Amazon S3 is the fundamental unit of data storage. When you upload a file to Amazon S3, it becomes an object and is stored durably across multiple facilities within your chosen Region.
+   - Each object typically includes the data itself, metadata, and a unique identifier, or key. Objects can be of any file type, such as images, videos, documents, or application data, and can range in size from a few bytes to several terabytes.
+   - Each Amazon S3 object is uniquely identified within a bucket by its key, which is essentially its file name. Objects also have properties like version ID, access control information, and user-defined metadata.
+     <img width="346" height="127" alt="image" src="https://github.com/user-attachments/assets/44dcfe7a-46ec-4af4-9ae2-556d262b4807" />
+
+2. S3 buckets
+   - An S3 bucket is a container for storing objects in Amazon S3. Buckets have a globally unique name across all of AWS, which helps to identify and organize your stored data.
+   - Buckets serve as the basic unit for access control and can hold a virtually unlimited number of objects. They play a crucial role in data management by making it possible to group related objects and apply policies at the bucket level.
+   - When creating a bucket, you specify its name and the Region where it will reside. Buckets can be configured with various settings, including versioning, logging, and access permissions.
+   - 
 - 
