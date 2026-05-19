@@ -263,6 +263,64 @@
       - This, S3 Glacier Instant Retrieval, is for data that might require quik access on accasion but we still want to optimize for costs as much as possible.
       - It provides the same quick access speeds as S3 Standard but has a lower storage cost and can be used for use cases like medicalimages or media files. 
    4. S3 Glacier Flexible Retrieval:
-
+      - If we don't need the quick access, and we are able to tolerate a bit of wait for the data retrieval, then S3 Glacier Flexible Retrieval is a better choice.
+      - It can save us even more on cost, through it does take a little bit longer to retrieve - ranging from minutes to hours. 
    5. S3 Glacier Deep Archieve
+      - This is the most cost-effective option. This is the best option for storing data we hardly ever need, making it ideal for things like compliance archives or digital preservation.
+      - Data in this tier can be restored within 12 hours. 
+
+- S3 has a few other storage tiers for specific use cases:
+  - **One-zone options:** S3 Express One Zone and S3 One Zone-IA, are lower cost, but might be susceptible to data loss in the unlikely case of the loss or damager to all or part of an AWS Availability Zone.
+- If we don't need the extra resilience, these can help cut costs or improve speeds.
+- Now, our data might start off as frequently accessed, but then over time might becomes less frequently accesses.
+- We can optimize our storage classes in AWS for these types of situations using S3 Lifecycle policies.  These are rules we set up to help us automatically move data between classes or delete old data when we no longer need it.
+  - For example: We can set up a Lifecycle policy to move old data into Glacier after a year, and then automatically delete it when it's no longer necessary for compliance. 
+- In order to help us figure out the best way to move our data, we can use S3 Storage Class Analysis. This feature looks at our data access patterns and helps us decide when to move data to a more cost-effective storage class.
+- If we want to take advantage of Amazon S3 storage tiers without managing the lifecycle policies ourself, we can use S3 Intelligent-Tiering. This class automatically moves data between 4 different tiers based on how often it's accessesd, helping us optimize for cost without doiing any of the work ourself. It's perfect for things like data lakes, or large datasets that might change their usage patterns.
+
+### Amazon S3 storage classes and use cases
+- Amazon S3 offers various storage classes to suit a variety of workloads with specific performance, access, resiliency, and cost requirements. They're also designed to address data residency requirements, unpredictable access patterns, archival storage needs, and offer the most cost-effective options for different access patterns.
+- Let's learn about each storage class and when it's practical to use them:
+  1. S3 Standard:
+     - S3 Standard is considered general-purpose storage for cloud applications, dynamic websites, content distribution, mobile and gaming applications, and big data analytics. When you upload an object to Amazon S3 without specifying a storage class, the object is added to S3 Standard by default.
+  2. S3 Intelligent Tiering:
+     - This tier is useful if your data has unknown or changing access patterns. S3 Intelligent-Tiering stores objects in three tiers: a frequent access tier, an infrequent access tier, and an archive instant access tier. Amazon S3 monitors access patterns of your data and automatically moves your data to the most cost-effective storage tier based on frequency of access.
+  3. S3 Standard Infrequent Access (Standard-IA)
+     - S3 Standard-Infrequent Access (S3 Standard-IA) is for data that is accessed less frequently but requires rapid access when needed. S3 Standard-IA offers the high durability, high throughput, and low latency of S3 Standard, with a low per-GiB storage price and per-GiB retrieval fee. This storage tier is ideal if you want to store long-term backups, disaster recovery files, and so on.
+  4. S3 One Zone Infrequent Access (One Zone-IA)
+     - S3 One Zone-Infrequent Access (S3 One Zone-IA) stores data in a single Availability Zone, reducing costs compared to S3 Standard-IA, which uses three zones. This storage class suits customers seeking affordable storage for infrequently accessed data without high availability needs. It's perfect for storing secondary backups or easily recreatable data.
+  5. S3 Express One Zone:
+     - S3 Express One Zone stores data in a single Availability Zone. It was purpose-built to deliver consistent single-digit millisecond data access for your most frequently accessed data and latency-sensitive applications. S3 Express One Zone delivers data access speed up to 10x faster and request costs up to 80% lower than S3 Standard.
+  6. S3 Glacier Instant Retrieval
+     - Use S3 Glacier Instant Retrieval for archiving data that is rarely accessed and requires millisecond retrieval. Data stored in this storage class offers a cost savings of up to 68 percent compared to the S3 Standard-IA storage class, with the same latency and throughput performance.
+  7. S3 Glacier Flexible Retrieval:
+     - S3 Glacier Flexible Retrieval offers low-cost storage for archived data that is accessed 1–2 times per year. With S3 Glacier Flexible Retrieval, your data can be accessed in as little as 1–5 minutes using an expedited retrieval. You can also request bulk retrievals in up to 5–12 hours at no additional cost. It's an ideal solution for backup, disaster recovery, offsite data storage needs, and for when some data occasionally must be retrieved in minutes.
+  8. S3 Glacier Deep Archive:
+     - S3 Glacier Deep Archive is the lowest-cost Amazon S3 storage class. It supports long-term retention and digital preservation for data that might be accessed once or twice per year. Data stored in the S3 Glacier Deep Archive storage class has a default retrieval time of 12 hours. It is designed for customers that retain data sets for 7–10 years or longer, to meet regulatory compliance requirements. Examples include those in highly regulated industries, such as financial services, healthcare, and public sectors.
+  9. S3 Outposts
+     - Amazon S3 Outposts delivers object storage to your on-premises AWS Outposts environment using Amazon S3 APIs and features, and serves workloads with local data residency requirements. It also helps maintain optimal performance when data must remain in close proximity to on-premises applications.
+
+### S3 Lifecycle:
+- To avoid manually managing your object storage tier configurations, you can use S3 Lifecycle configurations to automate the process. When you define a lifecycle configuration for an object or group of objects, you can choose to automate between two types of actions, as follows:
+  - Transition actions: define when objects should transition to another storage class.
+  - Expiration actions: define when objects expire and should be permanently deleted.
+- For example, you might transition objects to S3 Standard-IA storage class 30 days after you create them. Or you might archive objects to the S3 Glacier Deep Archive storage class 1 year after creating them.
+- Let's learn more about an S3 Lifecycle configuration:
+  <img width="430" height="154" alt="image" src="https://github.com/user-attachments/assets/89235d22-c3a0-4666-ac2a-dc3fd6d0bfbb" />
+
+  1. After 30 days:
+     - After 30 days without being accessed, the object is moved from the Amazon S3 Standard storage class to the Amazon S3 Standard-IA storage class.
+  2. After 60 days:
+     - After the object has been in the S3 Standard-IA storage class for 60 days without being accessed, it's moved to the Amazon S3 Glacier Instant Retrieval storage class.
+  3. After 365 days:
+     - Finally, after 365 days in the Amazon S3 Glacier Instant Retrieval storage class without being accessed, the object is deleted.
+
+#### Use cases:
+-  The following situations are candidates for the use of S3 lifecycle configuration rules:
+   - Periodic logs: If you upload periodic logs to a bucket, your application might need them for a week or a month. After that, you might want to delete them.
+   - Data that changes in access frequency: Some documents are frequently accessed for a limited period of time. After that, they are infrequently accessed. At some point, you might not need real-time access to them. However, your organization or regulations might require you to archive them for a specific period. After that, you can delete them.
+
+## Amazon S3 Demonstration
+
+
 -  
