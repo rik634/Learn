@@ -248,4 +248,21 @@
        1. Encryption at rest secures data stored in S3 buckets, preventing unauthorized access to stored objects.
        2. Encryption in transit safeguards data traveling to and from Amazon S3, maintaining secure communication between clients and the service.
 
+## Amazon S3 Storage Classes and S3 Lifecycle
+-  AWS offers different storage tiers, or “storage classes,” to store our data.
+-  Each one is designed for different needs, and by understanding them, we can optimize for costs while making sure our data is stored in the most appropriate way.
+-  Some storage classes are meant for data that’s accessed frequently, while others are better for data that’s rarely used or needs to be archived. We don’t have to stick to just one storage class for all our objects. Within a single S3 bucket, we can mix and match classes based on data access patterns.
+   1. S3 Standard:
+      - This is great for data that we access regularly, like files for a dynamic website. It's general purpose storage class and gives us fast retrieval speeds and affordable storage costs. 
+   2. S3 Standard-IA or Infrequent Access:
+      - If we don't need to access our data as often, this storage class is more cost-effective choice.
+      - We still get that quick retrieval when we need it, but at lower storage cost.
+      - It is perfect for things like backups. 
+   3. S3 Glacier Instant Retrieval:
+      - For even lower-cost options, we have the Glacier storage classes, which are deigned for long-term archiving.
+      - This, S3 Glacier Instant Retrieval, is for data that might require quik access on accasion but we still want to optimize for costs as much as possible.
+      - It provides the same quick access speeds as S3 Standard but has a lower storage cost and can be used for use cases like medicalimages or media files. 
+   4. S3 Glacier Flexible Retrieval:
+
+   5. S3 Glacier Deep Archieve
 -  
