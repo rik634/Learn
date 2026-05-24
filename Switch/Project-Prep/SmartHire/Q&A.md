@@ -1,7 +1,6 @@
 # SmartHire + CodeSense — Complete Interview Q&A Guide
 ### FAANG-level answers for product-based company interviews
 ### Covers: AI Agents · Kafka · pgvector · Spring AI · LangChain4j · System Design · Java · Spring Boot
-
 ---
 
 > **How to use this document:**
