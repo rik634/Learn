@@ -321,6 +321,27 @@
    - Data that changes in access frequency: Some documents are frequently accessed for a limited period of time. After that, they are infrequently accessed. At some point, you might not need real-time access to them. However, your organization or regulations might require you to archive them for a specific period. After that, you can delete them.
 
 ## Amazon S3 Demonstration
-
-
--  
+- Steps to create bucket:
+  1. In AWS Management Console, select Amazon S3.
+  2. Select "create bucket".
+  3. On create bucket page, add bucket name. Select the preferred AWS Region.
+  4. By default, the option "Block all public acess" is enabled, which prevents any external access to this bucket or its content. We will keep this enabled.
+  5. Choose "create ucket", and the bucket gets created. 
+- Steps to configure the bucket:
+  1. From the list of buckets, select the newly created bucket.
+  2. We can see, that the bucket is currently empty.
+  3. Now, let's create organized structure for the content in thsi bucket. Click on "create folder".
+  4. On the create folder page, add folder name.
+  5. Here, we have server-side encryption, in case we want to configure any security at this point.
+  6. click on "create folder", and the folder will be created.
+  7. Now, we can upload the objects in this newly created folder in our newly created bucket.
+  8. In order to upload, go inside the folder, and click on upload, then clcik on add files, and select the file from PC to be uploaded.
+  9. Now, in metadata section, there are 2 types of object metadata.
+     1. System defined metadata includes basic object details like creation date, size, and stprage class.
+     2. User defined metadata can be used to include our own custom metadata like tags.  
+  10. click on the option "Upload".
+  11. as we have uploaded a file here, we can also upload the folder, using the drag and drop option of uploading. This is also somethig we can do using the Command Line Interface or AWS SDK. 
+- Let's understand bucket level configurations:
+  - Choose "properties" tab, here we can review and modify important features including bucket versioning, tags, default encryption, intelligent-tiering archive configurations.
+  - 
+- 
