@@ -342,6 +342,20 @@
   10. click on the option "Upload".
   11. as we have uploaded a file here, we can also upload the folder, using the drag and drop option of uploading. This is also somethig we can do using the Command Line Interface or AWS SDK. 
 - Let's understand bucket level configurations:
-  - Choose "properties" tab, here we can review and modify important features including bucket versioning, tags, default encryption, intelligent-tiering archive configurations.
-  - 
+  - Choose "properties" tab, here we can review and modify important features including bucket versioning, tags, default encryption, intelligent-tiering archive configurations, static website hosting and more.
+  - Choose "permissions" tab, here, there are sections that allow us to configure a variety of access settings for the bucket. This includes the "block public access" setting, the bucket policy, object ownership, cross-origin resource sharing, and more. An S3 bucket policy is a JSON statement that provides access to objects stored in a bucket.
+  - Choose "management" tab, here, we can change the lifecycle configuration, replication configuration, and inventory configurations.
+  - Click any object uploaded, choose "properties" tab, this shows basic information about the object including, the object URL. If "block public access" is disabled and the bucket permissions allow, anyone can aceess the object through the URL. But, we have enabled the "allow public access, so we would use the bucket policy to define specifically who has access to thsi object.
+  - Click any object uploaded, choose "versions" tab, here, we could display a list of all previously created versions of the object if they existed. We can also restore previous version, delete specific versions and manage the cmplete version history of our objects. 
+- Steps to add bucket policy:
+  1. Select bucket, click "permission" tab, select "Bucket Policy" option, click on "Edit".
+  2. In the section for policy, paste our bucket policy.
+  3. click on "save changes".
+  4. Now, we have added the bucket policy, as per our requirements. 
+
+
+## Amazon Elastic File System (Amazon EFS)
+- Amazon EFS integrates seamlessly with AWS services and eliminates the need to provision and manage file servers.
+- Amazon EFS is a managed file system.
+- It's extremely common for businesses to have shared file systems across their applications.
 - 
