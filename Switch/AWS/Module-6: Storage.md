@@ -358,4 +358,199 @@
 - Amazon EFS integrates seamlessly with AWS services and eliminates the need to provision and manage file servers.
 - Amazon EFS is a managed file system.
 - It's extremely common for businesses to have shared file systems across their applications.
-- 
+  - For example, you might have multiple servers running analytics on large amounts of data being stored in a shared file system. If this were hosted traditionally, it would require planning for the storage capacity, deciding on data redundancy levels, backup strategies, and maintenance as the dataset grows.
+- With EFS, you can keep existing file systems in place while AWS does all the heavy lifting of the scaling and the replication. EFS makes it possible for you to have multiple instances accessing the data in EFS at the same time. It scales up and down as needed without you having to do anything to make that scaling happen.
+- When you create an EFS filesystem, it comes with pre-configured lifecycle policies that help keep your cloud data cost-optimized. EFS automatically moves data between storage classes based on access patterns, but you have the option to customize the lifecycle policies to fit your storage needs.When you create an EFS filesystem, it comes with pre-configured lifecycle policies that help keep your cloud data cost-optimized. EFS automatically moves data between storage classes based on access patterns, but you have the option to customize the lifecycle policies to fit your storage needs.
+- EBS and EFS might seem similar, so let's take a moment to distinguish the two. EBS volumes attach to EC2 instances and are an Availability Zone level resource. In order to attach EC2 to EBS, you need to be in the same Availability Zone.
+- An EBS volume is effectively a hard drive. You can save files on it, run a database on top of it, or store applications on it. If you provision a 2 TB EBS volume and fill it up, it doesn't automatically scale to give you more storage. So, that's EBS.
+- EFS can have multiple instances reading from and writing to it at the same time. But it isn't just a blank hard drive for 1s and 0s — it's a true file system for Linux. EFS is not AZ-limited, you can connect storage to EC2 instances throughout the region or even from other regions. As you write more data to EFS, it scales automatically - no need to provision any more volumes.
+
+### Amazon Elastic File System (EFS)
+- Amazon EFS is a fully managed, scalable file storage service for use with AWS cloud services and on-premises resources.
+- It operates using the Linux Network File System (NFS) protocol, and automatically scales to petabytes as you add or remove files without disrupting applications.
+- EFS is designed to support a wide variety of workloads and can be accessed by multiple EC2 instances simultaneously.
+
+#### Amazon EFS benefits
+1. Multi-AZ redundancy:
+   - Amazon EFS automatically replicates data across multiple Availability Zones in a region for high availability. This built-in redundancy protects against AZ failures and provides continuous access to your file systems
+2. Shared access:
+   - Amazon EFS supports thousands of concurrent NFS connections, so multiple EC2 instances can access the same file system simultaneously. This shared access model makes EFS ideal for collaborative workloads and distributed applications.
+3. Elastic storage:
+   - Amazon EFS automatically grows and shrinks as you add and remove files, with no need to provision or manage storage capacity. And since you only pay for the storage you use, it's cost-effective for varying workload demands.
+
+#### Amazon EFS storage classes:
+- With Amazon EFS, you can create and configure file systems quickly without any minimum fee or setup cost. You pay only for the storage used and you can choose from a range of storage classes designed to fit your use case.
+- Let's learn more about the Amazon EFS storage classes:
+  1. standard storage class:
+     - The EFS Standard and EFS Standard-Infrequent Access (Standard-IA) storage classes offer Multi-AZ resilience and the highest levels of durability and availability. They have a higher cost associated with them due to higher availability and durability.
+  2. one zone storage class:
+     - The EFS One Zone and EFS One Zone-Infrequent Access (EFS One Zone-IA) provide additional savings by saving your data in a single Availability Zone. By using just one Availability Zone, you can reduce your storage costs when compared to the Standard EFS storage classes.
+  3. archive storage class:
+     - The EFS Archive storage class is cost-optimized for data that is accessed only a few times a year or less and that does not need the sub-millisecond latencies of EFS Standard. EFS Archive offers a storage price up to 50% lower compared to EFS Infrequent Access, providing a more cost-optimized experience for cold, rarely-accessed data.
+
+#### Amazon EFS data lifecycle
+-  You can further optimize Amazon EFS storage costs by automatically moving data between storage classes based on usage patterns.
+-  You can create lifecycle policies that determine when and how files transition between different storage tiers.  - These automated policies help ensure your data resides in the most cost-effective storage class without manual intervention.
+  1. Transition to IA:
+     - This policy instructs lifecycle management when to move files into the Infrequent Access storage, which is cost-optimized for data that is accessed only a few times each quarter.
+     - By default, files that are not accessed in Standard storage for 30 days are transitioned into IA.
+  2. Transition to Archive:
+     - This policy instructs lifecycle management when to move files into the Archive storage class, which is cost-optimized for data that is accessed only a few times each year or less.
+     - By default, files that are not accessed in Standard storage for 90 days are transitioned into Archive.
+  3. Transition to standard:
+     - This policy instructs lifecycle management whether to transition files out of IA or Archive and back into Standard storage when the files are accessed in the IA or Archive storage.
+     - By default, files are not moved back to Standard storage, and they remain in the IA or Archive storage class when they are accessed.
+
+## Amazon FSx
+-  Amazon FSx makes it convenient and cost effective to launch, run, and scale feature-rich, high-performance file systems in the cloud.
+- It supports a wide range of workloads with its reliability, security, scalability, and broad set of capabilities.
+- Compared to Amazon EFS, which focuses on the Network File System (NFS) compatibility, Amazon FSx supports multiple filesystem protocols, including Windows File Server, Lustre, OpenZFS, and NetAPP ONTAP.
+- Amazon FSx is built on the latest AWS compute, networking, and disk technologies to provide high performance and lower total cost of ownership (TCO). As a fully managed service, it handles hardware provisioning, patching, and backups.
+
+### Amazon FSx benefits
+1. File system integration:
+   - Amazon FSx supports industry-standard file system protocols, allowing convenient integration with your existing applications, workflows, and development tools.
+2. Managed infrastructure:
+   - Amazon FSx reduces the complexity of managing infrastructure while delivering the features and capabilities of traditional file systems.
+3. Scalable storage:
+   - Amazon FSx adjusts resources dynamically, eliminating the need for complex capacity planning and manual infrastructure management.
+4. Cost effective:
+   - Amazon FSx has a pricing model and automated tiering options that optimize costs by charging only for used storage and moving infrequently accessed data to lower-cost tiers.
+
+### Amazon FSx file systems
+
+#### Amazon FSx for Window File Server
+- Amazon FSx for Windows File Server provides fully managed shared storage built on Windows Server.
+- It delivers a wide ranfe of data access, data management, and administrative capabilities.
+- Use cases include the following:
+  1. Migrate Windows file servers to AWS.
+  2. Accelerate hybrid workloads.
+  3. Reduce SQL Server deployment cost
+  4. Streamline virtual desktops and streaming 
+
+#### Amazon FSx for NetApp ONTAP
+- Amazon FSx for NetApp ONTAP provides fully managed shared storage in the AWS Cloud with the popular data access and management capabilities of ONTAP.
+- Use cases include the following:
+  1. Migrate workloads to AWS seamlessly.
+  2. Build modern applications.
+  3. Modernize our data management.
+  4. Streamline business continuity. 
+
+#### Amazon FSx for OpenZFS
+- Amazon FSx for OpenZFS provides fully managed shared file storage built on the OpenZFS file system and accessible through the NFS protocol (v3, v4, v4.1, and v4.2).
+- Use cases include the following:
+  1. Migrate workloads to AWS seamlessly.
+  2. Deliver insights faster for data analytics workloads.
+  3. Accelerate content management.
+  4. Increase dev/test velocity.
+
+#### Amazon FSx for Lustre:
+- Amazon FSx for Lustre provides fully managed shared storage with the scalability and performance of the popular Lustre file system.
+- Use cases include the following:
+  1. Accelerate machine learning (ML).
+  2. Enable high performance computing (HPC).
+  3. Unlock big data analytics.
+  4. Increase media workload agility.
+
+## AWS Storage Gateway
+- AWS Storage Gateway bridges the gap between your traditional infrastructure and the cloud.
+- It's a hybrid cloud storage service that gives you on-premises access to virtually unlimited cloud storage.
+- Although the cloud offers lots of options, some organizations still run much of their business using an on-premises environment. Look, if it works, don’t break it. But, if those organizations still want to take advantage of the cloud, to say, perform backups that’s a very valid use case.
+- This is where AWS Storage Gateway comes in handy. It is a hybrid cloud storage service that is like the bridge, giving you access to virtually unlimited cloud storage. There is minimal or no rework needed, and everything is seamlessly backed up to AWS. Storage Gateway comes in three types: S3 File Gateway, Volume Gateway, and Tape Gateway.
+  1. S3 File Gateway is ideal for storing files directly in Amazon S3. Even better, you can access these files from any AWS application or service.
+  2. Volume Gateway is a bit different in that it creates block storage volumes locally. On-premises applications can then use these volumes. The key benefit is that files are automatically backed up to AWS as Amazon EBS snapshots.
+  3. Tape Gateway, is super useful for businesses still using physical tape backups. It provides that seamless migration of tape data into the cloud.
+
+- Storage Gateway is a lifesaver for disaster recovery. Because you can keep a backup of your critical data in the cloud without changing your existing backup workflows. It’s like a safety net for your current safety net. Like a safety-safety net.
+- It's also ideal for data archiving. You can move your infrequently accessed data to the cloud for long-term storage. Whether you want to backup, archive, or just start your cloud journey, AWS Storage Gateway has you covered.
+
+### AWS Storage Gateway
+- Storage Gateway is a hybrid cloud storage service that makes it possible to seamlessly integrate on-premise environments with AWS Cloud storage.
+- We can use it to extend our local storage to the cloud while maintaining low-latency acccess to frequently used data.
+- We can use storage gateway to streamline storage management and reduce costs for practical hybrid cloud storage use cases. These include moving backups to the cloud, using on-premises file shares backed by cloud storage, and providing low-latency access to data in AWS for on-premise applications.
+
+### Benefits
+1. Seamless Integration:
+   - Storage Gateway enables smooth connectivity between on-premises applications and AWS Cloud storage, preserving existing workflows and minimizing disruption.
+2. Improved data management:
+   - Storage Gateway provides centralized management of hybrid storage environments, enhancing accessibility, security, and compliance.
+3. Local caching:
+   - Storage Gateway locally keeps frequently accessed data for quick access while managing less-used data in the cloud.
+4. Cost optimization:
+   - Storage Gateway reduces on-premises storage costs by using cloud storage for data archiving, backup, and disaster recovery purposes.
+
+### Gateway types
+- Storage Gateway offers three distinct types of gateways to meet different hybrid storage needs. Each gateway type is designed to address specific use cases and workload requirements.
+  1. Amazon S3 File Gateway:
+     - Amazon S3 File Gateway bridges our local environment with Amazon S3.
+     - It provides on-premises applications with access to virtually unlimited cloud storage through familiar file protocols.
+     - S3 File Gateway makes it possible to store and retrieve cloud objects using faimiliar file operations.
+     - When we deploy an S3 File Gateway, it appears to our local systems as a standard file servers.
+     - Files written to this server are automatically uploaded to Amazon S3  while maintaining local access to recently used data through intelligent caching.
+     - This means our applications can continue working with files as they always have while the actual data is securely stored in the AWS Cloud. 
+  2. Volume Gateway:
+     - With volume gateway, we create virtual storage volumes while maintaining local access to our data.
+     - It essentially functions as a bridge between our on-premise infrastructure and AWS Cloud Storage by presenting our cloud data as iSCSI volumes that can be mounted by our existing applications.
+     - Volume Gateway operates in 2 main configurations:
+       1. Cached volume mode stores primary data in the cloud while frequently accessed data in cached locally for low-latency access.
+       2. Stored volume mode locally keeps our complete dataset while asynchronously backing it up to the cloud as EBS snapshots. 
+  
+  3. Tape Gateway:
+     - Tape Gateway makes it possible to replace physical tape infrastructure with virtual tape capabilities while benefitting from the durability and scalability of AWS Cloud storage.
+     - Tape Gateway provides an interface that works with existing tape backup software, making the transaction from physical tapes to cloud storage seamless.
+     - When we deploy a Tape Gateway, it presents itself to our backup applications as standard tape hardware.
+     - Our backup software writes data to these virtual tapes just as it would to physical tapes and stored in Amazon S3.
+     - We can also configure Tape Gateway to automatically transition less frequently accessed data to a more cost-effective storage class for long-term retention.
+    
+## AWS Elastic Disaster Recovery
+-  Elastic Disaster Recovery replicates critical workloads to AWS with minimal downtime.
+-  Our server's block-level data is continuously replicated to AWS, making it ideal for uses that require robust disaster recovery solutions.
+-  It supports both physical and virtual servers to enable rapid recovery during disruptions, which is particularly valuable for industries like healthcare where system availability is crucial.
+-  We can use Elastic Disaster Recovery to reduce downtimes and data loss while eliminating the costs associated with maintaining secondary data centers.
+-  It also offers non-disruptive disaster recovery testing, meaning it;s capable of quickly launching recovery instances when needed.
+
+### Benefits
+1. Business resilience
+   - Maintain business operations with continuous block-level data replication and the ability to recover workloads within minutes during disruption.
+2. Streamlined disaster recovery
+   - Automate disaster recovery processes through an intuitive console, reducing complex manual configurations and minimizing the risk of human error. 
+3. Cost optimization
+   - Eliminate expensive secondary data centers and pay only for what we use, with minimal upfront investment and no standby infrastructure costs.
+  
+### Use cases
+1. Healthcare data protection
+   - Hospital systems could use Elastic Disaster Recovery to maintain compliance while protecting patient records by replicating on-premises servers to AWS.
+   - This ensures that critical medical data remains accessible during system outages.
+   - Regular disaster recovery testing helps validate their recovery procedures and meet strict healthcare regulations.
+2. Financial services continuity
+   - A regional bank could implement Elastic Disaster Recovery to protect their core banking applications by continuously replicating their transaction processing systems.
+   - This facilitates quick recovery if their primary data center fails and helps maintain customer trust and regulatory compliance. 
+3. Manufacturing operations recovery
+   - A global manufacturer could employ Elastic Disaster Recovery to protect their production planning systems .
+   - By replicating factory management servers to AWS, they can ensure minimal disruptions to supply chain operations during disasters.
+   - Regular failover testing validates the recovery strategy.
+
+## Comparing Storage Services
+- S3 is ideal for object storage, but it's not designed for the kind of rapid continuous rewrite operations that a database requires. EBS gives us that block level access which is essential for databases.
+- EFS can scale to petabytes without disrupting applications. It automatically grows and shrinks as you add or remove files so it is good for working with large media files like these images and videos. EFS provides low latency performance and can handle high levels of aggregate throughput and IOPs, so it's really perfect for media processing workflows like this.
+-  Amazon S3 excels at scalable object storage for web assets backups and more. Amazon EBS provides block level storage needed for EC2 instances and databases. And Amazon EFS offers managed shared file systems from workloads that require rapid simultaneous access to files
+
+## Summary
+- Amazon EC2 Instance Store: A temporary storage option that is directly attached to the host computer of an EC2 instance, providing high-performance but non-presistent storage
+- Amazon Elastic Block Storage (Amazon EBS): A scalable block storage service that provides persistent, high-performance volumes we can attach to our EC2 instances for data storage and applications.
+- Amazon EBS snapshots: EBS snapshots are point-in-time backups of our cloud storage volumes, make it possible to protect data and  restore it when needed.
+- Amazon Data Lifecycle Manager: A service that streamline the creation, retention, and deletion of Amazon EBS snapshots.
+- Amazon S3: A scalable cloud storage service that can store and retrieve any amount of data from anywhere on the web.
+- Amazon S3 Storage Classes: Amazon S3 offers various storage classes, from high-performance frequent access to cost-effective archival options, tailored to different data retrieval needs and budget constraints.
+- Amazon S3 versioning: Amazon S3 versioning keeps multiple variants of objects, offering recovery from unintended deletions or modifications by preserving every update to our files.
+- Amazon S3 Bucket: S3 buckets are cloud storage containers that securely hold various types of data, allowing convenient access and management through the AWS online infrastructure.
+- Amazon Elastic File System (Amazon EFS): A scalable, fully-managed file storage service that lets multiple AWS resources access shared data simultaneously without capacity planning.
+-  Amazon FSx: A fully managed file storage service that lets you launch and run file systems like Windows File Server, Lustre, NetApp ONTAP, and OpenZFS in the AWS cloud.
+-  Amazon FSx for Windows File Server: An Amazon FSx option providing reliable, high-performance file storage compatible with Windows applications in the AWS Cloud.
+-  Amazon FSx for NetApp ONTAP: An Amazon FSx option providing file storage with advanced data management capabilities and compatibility with both Windows and Linux workloads on AWS.
+-  Amazon FSx for OpenZFS: An Amazon FSx option that provides high-performance, scalable storage using the popular open-source ZFS file system.
+-  Amazon FSx for Lustre: An Amazon FSx option designed to accelerate workloads by providing fast data access for compute-intensive applications in AWS.
+-  AWS Storage Gateway: A hybrid cloud storage service that provides seamless and secure integration between on-premises environment and AWS cloud storage services.
+- Amazon S3 File Gateway: A Storage Gateway configuration that provides local file access to S3 objects while caching frequently accessed data locally for faster retrieval.
+- Tape Gateway: A Storage Gateway configuration used for backing up data to Amazon S3 while maintaining compatibility with existing tape-based backup applications.
+- Volume Gateway: A Storage Gateway configuration that provides iSCSI block storage volumes to on-premises applications, offering both cached and stored modes.
