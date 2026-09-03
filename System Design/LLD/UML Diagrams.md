@@ -65,6 +65,7 @@
 3.  Relationshipd:
     - The lines between classes shwo the relation between them.
     - There are 6 types of relationships:
+      
       1. Dependency loosest connection:
       2. Association:
       3. Aggregation:
