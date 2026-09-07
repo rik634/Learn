@@ -241,12 +241,116 @@
 ### Building blocks of sequence diagram:
 - Every sequence diagram is built from four elements
 1. Actors and participant:
+   - An actoris an outside entity that kicks off the interaction, such as user or an external system.
+   - A participant is an internal component that does the actual work, i.e., a service, a controller and a database etc.
+   - The distinction is simple: actor triggers from outside, participants handle it on the inside.
+     <img width="437" height="242" alt="image" src="https://github.com/user-attachments/assets/374465cf-601e-48b6-969b-418c98ac684a" />
+
+   - Here, customer sits on far left because they start the interaction. The 3 internal components handle everything after that. 
 
 2. Lifelines:
-
+   - The vertical line dropping down from each participant is called a lifeline.
+   - It represents time. From top, time starts. Top is earlier, and bottom is later.
+   - Every message connects one lifeline to another, pinning each interaction to an exact point in the sequence.
+     
 3. Activation Bars:
+   - When a participant is actively doing something, such as running a method, or waiting for a reply.
+   - AuthService stays active the entire time, it is waiting on the database. Database has its own shorter bar nested inside. Without these bars, we cannot tell who is busy and who is just sitting idle.
+     <img width="445" height="265" alt="image" src="https://github.com/user-attachments/assets/d7956217-5045-4977-97be-7aaf22556166" />
 
 4. Messages:
+   - Messages are the  horizontal arrows between lifelines.
+   - Each one is labeled with what is being sent, usually a method name with its parameters.
+   - The arrow points from sender to receiver.
+   - Th style of the arrow tells us, what kind of message it is. 
 
+### Types of Messages in sequence diragrams
+- Messages are what bring a sequence diagram to life. Each message type has a different arrow style that tells us something specific about how the sender and receiver interact.
+- There are 6 types of messages:
+1. Synchronous messages
+   - Let's say, we have 2 API calls in our system, one after another. Until we get response from first api call, the second API call is not made from our system to external system.
+   - The sender is completely blocked until the receiver sends something back.
+   - It is denoted by solid line with filled arrowhead.
+   - This is the most common type of message, as most method calls in OOPS are synchronous. 
+     <img width="452" height="246" alt="image" src="https://github.com/user-attachments/assets/f02d186c-5007-48d4-b4a7-815efec26aa7" />
 
-- 
+   - As we can see in the flow, every caller waits. Each one is blocked until the one below it finishes. 
+
+2. Asynchronous messages:
+   - It is like 2 external API calls being made in parallel in system.
+   - Here, we fire it off and keep moving. No waiting, no blocking, sometimes no reply at all.
+   - It is denoted by solid line with open arrowhead.
+   - It is used fro queuing jobs, publishing events, firing notifications.
+     <img width="432" height="213" alt="image" src="https://github.com/user-attachments/assets/fe55c8e6-5e45-4260-898b-3bbdf47c463f" />
+
+   - OrderService drops the event and moves on immediately. It does not handg around waiting for the email to go out. Thq queue handles the delivery on its own time. 
+
+3. Return messages:
+   - It is nothing but the response to a synchronous call.
+   - It is the data flowing back from receiver to sender.
+   - It is denoted by dashed line with open arrowhead.
+     <img width="440" height="244" alt="image" src="https://github.com/user-attachments/assets/3097a944-bfee-4c1a-9bf1-a8a492c584c2" />
+
+   - Every "--->" in iagram is a return message.
+   - It is technically optional in UML, but always worth including.
+   - It make the diagram self-explanatory, as we can see exactly what each component hands back without guessing. 
+
+4. Self messages:
+   - When an object calls one of its own methods. The arrow loops back to the same lifeline.
+      <img width="423" height="326" alt="image" src="https://github.com/user-attachments/assets/e93c2d5f-883c-4e2f-919b-ce9b70f087f8" />
+
+   - It is common for internal validation, helps methods, or business rule checks.
+   - The looping arrow makes it visually clear, no external calls is happening here.  
+
+5. Create Messages:
+   - It shows that a new object is being instantiated mid-flow.
+   - The new participant does not exist at the top of the diagram, it appears at the exact point it is created.
+      <img width="433" height="244" alt="image" src="https://github.com/user-attachments/assets/6408aaf6-95ce-475a-aadd-0040db45c11e" />
+
+   - Invoice is not there from the start. It appears only when OrderService creates it after the order is validated. This communicates clearly that invoices are born dynamically, not pre-existing objects. 
+
+6. Destroy Messages:
+   - This marks the point where an object ceases to exist.
+   - It is shown with an X at the end of the destroyed participant's lifeline.
+      <img width="415" height="249" alt="image" src="https://github.com/user-attachments/assets/eeb7b4f5-c63c-443c-8370-8fc3357cf18b" />
+
+   - After OrderService clears it, the Cart is gone. The X signals that this object is no longer exists from this point forward.
+   - It is useful any time we need to show cleanup clearing carts, closing sessions, releasing locks. 
+
+### Combined fragments:
+- Straight-line diagrams only tell half the story. Real systems make decision, repeat step, skip things, and run tasks at the same time. Combined fragments are how we show all of that inside a sequence diagram.
+- Each one is a box drawn over part of the diagram with a keyword in the top left corner that tells us what kind of logic is happening inside.
+
+1. alt/else (if this, else that):
+   - The alt fragment is our if/else block.
+   - It splits into 2 or more sections separated by a dashed line.
+   - Each section carries a condition in square brackets and only the matching one actually executes.
+     <img width="404" height="347" alt="image" src="https://github.com/user-attachments/assets/38b77562-b305-42d1-a4db-a02ddfb4b470" />
+
+   - Here, in above example, we have 2 outcomes, one diagram. If payment goes through, user gets a success. If payment bounces, user gets an error.
+   - There is no need o draw 2 separate diagrams for the same flow. 
+
+2. loop (run it again):
+   - The loop fragment wraps a block that repeats as long as condition stays true.
+   - It maps directly to a for or while loop in our code.
+     <img width="433" height="296" alt="image" src="https://github.com/user-attachments/assets/ce7f63c8-ce28-4484-b351-0d82134ffd75" />
+
+   - Every item in the order gets a stock check before anything moves forward. The loop box wraps the whole thing, so we know immediately that this block repeats once for each item, not just one for total.
+    
+
+3. opt (maybe, maybe not):
+   - The opt fragment is a single conditional block with no fallback. If the condition is met, the block runs. If not, the diagram skips right past it. This is like an if statement with no else statement attached to it.
+     <img width="422" height="249" alt="image" src="https://github.com/user-attachments/assets/c9d049d9-d0cc-4281-8aa2-a2807a80efa9" />
+
+   - Here, in above example, customers who bring a promo code get it validated. Everyone else skips straight to the confirmation.
+   - The opt box makes that optional step visible without adding a redundant empty branch. 
+
+4. par (all at once):
+   - The par fragment is for tasks that run side by side at the same time.
+   - Each section inside fires concurrently, not one after another sequentially.
+      <img width="417" height="298" alt="image" src="https://github.com/user-attachments/assets/2d1eaa8d-e5a4-4fa9-ae3a-df39810bde25" />
+
+   -  Here, in above example, the second an order lands, 2 things kick off in parallel, confirmation email goes out, stock gets locked, and the event gets logged.
+   -  The par block makes it crystal clear that these are not queued up one behind the other. They all start at the same moment.
+  
+## 
