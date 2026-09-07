@@ -20,4 +20,18 @@
       - These patterns define how objects interact and how responsibilities are distributed between them.
          <img width="434" height="301" alt="image" src="https://github.com/user-attachments/assets/a38d7774-2be7-41c4-88b5-51fa931deff2" />
 
--  
+- **IMP:** Reach for a pattern when we notice the same design problem recurring, or when we can already tell a simple version will need to grow.
+
+### Questions to ask before reaching for a pattern
+- These questions are not a formula, but they are a useful gut check before adding a named pattern to a piece of code.
+  1. Have I seen this exact shape of problem before, in this codebase or another one
+  2. Would a plain function or a plain object solve this just as clearly, with less ceremony
+  3. Will this part of the system likely need new variants added later
+  4. Would naming this pattern actually help a teammate understand my intent faster
+  5. Am I choosing this pattern because it fits, or because I want to practice using it
+- If most of the honest answers point toward "yes, this genuinely recurs and naming it would help", a pattern is probably earning its place. If not, plain code is usually the better choice.
+- A common, healthy path is to write the plain version first, and only introduce a named pattern once the plain version actually starts showing the strain, extra branches, duplicated logic, or new variants piling up.
+- Patterns applied at that point tend to fit naturally, because the code is telling you what shape it wants.
+- Patterns applied too early tend to feel forced, because you are guessing at a shape the problem has not asked for yet.
+
+- 
