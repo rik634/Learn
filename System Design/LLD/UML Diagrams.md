@@ -353,4 +353,12 @@
    -  Here, in above example, the second an order lands, 2 things kick off in parallel, confirmation email goes out, stock gets locked, and the event gets logged.
    -  The par block makes it crystal clear that these are not queued up one behind the other. They all start at the same moment.
   
-## 
+## Activity diagram
+- An activity diagram traces the path, which a process takes from beginning to end, every step, every decision, every fork in the road, all laid out in one clean picture.
+- Sequence diagrams are about objects talking to each other, while activity diagrams are about what gets doen and in what order. Same idea as a flowchart, but with the vocabulary and structure to handle real-world complexity.
+- An activity diagram is UML diagram that gives workflow, a visual shape. It captures:
+  1. Every action that needs to happen and the order they happen in.
+  2. The points where a choice sends the flow down on different roads.
+  3. The tasks that do not need to wait for each other and can run together.
+  4. Who owns which step through the use of swimlanes 
+- 
