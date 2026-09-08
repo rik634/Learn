@@ -12,7 +12,6 @@ Code:
 def majority_element(nums):
     count = 0
     candidate = None
-
     for num in nums:
         if count == 0:
             candidate = num
