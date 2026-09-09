@@ -34,4 +34,19 @@
 - Patterns applied at that point tend to fit naturally, because the code is telling you what shape it wants.
 - Patterns applied too early tend to feel forced, because you are guessing at a shape the problem has not asked for yet.
 
+- A design pattern that solves no real problem is not architecture, it is just extra code standing between you and the answer.
+-  Every pattern is a trade. You give up some directness and simplicity, and in exchange you are supposed to get flexibility, testability, or clarity that you will actually use.
+
+###  Questions Worth Asking
+1.  Will there realistically be more than two or three variants of this behavior within the next year, not in theory but on the actual roadmap?
+2.  Does this object get created in more than one place, with different concrete types chosen at runtime?
+3.  Is construction genuinely complex, involving multiple steps, optional pieces, or validation that would otherwise be duplicated?
+4.  Will a test need to substitute a fake implementation for this specific piece and nothing else?
+5. Does removing the pattern and inlining the logic make the code harder to follow, not easier?
+- If most of the honest answers are no, the code you have right now, before any pattern was added, is probably the right amount of structure.
+
+- A Useful Reversal: Instead of asking "which pattern fits this problem," try writing the simplest version first. Only reach for a pattern when the simple version visibly strains under real, current requirements. 
+- Revisit The Decision Later: A pattern that earned its place a year ago can stop earning it. Requirements shrink, variants get retired, and an abstraction that once tracked three real cases can end up tracking one.
+
+
 - 
