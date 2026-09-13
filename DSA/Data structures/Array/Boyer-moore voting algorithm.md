@@ -7,6 +7,8 @@
      3. If it's different, decrement count.
 - Intuition: pair up each occurrence of the majority element with a "different" element and cancel them out. Since the majority element occurs more than n/2 times, it has more instances than all other elements combined — so even after all this cancellation, it will always survive as the final candidate.
 
+
+
 Code:
 ```python
 def majority_element(nums):
