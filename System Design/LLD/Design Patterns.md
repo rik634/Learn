@@ -148,23 +148,68 @@
 ## Creational Design Patterns:
 1. Singleton:
    - Some things in software should only exist once such as Logger, config manager, darabase connection pool etC. Create more than one of these and we get inconsistent behavior, wasted resources, and hard-to-race bugs.
-   - This is what singleton pattern solves. 
+   - This is what singleton pattern solves.
+   - Here, singleton means, as class that controls its own creation, and guarantees only one instance ever exists no matter how many times we try to create it.
+   - What is singleton pattern?
+     -  Singleton is a creational design pattern that guarantees a class has only one instance and provides a global point of access to it.
+        1. Single instance: No matter how many times any part of the code asks for it, the same object comes back.
+        2. Global access: Any componnet can reach it wihtout being passed around through constructors or parameters.  
+   - Where is it used?
+     1. Loggers: One logging object writes to one output stream consistently across the entire app.
+     2. Database connection pools: One pool manages and reuses connections, do the system doesnt spin up hundreds of them.
+     3. Cache objects: One in-memory cache shared across the application, so every component reads the same data.
+     4. Thread pool: One pool of worker threads are shared system-wide in order to prevent resource overuse.
+     5. Configuration managers: One object holds the app settings, so every part of the system reads from the same source.
+     6. App state: One object tracks user session or application state, so nothing falls out of sync. 
+   -   In all of the above cases, we have same answer: there is only one instance, shared by the system, controlled by itself.
+   - Class diagram:
+     - For a class to behave as a singleton, we need to take away its ability of the outside code to freely create instances. The class itself must be the only one in charge of its own creation.
+     - Also, there must be a controlled way through which the rest of the application can reach that single instance.
+       <img width="434" height="215" alt="image" src="https://github.com/user-attachments/assets/e2d3f76f-a5a7-42e4-a541-39106c8b3f88" />
 
-2. Thread-safe Singleton:
+       - The instance field holds the one object that the entire applicaion shares.
+       - The private constructor makes it impossible for any outside code to create a fresh instance using new.
+       - The getInstance() method is the only entry point, call it from anywhere and we always get back the exact same object. 
+     -  Why not just use a global variable?
+        - On the surface, global variable seems to do the same job. But, they only handle the access. They do nothing about creation.
+        - A singleton goes further. It decides exactly when the object gets created, supports lazy initialization etc. So, the object only exisst when it is first needed, handles thread safety during startup, and actively prevents duplicate instances from ever being born. 
+   - Working:
+      <img width="400" height="281" alt="image" src="https://github.com/user-attachments/assets/48a19dbc-ac5a-4486-b96c-7c92a4078a59" />
+     - The sequence diagram shows 2 clients requesting the instance. The first triggers creation. The second gets the existing one back. Both end up pointing to the exact same object in memory. 
+   - Implementation:
+     - Challenge: If 2 threads call "getInstance()" simultaneously when no instance exists yet, both might create separate instances breaking the entire guarantee.
+     - Let's understand different approaches to implement the singleton pattern:
+       1. Lazy initialization (Not thread safe):
+          - This approach creates the singleton instance only when it is first needed saving resources if the singleton is never actually used.
+          - 
+
+       2. Thread-Safe singleton:
 
 
-3. Factory Method:
+       3. Double Checked Locking:
 
 
-4. Abstract Factory:
+       4. Eager initialiation:
+
+       5. 
+     - 
+   - 
+
+3. Thread-safe Singleton:
 
 
-5. Builder
+4. Factory Method:
 
 
-6. Prototype
+5. Abstract Factory:
 
-7. Object Pool:
+
+6. Builder
+
+
+7. Prototype
+
+8. Object Pool:
 
 ## Structural Design Patterns:
 1. Adapter:
