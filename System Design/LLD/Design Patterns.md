@@ -147,7 +147,8 @@
 
 ## Creational Design Patterns:
 1. Singleton:
-
+   - Some things in software should only exist once such as Logger, config manager, darabase connection pool etC. Create more than one of these and we get inconsistent behavior, wasted resources, and hard-to-race bugs.
+   - This is what singleton pattern solves. 
 
 2. Thread-safe Singleton:
 
