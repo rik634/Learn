@@ -5,6 +5,7 @@
 - Design patterns hand us a proven approach, not a finished solution. We adapt it to our codebase, our language, our situation.
 - They improve code maintainability, scalability, and make communication between developers easier.
 
+
 ### Categories of Design Patterns:
 -  All 23 patterns are organized into 3 categories based on the type of problem they solve.
    1. Creational Pattern: How objects are created:\
