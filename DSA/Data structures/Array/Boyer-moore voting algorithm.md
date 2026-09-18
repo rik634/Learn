@@ -9,6 +9,7 @@
 
 
 
+
 Code:
 ```python
 def majority_element(nums):
